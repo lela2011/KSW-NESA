@@ -3,35 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
-        android:scaleType="fitCenter"
+        android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/kantilogo"
-        android:layout_marginBottom="16dp"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/kantilogo" />
 
     <EditText
+        android:id="@+id/username_ET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:layout_marginBottom="16dp"
         android:hint="@string/username"
-        android:layout_marginBottom="16dp" />
+        android:imeOptions="actionNext"
+        android:inputType="text" />
 
     <EditText
+        android:id="@+id/password_ET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:layout_marginBottom="16dp"
         android:hint="@string/password"
-        android:layout_marginBottom="16dp" />
+        android:imeOptions="actionDone"
+        android:inputType="textPassword" />
 
     <Button
+        android:id="@+id/login_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_button_label" />
