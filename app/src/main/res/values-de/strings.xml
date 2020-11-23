@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NESA</string>
+    <string name="login_button_label">LOGIN</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+</resources>
