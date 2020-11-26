@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    getLoginCredentials();
                 }
                 return false;
             }
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         binding.loginSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getLoginCredentials();
             }
         });
     }
