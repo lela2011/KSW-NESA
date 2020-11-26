@@ -36,4 +36,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getLoginCredentials(){
+        final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
+        final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
+        String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), usernameKey);
+        String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), passwordKey);
+        Toast.makeText(this, "Username:\n" + encryptedUsername + "\nPassword:\n" + encryptedPassword, Toast.LENGTH_SHORT).show();
+    }
 }
