@@ -9,16 +9,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nesa.databinding.ActivityMainBinding;
+import com.example.nesa.databinding.LoginActivityBinding;
 
-public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+public class LoginActivity extends AppCompatActivity {
+
+    LoginActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = LoginActivityBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
