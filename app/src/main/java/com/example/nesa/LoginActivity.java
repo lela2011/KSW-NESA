@@ -24,6 +24,11 @@ public class LoginActivity extends AppCompatActivity {
     LoginActivityBinding binding;
     AlertDialog.Builder dialogBuilder;
     public static final int INTERNET_REQUEST = 1;
+    public static final int LOGIN_SUCCESSFUL = 1;
+    public static final int LOGIN_FAILED = -1;
+    public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
+    public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getLoginCredentials(){
-        final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
-        final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
         String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), usernameKey);
         String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), passwordKey);
         Toast.makeText(this, "Username:\n" + encryptedUsername + "\nPassword:\n" + encryptedPassword, Toast.LENGTH_SHORT).show();
