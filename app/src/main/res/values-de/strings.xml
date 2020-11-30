@@ -4,4 +4,8 @@
     <string name="login_button_label">LOGIN</string>
     <string name="username">Benutzername</string>
     <string name="password">Passwort</string>
+    <string name="internet_dialog_message">Sie müssen eine Internetberechtigung zur Nutzung dieser App erteilen!</string>
+    <string name="internet_dialog_title">Internetberechtigung</string>
+    <string name="dialogButtonOk">OK</string>
+    <string name="dialogButtonCancel">Abbrechen</string>
 </resources>
