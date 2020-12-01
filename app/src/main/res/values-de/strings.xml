@@ -8,4 +8,7 @@
     <string name="internet_dialog_title">Internetberechtigung</string>
     <string name="dialogButtonOk">OK</string>
     <string name="dialogButtonCancel">Abbrechen</string>
+    <string name="loginErrorCredentials">Beim Login ist ein Fehler aufgetreten. Überprüfen Sie ihren Nutzernamen und Passwort</string>
+    <string name="loginErrorFailed">Beim Login ist ein Fehler aufgetreten.</string>
+    <string name="loginSuccessful">Login erfolgreich</string>
 </resources>

@@ -7,4 +7,7 @@
     <string name="internet_dialog_title">Internet permission</string>
     <string name="dialogButtonOk">OK</string>
     <string name="dialogButtonCancel">Cancel</string>
+    <string name="loginErrorCredentials">There was an error logging in. Check your username or password</string>
+    <string name="loginErrorFailed">There was an error while logging in</string>
+    <string name="loginSuccessful">Login successful</string>
 </resources>
