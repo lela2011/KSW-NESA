@@ -1,6 +1,7 @@
 package com.example.nesa;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -25,9 +26,9 @@ public class LoginCredentialChecker implements Callable<Integer> {
     public Integer call() throws Exception {
         try{
             Connection.Response loginForm = Jsoup.connect(LOGIN_FORM_URL)
-                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
-                    .timeout(0)
+                    .timeout(60*1000)
                     .execute();
             Document loginPage = loginForm.parse();
             HashMap<String, String> cookies = new HashMap<>(loginForm.cookies());
@@ -56,7 +57,8 @@ public class LoginCredentialChecker implements Callable<Integer> {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("error", String.valueOf(e.getMessage()));
+            return LoginActivity.LOGIN_ERROR;
         }
-        return LoginActivity.LOGIN_FAILED;
     }
 }
