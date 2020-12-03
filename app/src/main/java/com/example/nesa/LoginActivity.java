@@ -3,6 +3,7 @@ package com.example.nesa;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
     public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
 
+    private ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
     }
 
     private void getLoginCredentials() throws ExecutionException, InterruptedException {
@@ -144,5 +148,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void insertCredentials(String username, String password) {
         // code for inserting credentials in to database
+        User user = new User(username, password);
+        viewModel.insert(user);
     }
 }
