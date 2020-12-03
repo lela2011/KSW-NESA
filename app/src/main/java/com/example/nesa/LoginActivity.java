@@ -70,20 +70,19 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }).create();
 
-        binding.showPwdBtn.setOnClickListener(new View.OnClickListener() {
+
+        binding.showHidePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.passwordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.showPwdBtn.setVisibility(View.INVISIBLE);
-                binding.hidePwdBtn.setVisibility(View.VISIBLE);
-                binding.hidePwdBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        binding.passwordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        binding.hidePwdBtn.setVisibility(View.INVISIBLE);
-                        binding.showPwdBtn.setVisibility(View.VISIBLE);
-                    }
-                });
+                if (binding.showHidePwd.getContentDescription().equals("show_btn")) {
+                    binding.passwordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    binding.showHidePwd.setContentDescription("hide_btn");
+                    binding.showHidePwd.setImageResource(R.drawable.hide_pwd);
+                } else {
+                    binding.passwordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    binding.showHidePwd.setContentDescription("show_btn");
+                    binding.showHidePwd.setImageResource(R.drawable.show_pwd);
+                }
             }
         });
 
