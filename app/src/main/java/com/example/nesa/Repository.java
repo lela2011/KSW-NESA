@@ -34,7 +34,11 @@ public class Repository {
         });
     }
 
-    public LiveData<List<User>> getCredentials(int id) {
-        return userDao.getCredentials(id);
+    public LiveData<List<User>> getCredentials() {
+        return userDao.getCredentials();
+    }
+
+    public LiveData<Integer> getTableSize() {
+        return userDao.getTableSize();
     }
 }

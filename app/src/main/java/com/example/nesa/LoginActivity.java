@@ -3,6 +3,7 @@ package com.example.nesa;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.nesa.databinding.LoginActivityBinding;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -130,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(loginResultCode == LOGIN_SUCCESSFUL){
                     binding.loginErrorMessage.setText(R.string.loginSuccessful);
                     binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
-                    insertCredentials(encryptedUsername, encryptedPassword);
+                    checkTableSize(encryptedUsername, encryptedPassword);
                 }
             });
         });
@@ -158,9 +160,37 @@ public class LoginActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    public void checkTableSize(String username, String password){
+        viewModel.getTableSize().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer == 0){
+                    insertCredentials(username, password);
+                } else {
+                    updateCredentials(username, password);
+                }
+            }
+        });
+    }
+
     public void insertCredentials(String username, String password) {
-        // code for inserting credentials in to database
         User user = new User(username, password);
         viewModel.insert(user);
+        Toast.makeText(this, "User added to database", Toast.LENGTH_SHORT).show();
+    }
+    public void updateCredentials(String username, String password){
+        viewModel.getCredentials().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                if(!(users.get(0).getUsername().equals(username) && users.get(0).getPassword().equals(password))){
+                    User user = new User(username, password);
+                    user.setId(users.get(0).getId());
+                    viewModel.update(user);
+                    Toast.makeText(LoginActivity.this, "Database updated", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(LoginActivity.this, "user already in Database", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

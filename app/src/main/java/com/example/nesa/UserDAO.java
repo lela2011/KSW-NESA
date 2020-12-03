@@ -21,6 +21,9 @@ public interface UserDAO {
     @Delete
     void delete(User user);
 
-    @Query("SELECT * FROM login_table WHERE id LIKE :id")
-    LiveData<List<User>> getCredentials(int id);
+    @Query("SELECT * FROM login_table")
+    LiveData<List<User>> getCredentials();
+
+    @Query("SELECT COUNT(*) FROM login_table")
+    LiveData<Integer> getTableSize();
 }

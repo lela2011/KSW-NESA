@@ -28,7 +28,11 @@ public class ViewModel extends AndroidViewModel {
         repository.delete(user);
     }
 
-    public LiveData<List<User>> getCredentials(int id) {
-        return repository.getCredentials(id);
+    public LiveData<List<User>> getCredentials() {
+        return repository.getCredentials();
+    }
+
+    public LiveData<Integer> getTableSize() {
+        return repository.getTableSize();
     }
 }
