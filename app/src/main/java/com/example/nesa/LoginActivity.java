@@ -9,6 +9,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -68,10 +70,20 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }).create();
 
-        binding.hideShowBtn.setOnClickListener(new View.OnClickListener() {
+        binding.showPwdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // code for hide and show password button
+                binding.passwordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                binding.showPwdBtn.setVisibility(View.INVISIBLE);
+                binding.hidePwdBtn.setVisibility(View.VISIBLE);
+                binding.hidePwdBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        binding.passwordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        binding.hidePwdBtn.setVisibility(View.INVISIBLE);
+                        binding.showPwdBtn.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
 

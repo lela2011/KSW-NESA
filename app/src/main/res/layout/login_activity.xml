@@ -40,13 +40,23 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/hide_show_btn"
+            android:id="@+id/show_pwd_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/show_pwd"/>
+
+        <Button
+            android:id="@+id/hide_pwd_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/hide_pwd"
+            android:visibility="invisible"/>
 
     </FrameLayout>
 
