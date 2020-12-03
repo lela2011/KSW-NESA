@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(loginResultCode == LOGIN_SUCCESSFUL){
                     binding.loginErrorMessage.setText(R.string.loginSuccessful);
                     binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
+                    insertCredentials(encryptedUsername, encryptedPassword);
                 }
             });
         });
