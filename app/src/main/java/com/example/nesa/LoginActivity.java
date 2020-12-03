@@ -94,6 +94,8 @@ public class LoginActivity extends AppCompatActivity {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     try {
                         getLoginCredentials();
+                        binding.usernameET.getText().clear();
+                        binding.passwordET.getText().clear();
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -106,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     getLoginCredentials();
+                    binding.usernameET.getText().clear();
+                    binding.passwordET.getText().clear();
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
