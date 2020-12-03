@@ -11,19 +11,19 @@ import java.util.List;
 
 @Dao
 public interface UserDAO {
-
+    //update entry
     @Update
     void update(User user);
-
+    //insert entry
     @Insert
     void insert(User user);
-
+    //delete entry
     @Delete
     void delete(User user);
-
+    //get credentials
     @Query("SELECT * FROM login_table")
-    LiveData<List<User>> getCredentials();
-
+    LiveData<User> getCredentials();
+    //get table size
     @Query("SELECT COUNT(*) FROM login_table")
     LiveData<Integer> getTableSize();
 }

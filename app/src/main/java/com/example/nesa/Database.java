@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 @androidx.room.Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class Database extends RoomDatabase {
-
+    //initialize Database
     private static volatile Database instance;
     public abstract UserDAO userDAO();
     public static final int NUMBER_OF_THREADS = 4;

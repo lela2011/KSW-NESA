@@ -10,34 +10,34 @@ import java.util.concurrent.Executors;
 
 public class Repository {
     private UserDAO userDao;
-
+    //initialize repository
     public Repository(Application application) {
         Database database = Database.getInstance(application);
         userDao = database.userDAO();
     }
-
+    //update database
     public void update(User user) {
         Database.databaseWriteExecutor.execute(() -> {
             userDao.update(user);
         });
     }
-
+    //insert into database
     public void insert(User user) {
         Database.databaseWriteExecutor.execute(() -> {
             userDao.insert(user);
         });
     }
-
+    //delete from database
     public void delete(User user) {
         Database.databaseWriteExecutor.execute(() -> {
             userDao.delete(user);
         });
     }
-
-    public LiveData<List<User>> getCredentials() {
+    //get credentials
+    public LiveData<User> getCredentials() {
         return userDao.getCredentials();
     }
-
+    //get table size
     public LiveData<Integer> getTableSize() {
         return userDao.getTableSize();
     }

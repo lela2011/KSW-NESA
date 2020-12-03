@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AES {
     private static SecretKeySpec secretKey;
     private static byte[] key;
-
+    //set key for encryption and decryption
     public static void setKey(String myKey){
         MessageDigest sha = null;
         try {
@@ -27,7 +27,7 @@ public class AES {
             e.printStackTrace();
         }
     }
-
+    //encrypt passed parameters
     public static String encrypt(String strToEncrypt, String secret){
         try{
             setKey(secret);
@@ -39,7 +39,7 @@ public class AES {
         }
         return null;
     }
-
+    //decrypt passed parameters
     public static String decrypt(String strToDecrypt, String secret){
         try {
             setKey(secret);
