@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }).create();
 
+        binding.hideShowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // code for hide and show password button
+            }
+        });
+
         binding.passwordET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -107,7 +115,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(loginResultCode == LOGIN_SUCCESSFUL){
                     binding.loginErrorMessage.setText(R.string.loginSuccessful);
                     binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -133,5 +140,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void insertCredentials(String username, String password) {
+        // code for inserting credentials in to database
     }
 }

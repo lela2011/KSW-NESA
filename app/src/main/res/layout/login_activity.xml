@@ -26,14 +26,30 @@
         android:imeOptions="actionNext"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/password_ET"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/password"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/password_ET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/hide_show_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/show_pwd"/>
+
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/login_submit"
