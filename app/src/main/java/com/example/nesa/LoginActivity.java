@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -139,6 +140,13 @@ public class LoginActivity extends AppCompatActivity {
                     binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
                     //check if user alredy saved in database
                     checkTableSize(encryptedUsername, encryptedPassword);
+                    //Set login completed
+                    SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);
+                    SplashActivity.editor.apply();
+                    //Start main Activity
+                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainActivity);
+                    finish();
                 }
             });
         });
@@ -162,7 +170,6 @@ public class LoginActivity extends AppCompatActivity {
     public void insertCredentials(String username, String password) {
         User user = new User(username, password);
         viewModel.insert(user);
-        Toast.makeText(this, "User added to database", Toast.LENGTH_SHORT).show();
     }
     //update credentials
     public void updateCredentials(String username, String password){
@@ -176,9 +183,6 @@ public class LoginActivity extends AppCompatActivity {
                     user.setId(users.getId());
                     //update credentials
                     viewModel.update(user);
-                    Toast.makeText(LoginActivity.this, "Database updated", Toast.LENGTH_SHORT).show();
-                } else{
-                    Toast.makeText(LoginActivity.this, "user already in Database", Toast.LENGTH_SHORT).show();
                 }
             }
         });
