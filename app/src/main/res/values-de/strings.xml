@@ -11,4 +11,8 @@
     <string name="loginErrorCredentials">Beim Login ist ein Fehler aufgetreten. Überprüfen Sie ihren Nutzernamen und Passwort</string>
     <string name="loginErrorFailed">Beim Login ist ein Fehler aufgetreten.</string>
     <string name="loginSuccessful">Login erfolgreich</string>
+    <string name="home">Home</string>
+    <string name="grades">Noten</string>
+    <string name="absences">Absenzen</string>
+    <string name="account">Konto</string>
 </resources>

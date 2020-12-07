@@ -10,4 +10,8 @@
     <string name="loginErrorCredentials">There was an error logging in. Check your username or password</string>
     <string name="loginErrorFailed">There was an error while logging in</string>
     <string name="loginSuccessful">Login successful</string>
+    <string name="home">Home</string>
+    <string name="grades">Grades</string>
+    <string name="absences">Absences</string>
+    <string name="account">Account</string>
 </resources>

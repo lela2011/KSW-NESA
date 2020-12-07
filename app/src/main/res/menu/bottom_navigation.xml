@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home_icon"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/nav_grades"
+        android:icon="@drawable/grades_icon"
+        android:title="@string/grades" />
+
+    <item
+        android:id="@+id/nav_absences"
+        android:icon="@drawable/absences_icon"
+        android:title="@string/absences" />
+
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/account_icon"
+        android:title="@string/account" />
+
+</menu>
