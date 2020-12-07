@@ -1,8 +1,9 @@
 package com.example.nesa;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -18,12 +19,12 @@ public class AES {
     public static void setKey(String myKey){
         MessageDigest sha = null;
         try {
-            key = myKey.getBytes("UTF-8");
+            key = myKey.getBytes(StandardCharsets.UTF_8);
             sha = MessageDigest.getInstance("SHA-1");
             key = sha.digest(key);
             key = Arrays.copyOf(key, 16);
             secretKey = new SecretKeySpec(key, "AES");
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e){
+        } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         }
     }
@@ -31,9 +32,9 @@ public class AES {
     public static String encrypt(String strToEncrypt, String secret){
         try{
             setKey(secret);
-            Cipher cipher = Cipher. getInstance("AES/ECB/PKCS5Padding");
+            @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
+            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e){
             Log.d("decrypting", "Error while encrypting: " + e.toString());
         }
@@ -43,7 +44,7 @@ public class AES {
     public static String decrypt(String strToDecrypt, String secret){
         try {
             setKey(secret);
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
         } catch (Exception e){
