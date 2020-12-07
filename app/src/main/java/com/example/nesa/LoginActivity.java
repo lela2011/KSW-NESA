@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(loginResultCode == LOGIN_SUCCESSFUL){
                     binding.loginErrorMessage.setText(R.string.loginSuccessful);
                     binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
-                    //check if user alredy saved in database
+                    //check if user already saved in database
                     checkTableSize(encryptedUsername, encryptedPassword);
                     //Set login completed
                     SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);

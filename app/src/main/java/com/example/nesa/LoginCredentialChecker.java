@@ -29,7 +29,6 @@ public class LoginCredentialChecker implements Callable<Integer> {
             Connection.Response loginForm = Jsoup.connect(LOGIN_FORM_URL)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
-                    .timeout(60*1000)
                     .execute();
             Document loginPage = loginForm.parse();
             //read out cookies
