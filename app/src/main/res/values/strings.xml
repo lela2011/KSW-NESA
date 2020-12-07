@@ -14,4 +14,5 @@
     <string name="grades">Grades</string>
     <string name="absences">Absences</string>
     <string name="account">Account</string>
+    <string name="settings">Settings</string>
 </resources>

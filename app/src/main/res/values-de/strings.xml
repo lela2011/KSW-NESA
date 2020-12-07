@@ -15,4 +15,5 @@
     <string name="grades">Noten</string>
     <string name="absences">Absenzen</string>
     <string name="account">Konto</string>
+    <string name="settings">Einstellungen</string>
 </resources>
