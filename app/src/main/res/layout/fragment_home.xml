@@ -7,14 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Grades"
-            android:layout_marginBottom="16dp"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -25,15 +25,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="16dp">
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:gravity="center_horizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="lajsdflj"
+                    android:gravity="center_horizontal"
+                    android:text="5.0"
                     android:textSize="32sp"/>
 
                 <View
@@ -43,11 +43,11 @@
                     android:theme="?android:dividerVertical"/>
 
                 <TextView
-                    android:gravity="center_horizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="lajsdflj"
+                    android:gravity="center_horizontal"
+                    android:text="12"
                     android:textSize="32sp"/>
 
             </LinearLayout>
@@ -57,8 +57,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Personal Info"
-            android:layout_marginBottom="16dp"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -69,90 +69,112 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="16dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="16dp">
+                    android:text="Name"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="32sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:text="Mostert Jakob"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="32sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:text="Adresse"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="32sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:text="Linthblick 9"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ort"
+                    android:textSize="16sp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lajsdflj"
-                        android:textSize="32sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="8725 Ernetschwil"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
 
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Geburtsdatum"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="08.06.2004"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ausbildungsgang"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gymnasium - Physik und Anwendungen der Mathematik"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Heimatort"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Telefon"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="+41 81 710 09 91"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mobiltelefon"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="+41 76 720 78 58"
+                    android:textSize="32sp"
+                    android:layout_marginBottom="8dp"/>
 
             </LinearLayout>
 
@@ -161,8 +183,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account"
             android:layout_marginBottom="16dp"
+            android:text="Account"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -170,35 +192,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="16dp">
-
-                <TextView
-                    android:gravity="center_horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="lajsdflj"
-                    android:textSize="32sp"/>
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/dividerVertical"
-                    android:theme="?android:dividerVertical"/>
-
-                <TextView
-                    android:gravity="center_horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="lajsdflj"
-                    android:textSize="32sp"/>
-
-            </LinearLayout>
+                android:text="130 CHF"
+                android:textSize="32sp"
+                android:layout_margin="16dp"/>
 
         </com.google.android.material.card.MaterialCardView>
 
