@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.nesa.daos.UserDAO;
 import com.example.nesa.tables.User;
 
 public class Repository {

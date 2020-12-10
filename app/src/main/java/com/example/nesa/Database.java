@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.nesa.daos.UserDAO;
 import com.example.nesa.tables.User;
 
 import java.util.concurrent.ExecutorService;

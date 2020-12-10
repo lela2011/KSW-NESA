@@ -1,4 +1,4 @@
-package com.example.nesa;
+package com.example.nesa.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
