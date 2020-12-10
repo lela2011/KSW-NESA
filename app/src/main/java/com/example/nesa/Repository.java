@@ -4,9 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import com.example.nesa.tables.User;
 
 public class Repository {
     private UserDAO userDao;

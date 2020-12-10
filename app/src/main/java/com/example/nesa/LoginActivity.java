@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.nesa.databinding.LoginActivityBinding;
+import com.example.nesa.tables.User;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

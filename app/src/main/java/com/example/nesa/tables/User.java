@@ -1,4 +1,4 @@
-package com.example.nesa;
+package com.example.nesa.tables;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
