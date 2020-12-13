@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 public class LoginHandler {
     //run credential checking on background thread
     public static int checkLoginCredentials(String encryptedUsername, String encryptedPassword) {
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<Integer> result = executorService.submit(new LoginCredentialChecker(encryptedUsername, encryptedPassword));
         try {
             return result.get();

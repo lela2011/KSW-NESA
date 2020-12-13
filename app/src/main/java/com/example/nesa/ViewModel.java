@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.nesa.tables.User;
 
+import java.util.List;
+
 public class ViewModel extends AndroidViewModel {
     private Repository repository;
     //initialize repository

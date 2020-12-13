@@ -39,10 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final int LOGIN_ERROR = 2;
     public static final int LOGIN_FAILED = -1;
     //Keys for encryption
-    public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
-    public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
 
-    private ViewModel viewModel;
+    public static ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //Initialize ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-
         //Check for internet permission on device
         checkInternetPermission();
         //Create dialog to explain why internet permission is needed
@@ -115,8 +111,8 @@ public class LoginActivity extends AppCompatActivity {
         //close keyboard on screen
         closeKeyboard();
         //encrypt username and password
-        String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), usernameKey);
-        String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), passwordKey);
+        String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), SplashActivity.usernameKey);
+        String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), SplashActivity.passwordKey);
         //clear the input fields
         binding.usernameET.getText().clear();
         binding.passwordET.getText().clear();

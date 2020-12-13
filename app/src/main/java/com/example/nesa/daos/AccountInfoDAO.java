@@ -28,4 +28,7 @@ public interface AccountInfoDAO {
     //select all items from account_table and order by ascending id
     @Query("SELECT * FROM account_table ORDER BY id ASC")
     LiveData<List<AccountInfo>> getAllAccountInfo();
+
+    @Query("SELECT COUNT(*) FROM account_table")
+    int isTableEmpty();
 }

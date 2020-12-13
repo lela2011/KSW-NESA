@@ -1,14 +1,40 @@
 package com.example.nesa;
 
 import android.app.Application;
+import android.provider.ContactsContract;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.nesa.daos.AccountInfoDAO;
 import com.example.nesa.daos.UserDAO;
+import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.User;
+
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Repository {
     private UserDAO userDao;
+    private AccountInfoDAO accountInfoDAO;
+    static final ExecutorService scrapingExecutor = Executors.newFixedThreadPool(2);
+    private static Document loginPage;
+    public static HashMap<String, String> cookies;
+    public static HashMap<String, String> formData;
+    public static String authKey;
+    public static String savedUsername;
+    public static String savedPassword;
     //initialize repository
     public Repository(Application application) {
         Database database = Database.getInstance(application);
@@ -40,4 +66,5 @@ public class Repository {
     public LiveData<Integer> getTableSize() {
         return userDao.getTableSize();
     }
+
 }

@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
+
+import java.util.HashMap;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,6 +17,12 @@ public class SplashActivity extends AppCompatActivity {
     public static final int SPLASH_TIME_OUT = 1500;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
+    public static ViewModel viewModel;
+    public static String usernameKey;
+    public static String passwordKey;
+    public static String LOGIN_FORM_URL;
+    public static String ACTION_URL;
+    HashMap<String, String> cookies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,12 @@ public class SplashActivity extends AppCompatActivity {
         Context context = SplashActivity.this;
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
+        usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
+        passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
+
+        LOGIN_FORM_URL = "https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=";
+        ACTION_URL = "https://ksw.nesa-sg.ch/index.php?pageid=";
 
         new Handler().postDelayed(new Runnable() {
             @Override

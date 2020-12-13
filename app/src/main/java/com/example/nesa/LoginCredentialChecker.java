@@ -14,8 +14,6 @@ import java.util.concurrent.Callable;
 public class LoginCredentialChecker implements Callable<Integer> {
     //variable definition
     String username, password;
-    final String LOGIN_FORM_URL = "https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=";
-    final String LOGIN_ACTION_URL = "https://ksw.nesa-sg.ch/index.php?pageid=";
     //initialize credential checker
     public LoginCredentialChecker(String username, String password){
         this.username = username;
@@ -26,7 +24,7 @@ public class LoginCredentialChecker implements Callable<Integer> {
     public Integer call() throws Exception {
         try{
             //connect to login page
-            Connection.Response loginForm = Jsoup.connect(LOGIN_FORM_URL)
+            Connection.Response loginForm = Jsoup.connect(SplashActivity.LOGIN_FORM_URL)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
                     .execute();
@@ -39,11 +37,11 @@ public class LoginCredentialChecker implements Callable<Integer> {
                     .attr("value");
             //add username and password to request
             HashMap<String, String> formData = new HashMap<>();
-            formData.put("login", AES.decrypt(username, LoginActivity.usernameKey));
-            formData.put("passwort", AES.decrypt(password, LoginActivity.passwordKey));
+            formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
+            formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
             formData.put("loginhash", authToken);
             //connect to main page
-            Connection.Response homePage = Jsoup.connect(LOGIN_ACTION_URL)
+            Connection.Response homePage = Jsoup.connect(SplashActivity.ACTION_URL)
                     .cookies(cookies)
                     .data(formData)
                     .method(Connection.Method.POST)

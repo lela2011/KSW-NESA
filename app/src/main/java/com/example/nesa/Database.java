@@ -13,13 +13,12 @@ import com.example.nesa.tables.User;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {User.class, AccountInfo.class}, version = 2, exportSchema = false)
+@androidx.room.Database(entities = {User.class}, version = 2, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;
     public abstract UserDAO userDAO();
-    public abstract AccountInfoDAO accountInfoDAO();
-    public static final int NUMBER_OF_THREADS = 8;
+    public static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     static Database getInstance(Context context) {
