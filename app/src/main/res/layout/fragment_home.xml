@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Grades"
+            android:text="@string/grade_overview"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Personal Info"
+            android:text="@string/personal_info"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -75,105 +75,112 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mostert Jakob"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Adresse"
+                    android:text="@string/address"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Linthblick 9"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ort"
+                    android:text="@string/city"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="8725 Ernetschwil"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Geburtsdatum"
+                    android:text="@string/birthdate"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/birthdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="08.06.2004"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ausbildungsgang"
+                    android:text="@string/major"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/major"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Gymnasium - Physik und Anwendungen der Mathematik"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Heimatort"
+                    android:text="@string/familyorigin"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/familyorigin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Telefon"
+                    android:text="@string/telefon"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+41 81 710 09 91"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mobiltelefon"
+                    android:text="@string/mobilephone"
                     android:textSize="16sp"/>
 
                 <TextView
+                    android:id="@+id/mobilephone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+41 76 720 78 58"
+                    android:text=""
                     android:textSize="32sp"
                     android:layout_marginBottom="8dp"/>
 
@@ -185,7 +192,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Account"
+            android:text="@string/bank"
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView

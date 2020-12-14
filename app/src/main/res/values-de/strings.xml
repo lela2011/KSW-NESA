@@ -16,4 +16,15 @@
     <string name="absences">Absenzen</string>
     <string name="account">Konto</string>
     <string name="settings">Einstellungen</string>
+    <string name="grade_overview">Noten Übersicht</string>
+    <string name="personal_info">Persönliche Informationen</string>
+    <string name="name">Name</string>
+    <string name="address">Adresse</string>
+    <string name="city">Ort</string>
+    <string name="birthdate">Geburtstag</string>
+    <string name="major">Ausbildungsgang</string>
+    <string name="familyorigin">Heimatort</string>
+    <string name="telefon">Telefon</string>
+    <string name="mobilephone">Mobiltelefon</string>
+    <string name="bank">Bank</string>
 </resources>
