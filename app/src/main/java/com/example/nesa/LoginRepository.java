@@ -25,18 +25,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Repository {
+public class LoginRepository {
     private UserDAO userDao;
-    private AccountInfoDAO accountInfoDAO;
-    static final ExecutorService scrapingExecutor = Executors.newFixedThreadPool(2);
-    private static Document loginPage;
-    public static HashMap<String, String> cookies;
-    public static HashMap<String, String> formData;
-    public static String authKey;
-    public static String savedUsername;
-    public static String savedPassword;
     //initialize repository
-    public Repository(Application application) {
+    public LoginRepository(Application application) {
         Database database = Database.getInstance(application);
         userDao = database.userDAO();
     }

@@ -7,13 +7,12 @@ import androidx.room.PrimaryKey;
 public class AccountInfo {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    public String value;
+    public int order;
 
-    public String keyName;
-    public String keyValue;
-
-    public AccountInfo(String keyName, String keyValue) {
-        this.keyName = keyName;
-        this.keyValue = keyValue;
+    public AccountInfo(String value, int order) {
+        this.value = value;
+        this.order = order;
     }
 
     public int getId() {

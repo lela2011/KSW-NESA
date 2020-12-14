@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     //check if there already is a user added to database
     public void checkTableSize(String username, String password){
-        viewModel.getTableSize().observe(this, new Observer<Integer>() {
+        viewModel.getTableSizeLogin().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 if(integer == 0){
@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
     //add user to database
     public void insertCredentials(String username, String password) {
         User user = new User(username, password);
-        viewModel.insert(user);
+        viewModel.insertLogin(user);
     }
     //update credentials
     public void updateCredentials(String username, String password){
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                     User user = new User(username, password);
                     user.setId(users.getId());
                     //update credentials
-                    viewModel.update(user);
+                    viewModel.updateLogin(user);
                 }
             }
         });

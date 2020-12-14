@@ -18,11 +18,10 @@ import com.example.nesa.fragments.GradesFragment;
 import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
 import com.example.nesa.scrapers.CookieAndAuthScraper;
-import com.example.nesa.scrapers.MainScraper;
+import com.example.nesa.scrapers.PageScraper;
 import com.example.nesa.tables.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -33,6 +32,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
     public class MainActivity extends AppCompatActivity {
+
+    public static final int PAGE_MAIN = 1;
+    public static final int PAGE_MARKS = 2;
+    public static final int PAGE_ABSENCES = 3;
+    public static final int PAGE_ACCOUNT = 4;
 
     ActivityMainBinding binding;
     public static HashMap<String, String> cookies;
@@ -103,25 +107,50 @@ import java.util.concurrent.Future;
         viewModel.getCredentials().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                username = user.getUsername();
-                password = user.getPassword();
-                formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-                formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
-                formData.put("loginhash", authToken);
-                Log.d("debug", formData.toString());
-                scrapeName();
+                if(user != null){
+                    username = user.getUsername();
+                    password = user.getPassword();
+                    formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
+                    formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
+                    formData.put("loginhash", authToken);
+                    Log.d("debug", formData.toString());
+                    scrapePage(SplashActivity.ACTION_URL, PAGE_MAIN);
+                }
             }
         });
     }
 
-    private void scrapeName () {
-        Future<String> main = executorService.submit(new MainScraper(cookies, formData));
+    private void scrapePage (String url, int pageID) {
+        Future<Document> pageFuture = executorService.submit(new PageScraper(cookies, formData, url));
         try {
-            String start = main.get();
-            runOnUiThread(()-> Toast.makeText(this, start, Toast.LENGTH_SHORT).show());
+            Document page = pageFuture.get();
+            switch (pageID){
+                case PAGE_MAIN: scrapeMain(page);
+                case PAGE_MARKS: scrapeMarks(page);
+                case PAGE_ABSENCES: scrapeAbsences(page);
+                case PAGE_ACCOUNT: scrapeAccount(page);
+            }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void scrapeMain(Document page){
+        Element start = page.select("tr.mdl-table--row-dense:nth-child(4) > td:nth-child(2)").get(0);
+        String text = start.text();
+        runOnUiThread(()-> Toast.makeText(this, text, Toast.LENGTH_SHORT).show());
+    }
+
+    private void scrapeMarks(Document page) {
+
+    }
+
+    private void scrapeAbsences(Document page){
+
+    }
+
+    private void scrapeAccount(Document page){
+
     }
 
 }

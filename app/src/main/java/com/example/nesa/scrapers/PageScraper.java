@@ -16,33 +16,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import static com.example.nesa.Repository.formData;
-
-public class MainScraper implements Callable<String> {
+public class PageScraper implements Callable<Document> {
 
     HashMap<String, String> cookies, formData;
+    String url;
 
-    public MainScraper(HashMap<String, String> cookies, HashMap<String, String> formData){
+    public PageScraper(HashMap<String, String> cookies, HashMap<String, String> formData, String url){
         this.cookies = cookies;
         this.formData = formData;
+        this.url = url;
     }
 
     @Override
-    public String call() throws Exception {
-        Connection.Response mainResponse = Jsoup.connect(SplashActivity.ACTION_URL)
+    public Document call() throws Exception {
+        return Jsoup.connect(url)
                 .cookies(cookies)
                 .data(formData)
                 .method(Connection.Method.POST)
-                .execute();
-
-        Document mainPage = mainResponse.parse();
-        Element start = mainPage.select("tr.mdl-table--row-dense:nth-child(4) > td:nth-child(2)").get(0);
-        String text = start.text();
-
-        return text;
+                .execute()
+                .parse();
     }
 }
 
