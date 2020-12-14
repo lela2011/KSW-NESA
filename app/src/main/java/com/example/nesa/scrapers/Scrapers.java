@@ -23,6 +23,9 @@ public class Scrapers {
         for (int i = 1; i < 9; i++) {
             Element entry = table.get(i - 1);
             String text = entry.child(1).text();
+            if(text.equals("")){
+                text = "-";
+            }
             userInfo.add(new AccountInfo(text, i));
         }
         return userInfo;

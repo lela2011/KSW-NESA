@@ -144,7 +144,7 @@ import java.util.concurrent.Future;
         viewModel.getAccountInfo().observe(this, new Observer<List<AccountInfo>>() {
             @Override
             public void onChanged(List<AccountInfo> accountInfos) {
-                if (accountInfos != null) {
+                if (accountInfos.size() != 0 && info.size() != 0) {
                     for (int i = 0; i < 8; i++) {
                         int id = accountInfos.get(i).getId();
                         AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);

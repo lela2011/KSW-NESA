@@ -46,7 +46,7 @@ public class ViewModel extends AndroidViewModel {
     }
 
     public void insertInfo(AccountInfo info) {
-        infoRepository.update(info);
+        infoRepository.insert(info);
     }
 
     public void deleteInfo(AccountInfo info) {
