@@ -19,13 +19,17 @@ import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
 import com.example.nesa.scrapers.CookieAndAuthScraper;
 import com.example.nesa.scrapers.PageScraper;
+import com.example.nesa.scrapers.Scrapers;
+import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,7 +49,7 @@ import java.util.concurrent.Future;
     public static String username;
     public static String password;
     ExecutorService executorService = Executors.newFixedThreadPool(3);
-    ViewModel viewModel;
+    public static ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,32 +129,48 @@ import java.util.concurrent.Future;
         try {
             Document page = pageFuture.get();
             switch (pageID){
-                case PAGE_MAIN: scrapeMain(page);
-                case PAGE_MARKS: scrapeMarks(page);
-                case PAGE_ABSENCES: scrapeAbsences(page);
-                case PAGE_ACCOUNT: scrapeAccount(page);
+                case PAGE_MAIN: reScrapeMain(page);
+                case PAGE_MARKS: reScrapeMarks(page);
+                case PAGE_ABSENCES: reScrapeAbsences(page);
+                case PAGE_ACCOUNT: reScrapeAccount(page);
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void scrapeMain(Document page){
-        Element start = page.select("tr.mdl-table--row-dense:nth-child(4) > td:nth-child(2)").get(0);
-        String text = start.text();
-        runOnUiThread(()-> Toast.makeText(this, text, Toast.LENGTH_SHORT).show());
+    private void reScrapeMain(Document page) {
+        ArrayList<AccountInfo> info = Scrapers.scrapeMain(page);
+        viewModel.getAccountInfo().observe(this, new Observer<List<AccountInfo>>() {
+            @Override
+            public void onChanged(List<AccountInfo> accountInfos) {
+                if (accountInfos != null) {
+                    for (int i = 0; i < 8; i++) {
+                        int id = accountInfos.get(i).getId();
+                        AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);
+                        updatedEntry.setId(id);
+                        viewModel.updateInfo(updatedEntry);
+                    }
+                } else {
+                    for (int i = 0; i < 8; i++) {
+                        AccountInfo newEntry = new AccountInfo(info.get(i).value, info.get(i).order);
+                        viewModel.insertInfo(newEntry);
+                    }
+                }
+            }
+        });
     }
 
-    private void scrapeMarks(Document page) {
-
+    private void reScrapeMarks(Document page) {
+        Scrapers.scrapeMarks(page);
     }
 
-    private void scrapeAbsences(Document page){
-
+    private void reScrapeAbsences(Document page) {
+        Scrapers.scrapeAbsences(page);
     }
 
-    private void scrapeAccount(Document page){
-
+    private void reScrapeAccount(Document page) {
+        Scrapers.scrapeAbsences(page);
     }
 
 }
