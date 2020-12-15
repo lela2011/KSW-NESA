@@ -17,12 +17,10 @@ public class SplashActivity extends AppCompatActivity {
     public static final int SPLASH_TIME_OUT = 1500;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
-    public static ViewModel viewModel;
     public static String usernameKey;
     public static String passwordKey;
     public static String LOGIN_FORM_URL;
     public static String ACTION_URL;
-    HashMap<String, String> cookies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
