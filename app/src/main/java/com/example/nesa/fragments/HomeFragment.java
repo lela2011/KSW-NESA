@@ -1,6 +1,7 @@
 package com.example.nesa.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import java.util.concurrent.Future;
 public class HomeFragment extends Fragment {
 
     public FragmentHomeBinding binding;
-    ViewModel viewModel;
 
     @Nullable
     @Override
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         MainActivity.viewModel.getAccountInfo().observe(getActivity(), new Observer<List<AccountInfo>>() {
             @Override
             public void onChanged(List<AccountInfo> accountInfos) {
-                if(accountInfos.size() != 0){
+                if(accountInfos.size() == 8 && personalInfoTextViews.size() == 8){
                     for(int i = 0; i<8; i++){
                         personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
                     }

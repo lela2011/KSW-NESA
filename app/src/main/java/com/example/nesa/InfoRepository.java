@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.nesa.daos.AccountInfoDAO;
 import com.example.nesa.tables.AccountInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InfoRepository {
@@ -18,13 +19,13 @@ public class InfoRepository {
         accountInfoDAO = database.accountInfoDAO();
     }
 
-    public void update(AccountInfo info){
+    public void update(List<AccountInfo> info){
         Database.databaseWriteExecutor.execute(()->{
             accountInfoDAO.update(info);
         });
     }
 
-    public void insert(AccountInfo info){
+    public void insert(List<AccountInfo> info){
         Database.databaseWriteExecutor.execute(()->{
             accountInfoDAO.insert(info);
         });

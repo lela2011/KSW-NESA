@@ -15,11 +15,11 @@ import java.util.List;
 public interface AccountInfoDAO {
     //update account_table
     @Update
-    void update(AccountInfo info);
+    void update(List<AccountInfo> info);
 
     //insert into account_table
     @Insert
-    void insert(AccountInfo info);
+    void insert(List<AccountInfo> info);
 
     //delete from account_table
     @Delete

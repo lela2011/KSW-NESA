@@ -31,6 +31,15 @@ public class Scrapers {
         return userInfo;
     }
 
+    public static ArrayList<String> scrapeLinks(Document page) {
+        ArrayList<String> links = new ArrayList<>();
+        links.add(0, page.select("#menu1").first().attr("href"));
+        links.add(1, page.select("#menu21311").first().attr("href"));
+        links.add(2, page.select("#menu21111").first().attr("href"));
+        links.add(3, page.select("#menu21411").first().attr("href"));
+        return links;
+    }
+
     public static void scrapeMarks(Document page) {
 
     }
@@ -40,6 +49,7 @@ public class Scrapers {
     }
 
     public static void scrapeAccount(Document page){
-
+        String balance = page.select("a.mdl-button").get(0).text();
+        Log.d("balance", balance);
     }
 }

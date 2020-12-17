@@ -43,13 +43,12 @@ import java.util.concurrent.Future;
     public static final int PAGE_ACCOUNT = 4;
 
     ActivityMainBinding binding;
-    public static HashMap<String, String> cookies;
-    public static HashMap<String, String> formData = new HashMap<>();
-    public static String authToken;
     public static String username;
     public static String password;
     ExecutorService executorService = Executors.newFixedThreadPool(3);
     public static ViewModel viewModel;
+
+    List<AccountInfo> oldInfo = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +98,6 @@ import java.util.concurrent.Future;
     };
 
     private void initializeScraping () {
-        Future<CookieAndAuth> login = executorService.submit(new CookieAndAuthScraper());
-        try {
-            CookieAndAuth loginResponse = login.get();
-            authToken = loginResponse.authToken;
-            cookies = loginResponse.cookies;
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
 
         viewModel.getCredentials().observe(this, new Observer<User>() {
             @Override
@@ -114,63 +105,110 @@ import java.util.concurrent.Future;
                 if(user != null){
                     username = user.getUsername();
                     password = user.getPassword();
-                    formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-                    formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
-                    formData.put("loginhash", authToken);
-                    Log.d("debug", formData.toString());
-                    scrapePage(SplashActivity.ACTION_URL, PAGE_MAIN);
+                    scrapeMain();
+                    scrapeAccount();
+                } else {
                 }
             }
         });
     }
 
-    private void scrapePage (String url, int pageID) {
+    private Document scrapePage (String url, HashMap<String, String> cookies, HashMap<String, String> formData) {
         Future<Document> pageFuture = executorService.submit(new PageScraper(cookies, formData, url));
         try {
             Document page = pageFuture.get();
-            switch (pageID){
-                case PAGE_MAIN: reScrapeMain(page);
-                case PAGE_MARKS: reScrapeMarks(page);
-                case PAGE_ABSENCES: reScrapeAbsences(page);
-                case PAGE_ACCOUNT: reScrapeAccount(page);
-            }
+            return page;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    private void reScrapeMain(Document page) {
-        ArrayList<AccountInfo> info = Scrapers.scrapeMain(page);
+    private void scrapeMain() {
+        CookieAndAuth cookieAndAuth = cookiesAndAuth();
+
+        HashMap<String, String> cookies = cookieAndAuth.cookies;
+        String authToken = cookieAndAuth.authToken;
+
+        HashMap<String, String> formData = new HashMap<>();
+        formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
+        formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
+        formData.put("loginhash", authToken);
+
+        Document mainPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
+
+        ArrayList<AccountInfo> info = Scrapers.scrapeMain(mainPage);
         viewModel.getAccountInfo().observe(this, new Observer<List<AccountInfo>>() {
             @Override
-            public void onChanged(List<AccountInfo> accountInfos) {
-                if (accountInfos.size() != 0 && info.size() != 0) {
+            public void onChanged(List<AccountInfo> accountInfo) {
+                if (accountInfo.size() == 8) {
+                    List<AccountInfo> infoList = new ArrayList<>();
                     for (int i = 0; i < 8; i++) {
-                        int id = accountInfos.get(i).getId();
+                        int id = accountInfo.get(i).getId();
                         AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);
                         updatedEntry.setId(id);
-                        viewModel.updateInfo(updatedEntry);
+                        infoList.add(updatedEntry);
                     }
-                } else {
+                    if(!compareLists(oldInfo, infoList)){
+                        viewModel.updateInfo(infoList);
+                        oldInfo = infoList;
+                    }
+                } else if (accountInfo.size() == 0) {
+                    List<AccountInfo> infoList = new ArrayList<>();
                     for (int i = 0; i < 8; i++) {
                         AccountInfo newEntry = new AccountInfo(info.get(i).value, info.get(i).order);
-                        viewModel.insertInfo(newEntry);
+                        infoList.add(newEntry);
                     }
+                    viewModel.insertInfo(infoList);
                 }
             }
         });
     }
 
-    private void reScrapeMarks(Document page) {
-        Scrapers.scrapeMarks(page);
+    private void scrapeMarks() {
+        CookieAndAuth cookieAndAuth = cookiesAndAuth();
+
+        HashMap<String, String> cookies = cookieAndAuth.cookies;
+        String authToken = cookieAndAuth.authToken;
+
+        HashMap<String, String> formData = new HashMap<>();
+        formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
+        formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
+        formData.put("loginhash", authToken);
+
+        Document mainPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
     }
 
-    private void reScrapeAbsences(Document page) {
-        Scrapers.scrapeAbsences(page);
+    private void scrapeAbsences() {
+
     }
 
-    private void reScrapeAccount(Document page) {
-        Scrapers.scrapeAbsences(page);
+    private void scrapeAccount() {
+
+    }
+
+    private CookieAndAuth cookiesAndAuth() {
+        Future<CookieAndAuth> login = executorService.submit(new CookieAndAuthScraper());
+        try {
+            CookieAndAuth loginResponse = login.get();
+            return loginResponse;
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean compareLists(List<AccountInfo> oldInfo, List<AccountInfo> newInfo){
+        if(oldInfo.size() == newInfo.size()){
+            for(int i = 0; i<oldInfo.size(); i++){
+                if(!(oldInfo.get(i).order == newInfo.get(i).order && oldInfo.get(i).value.equals(newInfo.get(i).value))){
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

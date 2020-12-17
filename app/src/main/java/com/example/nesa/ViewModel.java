@@ -41,11 +41,11 @@ public class ViewModel extends AndroidViewModel {
         return loginRepository.getTableSize();
     }
 
-    public void updateInfo(AccountInfo info) {
+    public void updateInfo(List<AccountInfo> info) {
         infoRepository.update(info);
     }
 
-    public void insertInfo(AccountInfo info) {
+    public void insertInfo(List<AccountInfo> info) {
         infoRepository.insert(info);
     }
 
