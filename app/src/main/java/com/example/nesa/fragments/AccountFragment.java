@@ -17,6 +17,7 @@ import com.example.nesa.CookieAndAuth;
 import com.example.nesa.MainActivity;
 import com.example.nesa.R;
 import com.example.nesa.SplashActivity;
+import com.example.nesa.databinding.FragmentAccountBinding;
 import com.example.nesa.scrapers.CookieAndAuthScraper;
 import com.example.nesa.scrapers.PageScraper;
 import com.example.nesa.tables.User;
@@ -31,9 +32,12 @@ import java.util.concurrent.Future;
 
 public class AccountFragment extends Fragment {
 
+    public FragmentAccountBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 }

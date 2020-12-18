@@ -176,7 +176,7 @@ import java.util.concurrent.Future;
         formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        Document mainPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
+        Document accountPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
     }
 
     private void scrapeAbsences() {

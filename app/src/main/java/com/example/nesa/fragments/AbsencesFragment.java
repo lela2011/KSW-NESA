@@ -10,11 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.nesa.R;
+import com.example.nesa.databinding.FragmentAbsencesBinding;
 
 public class AbsencesFragment extends Fragment {
+
+    public FragmentAbsencesBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_absences, container, false);
+        binding = FragmentAbsencesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 }

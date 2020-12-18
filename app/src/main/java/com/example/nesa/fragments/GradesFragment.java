@@ -10,11 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.nesa.R;
+import com.example.nesa.databinding.FragmentGradesBinding;
 
 public class GradesFragment extends Fragment {
+
+    public FragmentGradesBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_grades, container, false);
+        binding = FragmentGradesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 }
