@@ -21,6 +21,7 @@ import com.example.nesa.scrapers.CookieAndAuthScraper;
 import com.example.nesa.scrapers.PageScraper;
 import com.example.nesa.scrapers.Scrapers;
 import com.example.nesa.tables.AccountInfo;
+import com.example.nesa.tables.BankStatement;
 import com.example.nesa.tables.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -184,7 +185,20 @@ import java.util.concurrent.Future;
     }
 
     private void scrapeAccount() {
+        CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
+        HashMap<String, String> cookies = cookieAndAuth.cookies;
+        String authToken = cookieAndAuth.authToken;
+
+        HashMap<String, String> formData = new HashMap<>();
+        formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
+        formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
+        formData.put("loginhash", authToken);
+
+        Document accountPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
+
+        ArrayList<BankStatement> debits = Scrapers.scrapeAccount(accountPage);
+        Log.d("debits", debits.toString());
     }
 
     private CookieAndAuth cookiesAndAuth() {

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.nesa.tables.AccountInfo;
+import com.example.nesa.tables.BankStatement;
 import com.example.nesa.tables.User;
 
 import java.util.List;
@@ -14,11 +15,13 @@ import java.util.List;
 public class ViewModel extends AndroidViewModel {
     private LoginRepository loginRepository;
     private InfoRepository infoRepository;
+    private BankStatementRepository bankRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
         loginRepository = new LoginRepository(application);
         infoRepository = new InfoRepository(application);
+        bankRepository = new BankStatementRepository(application);
     }
     //update entry
     public void updateLogin(User user) {
@@ -59,5 +62,21 @@ public class ViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getTableSizeInfo() {
         return infoRepository.getTableSize();
+    }
+
+    public void updateBank(List<BankStatement> statement){
+        bankRepository.update(statement);
+    }
+
+    public void insertAllBank(List<BankStatement> statement) {
+        bankRepository.insertAll(statement);
+    }
+
+    public void insertBank(BankStatement statement) {
+        bankRepository.insert(statement);
+    }
+
+    public LiveData<List<BankStatement>> getBankStatements() {
+        return bankRepository.getBankStatement();
     }
 }

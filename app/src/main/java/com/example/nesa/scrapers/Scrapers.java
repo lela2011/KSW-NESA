@@ -7,11 +7,13 @@ import androidx.lifecycle.Observer;
 
 import com.example.nesa.MainActivity;
 import com.example.nesa.tables.AccountInfo;
+import com.example.nesa.tables.BankStatement;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +50,20 @@ public class Scrapers {
 
     }
 
-    public static void scrapeAccount(Document page){
-        String balance = page.select("a.mdl-button").get(0).text();
-        Log.d("balance", balance);
+    public static ArrayList<BankStatement> scrapeAccount(Document page){
+        ArrayList<BankStatement> statements = new ArrayList<>();
+
+        Elements table = page.select("#content-card > table:nth-child(6) > tbody:nth-child(1) > tr");
+        table.remove(0);
+        table.remove(table.last());
+        for(int i = 0; i<table.size(); i++ ){
+            Element statement = table.get(i);
+            String date = statement.child(0).text();
+            String name = statement.child(1).text();
+            String amount = statement.child(2).text();
+            String balance = statement.child(3).text();
+            statements.add(new BankStatement(i, date, name, amount, balance));
+        }
+        return statements;
     }
 }
