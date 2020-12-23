@@ -76,7 +76,15 @@ public class ViewModel extends AndroidViewModel {
         bankRepository.insert(statement);
     }
 
+    public void deleteAllBank() {
+        bankRepository.deleteAll();
+    }
+
     public LiveData<List<BankStatement>> getBankStatements() {
         return bankRepository.getBankStatement();
+    }
+
+    public LiveData<Float> getBalance(){
+        return bankRepository.getBalance();
     }
 }

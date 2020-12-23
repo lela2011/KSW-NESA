@@ -20,20 +20,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="12.11.2020"
+                android:text=""
                 android:layout_marginBottom="8dp"/>
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollHorizontally="true"
-                android:ellipsize="end"
                 android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="32sp"
-                android:text="Christopher" />
+                android:text="" />
 
         </LinearLayout>
 
@@ -44,18 +45,22 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="100"
+                android:text=""
+                android:textColor="@color/red"
                 android:textSize="32sp"
                 android:gravity="center"/>
 
             <TextView
+                android:id="@+id/currency"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="CHF"
+                android:text="@string/chf"
+                android:textColor="@color/red"
                 android:textSize="32sp"
                 android:gravity="center"/>
 

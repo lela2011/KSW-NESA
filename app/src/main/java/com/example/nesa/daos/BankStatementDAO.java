@@ -28,7 +28,13 @@ public interface BankStatementDAO {
     @Delete
     void delete(BankStatement statement);
 
+    @Query("DELETE FROM bank_table")
+    void deleteAll();
+
     //get all of the rows in ascending order (oldest to newest)
     @Query("SELECT * FROM bank_table ORDER BY `order` ASC")
     LiveData<List<BankStatement>> getBankStatement();
+
+    @Query("SELECT saldo FROM bank_table ORDER BY `order` DESC LIMIT 1")
+    LiveData<Float> getBalance();
 }

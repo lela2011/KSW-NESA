@@ -10,10 +10,10 @@ public class BankStatement {
     public int order;
     public String date;
     public String title;
-    public String amount;
-    public String saldo;
+    public float amount;
+    public float saldo;
 
-    public BankStatement(int order, String date, String title, String amount, String saldo) {
+    public BankStatement(int order, String date, String title, float amount, float saldo) {
         this.order = order;
         this.date = date;
         this.title = title;

@@ -1,11 +1,14 @@
 package com.example.nesa.scrapers;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
 import com.example.nesa.MainActivity;
+import com.example.nesa.R;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
 
@@ -51,6 +54,8 @@ public class Scrapers {
     }
 
     public static ArrayList<BankStatement> scrapeAccount(Document page){
+        String color = "red";
+
         ArrayList<BankStatement> statements = new ArrayList<>();
 
         Elements table = page.select("#content-card > table:nth-child(6) > tbody:nth-child(1) > tr");
@@ -60,8 +65,8 @@ public class Scrapers {
             Element statement = table.get(i);
             String date = statement.child(0).text();
             String name = statement.child(1).text();
-            String amount = statement.child(2).text();
-            String balance = statement.child(3).text();
+            float amount = Float.parseFloat(statement.child(2).text().replace(" sFr", ""));
+            float balance = Float.parseFloat(statement.child(3).text().replace(" sFr", ""));
             statements.add(new BankStatement(i, date, name, amount, balance));
         }
         return statements;

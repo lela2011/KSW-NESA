@@ -15,7 +15,7 @@ import com.example.nesa.tables.User;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {User.class, AccountInfo.class, BankStatement.class}, version = 6, exportSchema = false)
+@androidx.room.Database(entities = {User.class, AccountInfo.class, BankStatement.class}, version = 8, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;

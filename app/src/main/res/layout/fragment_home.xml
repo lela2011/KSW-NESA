@@ -204,6 +204,7 @@
             android:textSize="32sp"/>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -212,9 +213,10 @@
             app:cardElevation="1dp">
 
             <TextView
+                android:id="@+id/balance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="130 CHF"
+                android:text=""
                 android:textSize="32sp"
                 android:layout_margin="16dp"/>
 

@@ -35,7 +35,17 @@ public class BankStatementRepository {
         });
     }
 
+    public void deleteAll() {
+        Database.databaseWriteExecutor.execute(()->{
+            bankStatementDAO.deleteAll();
+        });
+    }
+
     LiveData<List<BankStatement>> getBankStatement() {
         return bankStatementDAO.getBankStatement();
+    }
+
+    LiveData<Float> getBalance() {
+        return bankStatementDAO.getBalance();
     }
 }

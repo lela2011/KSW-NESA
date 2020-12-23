@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +19,7 @@ import com.example.nesa.R;
 import com.example.nesa.ViewModel;
 import com.example.nesa.databinding.FragmentHomeBinding;
 import com.example.nesa.tables.AccountInfo;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,23 @@ public class HomeFragment extends Fragment {
                 if(accountInfos.size() == 8 && personalInfoTextViews.size() == 8){
                     for(int i = 0; i<8; i++){
                         personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
+                    }
+                }
+            }
+        });
+
+        MainActivity.viewModel.getBalance().observe(getActivity(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                if(aFloat != null){
+                    String balance = String.valueOf(aFloat + " " + getString(R.string.chf));
+                    binding.balance.setText(balance);
+                    if(aFloat >= 100){
+                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    } else if(aFloat > 0) {
+                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    } else {
+                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                     }
                 }
             }

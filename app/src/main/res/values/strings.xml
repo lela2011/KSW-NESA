@@ -26,4 +26,6 @@
     <string name="telefon">Phone</string>
     <string name="mobilephone">Mobile phone</string>
     <string name="bank">Account</string>
+    <string name="chf">CHF</string>
+    <string name="saldo">Balance:</string>
 </resources>
