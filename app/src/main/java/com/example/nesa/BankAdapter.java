@@ -19,6 +19,7 @@ import java.util.List;
 public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementHolder> {
 
     private List<BankStatement> statements = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -62,7 +63,24 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
             titleView = binding.title;
             amountView = binding.amount;
             currencyView = binding.currency;
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(statements.get(position));
+                    }
+                }
+            });
         }
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(BankStatement statement);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 }

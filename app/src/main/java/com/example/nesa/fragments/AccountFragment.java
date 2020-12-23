@@ -1,5 +1,6 @@
 package com.example.nesa.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nesa.AES;
 import com.example.nesa.BankAdapter;
 import com.example.nesa.CookieAndAuth;
+import com.example.nesa.DetailedBankStatement;
 import com.example.nesa.MainActivity;
 import com.example.nesa.R;
 import com.example.nesa.SplashActivity;
@@ -76,6 +78,19 @@ public class AccountFragment extends Fragment {
                 }
             }
         });
+
+        adapter.setOnItemClickListener(new BankAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BankStatement statement) {
+                Intent intent = new Intent(getActivity(), DetailedBankStatement.class);
+                intent.putExtra("Date", statement.date);
+                intent.putExtra("Description", statement.title);
+                intent.putExtra("Amount", statement.amount);
+                intent.putExtra("Balance", statement.saldo);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

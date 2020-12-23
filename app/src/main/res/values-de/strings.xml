@@ -29,4 +29,9 @@
     <string name="bank">Bank</string>
     <string name="chf">CHF</string>
     <string name="saldo">Saldo:</string>
+    <string name="description">Beschreibung</string>
+    <string name="detailed_statement">Detailierter Auszug</string>
+    <string name="amount">Betrag</string>
+    <string name="balance">Saldo</string>
+    <string name="date">Datum</string>
 </resources>

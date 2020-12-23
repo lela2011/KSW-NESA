@@ -28,4 +28,9 @@
     <string name="bank">Account</string>
     <string name="chf">CHF</string>
     <string name="saldo">Balance:</string>
+    <string name="description">Description</string>
+    <string name="detailed_statement">Detailed statement</string>
+    <string name="amount">Amount</string>
+    <string name="balance">Balance</string>
+    <string name="date">Date</string>
 </resources>
