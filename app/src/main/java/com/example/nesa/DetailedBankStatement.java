@@ -23,8 +23,8 @@ public class DetailedBankStatement extends AppCompatActivity {
         String description = intent.getStringExtra("Description");
         float amount = intent.getFloatExtra("Amount", 0);
         float balance = intent.getFloatExtra("Balance", 0);
-        String amountString = String.valueOf(amount) + " " + getString(R.string.chf);
-        String balanceString = String.valueOf(balance) + " " + getString(R.string.chf);
+        String amountString = amount + " " + getString(R.string.chf);
+        String balanceString = balance + " " + getString(R.string.chf);
 
         binding.date.setText(date);
         binding.description.setText(description);
