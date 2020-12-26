@@ -2,12 +2,8 @@
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -19,33 +15,28 @@ import com.example.nesa.fragments.AccountFragment;
 import com.example.nesa.fragments.GradesFragment;
 import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
-import com.example.nesa.scrapers.CookieAndAuthScraper;
-import com.example.nesa.scrapers.PageScraper;
-import com.example.nesa.scrapers.Scrapers;
+import com.example.nesa.scrapers.ContentScrapers;
+import com.example.nesa.scrapers.DocumentScraper;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
 import com.example.nesa.tables.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
-import java.net.NoRouteToHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
     public class MainActivity extends AppCompatActivity {
 
         public ActivityMainBinding binding;
         public static String username;
         public static String password;
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
         public static ViewModel viewModel;
+
+        Document mainPage, markPage, absencesPage, bankPage;
 
         List<AccountInfo> oldInfo = new ArrayList<>();
 
@@ -66,7 +57,20 @@ import java.util.concurrent.Future;
 
             viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
-            initializeScraping();
+            //TODO: Check if device is online to get new data
+            boolean firstLogin = SplashActivity.sharedPreferences.getBoolean(SplashActivity.FIRST_LOGIN, true);
+            if(firstLogin) {
+                mainPage = SplashActivity.mainPage;
+                markPage = SplashActivity.markPage;
+                absencesPage = SplashActivity.absencesPage;
+                bankPage = SplashActivity.bankPage;
+                initializeScraping();
+                SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, false);
+                SplashActivity.editor.apply();
+            }
+
+            username = SplashActivity.username;
+            password = SplashActivity.password;
         }
 
         @SuppressLint("NonConstantResourceId")
@@ -100,46 +104,12 @@ import java.util.concurrent.Future;
         };
 
         private void initializeScraping() {
-
-            viewModel.getCredentials().observe(this, new Observer<User>() {
-                @Override
-                public void onChanged(User user) {
-                    if (user != null) {
-                        username = user.getUsername();
-                        password = user.getPassword();
-                        scrapeMain();
-                        scrapeAccount();
-                    } else {
-                    }
-                }
-            });
-        }
-
-        private Document scrapePage(String url, HashMap<String, String> cookies, HashMap<String, String> formData) {
-            Future<Document> pageFuture = executorService.submit(new PageScraper(cookies, formData, url));
-            try {
-                Document page = pageFuture.get();
-                return page;
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
+            scrapeMain();
+            scrapeAccount();
         }
 
         private void scrapeMain() {
-            CookieAndAuth cookieAndAuth = cookiesAndAuth();
-
-            HashMap<String, String> cookies = cookieAndAuth.cookies;
-            String authToken = cookieAndAuth.authToken;
-
-            HashMap<String, String> formData = new HashMap<>();
-            formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-            formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
-            formData.put("loginhash", authToken);
-
-            Document mainPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
-
-            ArrayList<AccountInfo> info = Scrapers.scrapeMain(mainPage);
+            ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
             viewModel.getAccountInfo().observe(this, new Observer<List<AccountInfo>>() {
                 @Override
                 public void onChanged(List<AccountInfo> accountInfo) {
@@ -168,17 +138,7 @@ import java.util.concurrent.Future;
         }
 
         private void scrapeMarks() {
-            CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
-            HashMap<String, String> cookies = cookieAndAuth.cookies;
-            String authToken = cookieAndAuth.authToken;
-
-            HashMap<String, String> formData = new HashMap<>();
-            formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-            formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
-            formData.put("loginhash", authToken);
-
-            Document accountPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
         }
 
         private void scrapeAbsences() {
@@ -186,19 +146,7 @@ import java.util.concurrent.Future;
         }
 
         private void scrapeAccount() {
-            CookieAndAuth cookieAndAuth = cookiesAndAuth();
-
-            HashMap<String, String> cookies = cookieAndAuth.cookies;
-            String authToken = cookieAndAuth.authToken;
-
-            HashMap<String, String> formData = new HashMap<>();
-            formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-            formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
-            formData.put("loginhash", authToken);
-
-            Document accountPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
-
-            ArrayList<BankStatement> debits = Scrapers.scrapeAccount(accountPage);
+            ArrayList<BankStatement> debits = ContentScrapers.scrapeAccount(bankPage);
             viewModel.getBankStatements().observe(this, new Observer<List<BankStatement>>() {
                 @Override
                 public void onChanged(List<BankStatement> statements) {
@@ -215,17 +163,6 @@ import java.util.concurrent.Future;
                     }
                 }
             });
-        }
-
-        private CookieAndAuth cookiesAndAuth() {
-            Future<CookieAndAuth> login = executorService.submit(new CookieAndAuthScraper());
-            try {
-                CookieAndAuth loginResponse = login.get();
-                return loginResponse;
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
         }
 
         private boolean compareLists(List<AccountInfo> oldInfo, List<AccountInfo> newInfo) {

@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 if(aFloat != null){
-                    String balance = String.valueOf(aFloat + " " + getString(R.string.chf));
+                    String balance = aFloat + " " + getString(R.string.chf);
                     binding.balance.setText(balance);
                     if(aFloat >= 100){
                         binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));

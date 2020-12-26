@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class LoginRepository {
-    private UserDAO userDao;
+    private final UserDAO userDao;
     //initialize repository
     public LoginRepository(Application application) {
         Database database = Database.getInstance(application);

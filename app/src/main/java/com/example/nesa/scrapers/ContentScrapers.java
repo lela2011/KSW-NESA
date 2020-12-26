@@ -20,7 +20,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scrapers {
+public class ContentScrapers {
 
     public static ArrayList<AccountInfo> scrapeMain(Document page){
         Elements table = page.select("div.mdl-cell:nth-child(5) > table:nth-child(2) > tbody:nth-child(1) > tr");
@@ -54,7 +54,6 @@ public class Scrapers {
     }
 
     public static ArrayList<BankStatement> scrapeAccount(Document page){
-        String color = "red";
 
         ArrayList<BankStatement> statements = new ArrayList<>();
 

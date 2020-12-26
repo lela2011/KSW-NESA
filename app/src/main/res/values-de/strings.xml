@@ -34,4 +34,6 @@
     <string name="amount">Betrag</string>
     <string name="balance">Saldo</string>
     <string name="date">Datum</string>
+    <string name="kanti_logo">kanti logo</string>
+    <string name="hold_on_while_we_get_your_data">Warten Sie, während wir ihre Daten Laden</string>
 </resources>

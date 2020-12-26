@@ -67,14 +67,14 @@ public class AccountFragment extends Fragment {
             public void onChanged(List<BankStatement> statements) {
                 adapter.setStatements(statements);
                 float balanceFloat = statements.get(statements.size()-1).saldo;
-                String balance = String.valueOf(balanceFloat + " " + getString(R.string.chf));
+                String balance = String.format("%.2f",balanceFloat);
                 binding.balance.setText(balance);
                 if(balanceFloat >= 100){
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                 } else if(balanceFloat > 0) {
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.orange));
                 } else {
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.red));
                 }
             }
         });

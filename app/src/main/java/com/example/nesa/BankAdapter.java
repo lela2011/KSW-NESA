@@ -33,10 +33,9 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
         BankStatement currentStatement = statements.get(position);
         holder.dateView.setText(currentStatement.date);
         holder.titleView.setText(currentStatement.title);
-        holder.amountView.setText(String.valueOf(currentStatement.amount));
+        holder.amountView.setText(String.format("%.2f", currentStatement.amount));
         if(currentStatement.amount > 0){
             holder.amountView.setTextColor(ContextCompat.getColor(holder.amountView.getContext(), R.color.green));
-            holder.currencyView.setTextColor(ContextCompat.getColor(holder.amountView.getContext(), R.color.green));
         }
     }
 
@@ -52,17 +51,15 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
 
     class BankStatementHolder extends RecyclerView.ViewHolder{
 
-        private TextView dateView;
-        private TextView titleView;
-        private TextView amountView;
-        private TextView currencyView;
+        private final TextView dateView;
+        private final TextView titleView;
+        private final TextView amountView;
 
         public BankStatementHolder(@NonNull BankRecyclerItemBinding binding) {
             super(binding.getRoot());
             dateView = binding.date;
             titleView = binding.title;
             amountView = binding.amount;
-            currencyView = binding.currency;
 
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override

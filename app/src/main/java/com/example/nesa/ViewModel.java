@@ -13,9 +13,9 @@ import com.example.nesa.tables.User;
 import java.util.List;
 
 public class ViewModel extends AndroidViewModel {
-    private LoginRepository loginRepository;
-    private InfoRepository infoRepository;
-    private BankStatementRepository bankRepository;
+    private final LoginRepository loginRepository;
+    private final InfoRepository infoRepository;
+    private final BankStatementRepository bankRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
