@@ -58,15 +58,12 @@ import java.util.concurrent.Executors;
             viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
             //TODO: Check if device is online to get new data
-            boolean firstLogin = SplashActivity.sharedPreferences.getBoolean(SplashActivity.FIRST_LOGIN, true);
-            if(firstLogin) {
+            if(SplashActivity.netWorkAvailable) {
                 mainPage = SplashActivity.mainPage;
                 markPage = SplashActivity.markPage;
                 absencesPage = SplashActivity.absencesPage;
                 bankPage = SplashActivity.bankPage;
                 initializeScraping();
-                SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, false);
-                SplashActivity.editor.apply();
             }
 
             username = SplashActivity.username;

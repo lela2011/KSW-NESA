@@ -71,7 +71,6 @@ public class SplashActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
         boolean loginComplete = sharedPreferences.getBoolean(LOGIN_COMPLETED, false);
-        boolean firstLogin = sharedPreferences.getBoolean(FIRST_LOGIN, true);
 
         if(!loginComplete){
             new Handler().postDelayed(new Runnable() {
@@ -124,9 +123,12 @@ public class SplashActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Boolean> onlineFuture = executor.submit(new isDeviceOnlineFuture());
         try {
-            return onlineFuture.get();
+            boolean deviceOnline = onlineFuture.get();
+            netWorkAvailable = deviceOnline;
+            return deviceOnline;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            netWorkAvailable = false;
             return false;
         }
     }

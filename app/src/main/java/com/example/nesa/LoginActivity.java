@@ -136,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
                     checkTableSize(encryptedUsername, encryptedPassword);
                     //Set login completed
                     SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);
-                    SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, true);
                     SplashActivity.editor.apply();
                     //Start main Activity
                     Intent splashActivity = new Intent(LoginActivity.this, SplashActivity.class);
