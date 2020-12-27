@@ -15,13 +15,13 @@ import java.util.List;
 public class ViewModel extends AndroidViewModel {
     private final LoginRepository loginRepository;
     private final InfoRepository infoRepository;
-    private final BankStatementRepository bankRepository;
+    private final BankRepository bankRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
         loginRepository = new LoginRepository(application);
         infoRepository = new InfoRepository(application);
-        bankRepository = new BankStatementRepository(application);
+        bankRepository = new BankRepository(application);
     }
     //update entry
     public void updateLogin(User user) {
@@ -44,36 +44,16 @@ public class ViewModel extends AndroidViewModel {
         return loginRepository.getTableSize();
     }
 
-    public void updateInfo(List<AccountInfo> info) {
-        infoRepository.update(info);
-    }
-
     public void insertInfo(List<AccountInfo> info) {
         infoRepository.insert(info);
-    }
-
-    public void deleteInfo(AccountInfo info) {
-        infoRepository.delete(info);
     }
 
     public LiveData<List<AccountInfo>> getAccountInfo() {
         return infoRepository.getAccountInfo();
     }
 
-    public LiveData<Integer> getTableSizeInfo() {
-        return infoRepository.getTableSize();
-    }
-
-    public void updateBank(List<BankStatement> statement){
-        bankRepository.update(statement);
-    }
-
-    public void insertAllBank(List<BankStatement> statement) {
-        bankRepository.insertAll(statement);
-    }
-
-    public void insertBank(BankStatement statement) {
-        bankRepository.insert(statement);
+    public void insertBank(List<BankStatement> statements) {
+        bankRepository.insert(statements);
     }
 
     public void deleteAllBank() {

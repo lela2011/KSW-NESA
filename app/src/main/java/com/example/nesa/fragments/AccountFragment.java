@@ -44,7 +44,7 @@ public class AccountFragment extends Fragment {
 
         MainActivity.viewModel.getBankStatements().observe(getActivity(), statements -> {
             adapter.setStatements(statements);
-            float balanceFloat = statements.get(statements.size()-1).saldo;
+            float balanceFloat = statements.get(statements.size()-1).balance;
             @SuppressLint("DefaultLocale") String balance = String.format("%.2f",balanceFloat);
             binding.balance.setText(balance);
             if(balanceFloat >= 100){
@@ -61,7 +61,7 @@ public class AccountFragment extends Fragment {
             intent.putExtra("Date", statement.date);
             intent.putExtra("Description", statement.title);
             intent.putExtra("Amount", statement.amount);
-            intent.putExtra("Balance", statement.saldo);
+            intent.putExtra("Balance", statement.balance);
             startActivity(intent);
         });
 

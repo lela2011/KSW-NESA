@@ -101,28 +101,7 @@ import java.util.List;
 
         private void scrapeMain() {
             ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
-            viewModel.getAccountInfo().observe(this, accountInfo -> {
-                if (accountInfo.size() == 8) {
-                    List<AccountInfo> infoList = new ArrayList<>();
-                    for (int i = 0; i < 8; i++) {
-                        int id = accountInfo.get(i).getId();
-                        AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);
-                        updatedEntry.setId(id);
-                        infoList.add(updatedEntry);
-                    }
-                    if (!compareLists(oldInfo, infoList)) {
-                        viewModel.updateInfo(infoList);
-                        oldInfo = infoList;
-                    }
-                } else if (accountInfo.size() == 0) {
-                    List<AccountInfo> infoList = new ArrayList<>();
-                    for (int i = 0; i < 8; i++) {
-                        AccountInfo newEntry = new AccountInfo(info.get(i).value, info.get(i).order);
-                        infoList.add(newEntry);
-                    }
-                    viewModel.insertInfo(infoList);
-                }
-            });
+            viewModel.insertInfo(info);
         }
 
         private void scrapeMarks() {
@@ -135,22 +114,10 @@ import java.util.List;
 
         private void scrapeAccount() {
             ArrayList<BankStatement> debits = ContentScrapers.scrapeAccount(bankPage);
-            viewModel.getBankStatements().observe(this, statements -> {
-                if (statements.size() == 0) {
-                    viewModel.insertAllBank(debits);
-                } else if (statements.size() != debits.size()) {
-                    if (statements.size() < debits.size()) {
-                        List<BankStatement> updatedStatements = debits.subList(statements.size(), debits.size());
-                        viewModel.insertAllBank(updatedStatements);
-                    } else {
-                        viewModel.deleteAllBank();
-                        viewModel.insertAllBank(debits);
-                    }
-                }
-            });
+            viewModel.insertBank(debits);
         }
 
-        private boolean compareLists(List<AccountInfo> oldInfo, List<AccountInfo> newInfo) {
+        /*private boolean compareLists(List<AccountInfo> oldInfo, List<AccountInfo> newInfo) {
             if (oldInfo.size() == newInfo.size()) {
                 for (int i = 0; i < oldInfo.size(); i++) {
                     if (!(oldInfo.get(i).order == newInfo.get(i).order && oldInfo.get(i).value.equals(newInfo.get(i).value))) {
@@ -161,5 +128,5 @@ import java.util.List;
             } else {
                 return false;
             }
-        }
+        }*/
     }

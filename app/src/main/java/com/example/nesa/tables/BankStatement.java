@@ -1,31 +1,26 @@
 package com.example.nesa.tables;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "bank_table")
 public class BankStatement {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
+    @NonNull
+    public String pk;
     public int order;
     public String date;
     public String title;
     public float amount;
-    public float saldo;
+    public float balance;
 
-    public BankStatement(int order, String date, String title, float amount, float saldo) {
+    public BankStatement(@NonNull String pk, int order, String date, String title, float amount, float balance) {
+        this.pk = pk;
         this.order = order;
         this.date = date;
         this.title = title;
         this.amount = amount;
-        this.saldo = saldo;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.balance = balance;
     }
 }

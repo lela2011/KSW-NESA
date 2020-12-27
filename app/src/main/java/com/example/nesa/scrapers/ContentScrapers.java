@@ -46,7 +46,8 @@ public class ContentScrapers {
             String name = statement.child(1).text();
             float amount = Float.parseFloat(statement.child(2).text().replace(" sFr", ""));
             float balance = Float.parseFloat(statement.child(3).text().replace(" sFr", ""));
-            statements.add(new BankStatement(i, date, name, amount, balance));
+            String pk = i + "_" + date + "_" + name + "_" + amount + "_" + balance;
+            statements.add(new BankStatement(pk ,i, date, name, amount, balance));
         }
         return statements;
     }

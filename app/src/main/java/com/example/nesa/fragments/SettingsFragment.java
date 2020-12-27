@@ -1,5 +1,6 @@
 package com.example.nesa.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.nesa.MainActivity;
+import com.example.nesa.SplashActivity;
 import com.example.nesa.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -20,5 +23,14 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        binding.reloadDataBtn.setOnClickListener(v -> {
+            Intent splashActivity = new Intent(getActivity(), SplashActivity.class);
+            startActivity(splashActivity);
+        });
     }
 }
