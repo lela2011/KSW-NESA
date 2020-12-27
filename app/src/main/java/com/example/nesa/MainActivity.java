@@ -1,4 +1,4 @@
-    package com.example.nesa;
+package com.example.nesa;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.nesa.databinding.ActivityMainBinding;
@@ -16,18 +15,14 @@ import com.example.nesa.fragments.GradesFragment;
 import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
 import com.example.nesa.scrapers.ContentScrapers;
-import com.example.nesa.scrapers.DocumentScraper;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
-import com.example.nesa.tables.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
     public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +52,6 @@ import java.util.concurrent.Executors;
 
             viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
-            //TODO: Check if device is online to get new data
             if(SplashActivity.netWorkAvailable) {
                 mainPage = SplashActivity.mainPage;
                 markPage = SplashActivity.markPage;
@@ -107,29 +101,26 @@ import java.util.concurrent.Executors;
 
         private void scrapeMain() {
             ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
-            viewModel.getAccountInfo().observe(this, new Observer<List<AccountInfo>>() {
-                @Override
-                public void onChanged(List<AccountInfo> accountInfo) {
-                    if (accountInfo.size() == 8) {
-                        List<AccountInfo> infoList = new ArrayList<>();
-                        for (int i = 0; i < 8; i++) {
-                            int id = accountInfo.get(i).getId();
-                            AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);
-                            updatedEntry.setId(id);
-                            infoList.add(updatedEntry);
-                        }
-                        if (!compareLists(oldInfo, infoList)) {
-                            viewModel.updateInfo(infoList);
-                            oldInfo = infoList;
-                        }
-                    } else if (accountInfo.size() == 0) {
-                        List<AccountInfo> infoList = new ArrayList<>();
-                        for (int i = 0; i < 8; i++) {
-                            AccountInfo newEntry = new AccountInfo(info.get(i).value, info.get(i).order);
-                            infoList.add(newEntry);
-                        }
-                        viewModel.insertInfo(infoList);
+            viewModel.getAccountInfo().observe(this, accountInfo -> {
+                if (accountInfo.size() == 8) {
+                    List<AccountInfo> infoList = new ArrayList<>();
+                    for (int i = 0; i < 8; i++) {
+                        int id = accountInfo.get(i).getId();
+                        AccountInfo updatedEntry = new AccountInfo(info.get(i).value, info.get(i).order);
+                        updatedEntry.setId(id);
+                        infoList.add(updatedEntry);
                     }
+                    if (!compareLists(oldInfo, infoList)) {
+                        viewModel.updateInfo(infoList);
+                        oldInfo = infoList;
+                    }
+                } else if (accountInfo.size() == 0) {
+                    List<AccountInfo> infoList = new ArrayList<>();
+                    for (int i = 0; i < 8; i++) {
+                        AccountInfo newEntry = new AccountInfo(info.get(i).value, info.get(i).order);
+                        infoList.add(newEntry);
+                    }
+                    viewModel.insertInfo(infoList);
                 }
             });
         }
@@ -144,19 +135,16 @@ import java.util.concurrent.Executors;
 
         private void scrapeAccount() {
             ArrayList<BankStatement> debits = ContentScrapers.scrapeAccount(bankPage);
-            viewModel.getBankStatements().observe(this, new Observer<List<BankStatement>>() {
-                @Override
-                public void onChanged(List<BankStatement> statements) {
-                    if (statements.size() == 0) {
+            viewModel.getBankStatements().observe(this, statements -> {
+                if (statements.size() == 0) {
+                    viewModel.insertAllBank(debits);
+                } else if (statements.size() != debits.size()) {
+                    if (statements.size() < debits.size()) {
+                        List<BankStatement> updatedStatements = debits.subList(statements.size(), debits.size());
+                        viewModel.insertAllBank(updatedStatements);
+                    } else {
+                        viewModel.deleteAllBank();
                         viewModel.insertAllBank(debits);
-                    } else if (statements.size() != debits.size()) {
-                        if (statements.size() < debits.size()) {
-                            List<BankStatement> updatedStatements = debits.subList(statements.size(), debits.size());
-                            viewModel.insertAllBank(updatedStatements);
-                        } else {
-                            viewModel.deleteAllBank();
-                            viewModel.insertAllBank(debits);
-                        }
                     }
                 }
             });

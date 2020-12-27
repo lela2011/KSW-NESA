@@ -2,7 +2,6 @@ package com.example.nesa;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,19 +11,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.nesa.databinding.LoginActivityBinding;
 import com.example.nesa.tables.User;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -56,58 +52,34 @@ public class LoginActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
         dialogBuilder.setMessage(R.string.internet_dialog_message)
                 .setTitle(R.string.internet_dialog_title)
-                .setPositiveButton(R.string.dialogButtonOk, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermissions(new String[]{Manifest.permission.INTERNET}, INTERNET_REQUEST);
-                    }
-                }).create();
+                .setPositiveButton(R.string.dialogButtonOk, (dialogInterface, i) -> requestPermissions(new String[]{Manifest.permission.INTERNET}, INTERNET_REQUEST)).create();
 
         //showing and hiding password
-        binding.showHidePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (binding.showHidePwd.getContentDescription().equals("show_btn")) {
-                    binding.passwordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    binding.showHidePwd.setContentDescription("hide_btn");
-                    binding.showHidePwd.setImageResource(R.drawable.hide_pwd);
-                } else {
-                    binding.passwordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    binding.showHidePwd.setContentDescription("show_btn");
-                    binding.showHidePwd.setImageResource(R.drawable.show_pwd);
-                }
+        binding.showHidePwd.setOnClickListener(view1 -> {
+            if (binding.showHidePwd.getContentDescription().equals("show_btn")) {
+                binding.passwordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                binding.showHidePwd.setContentDescription("hide_btn");
+                binding.showHidePwd.setImageResource(R.drawable.hide_pwd);
+            } else {
+                binding.passwordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                binding.showHidePwd.setContentDescription("show_btn");
+                binding.showHidePwd.setImageResource(R.drawable.show_pwd);
             }
         });
 
         //pressing enter or login to post username and password
-        binding.passwordET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    try {
-                        getLoginCredentials();
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
+        binding.passwordET.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                getLoginCredentials();
             }
+            return false;
         });
         //save credentials on button press
-        binding.loginSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    getLoginCredentials();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        binding.loginSubmit.setOnClickListener(v -> getLoginCredentials());
     }
 
     //Reading out credentials, encrypting, checking for validity, writing into database
-    private void getLoginCredentials() throws ExecutionException, InterruptedException {
+    private void getLoginCredentials() {
         //close keyboard on screen
         closeKeyboard();
         //encrypt username and password
@@ -147,16 +119,13 @@ public class LoginActivity extends AppCompatActivity {
     }
     //check if there already is a user added to database
     public void checkTableSize(String username, String password){
-        viewModel.getTableSizeLogin().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if(integer == 0){
-                    //add new user
-                    insertCredentials(username, password);
-                } else {
-                    //update credentials
-                    updateCredentials(username, password);
-                }
+        viewModel.getTableSizeLogin().observe(this, integer -> {
+            if(integer == 0){
+                //add new user
+                insertCredentials(username, password);
+            } else {
+                //update credentials
+                updateCredentials(username, password);
             }
         });
     }
@@ -168,16 +137,13 @@ public class LoginActivity extends AppCompatActivity {
     //update credentials
     public void updateCredentials(String username, String password){
         //get saved credentials out of database
-        viewModel.getCredentials().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(User users) {
-                //check if credentials changed
-                if(!(users.getUsername().equals(username) && users.getPassword().equals(password))){
-                    User user = new User(username, password);
-                    user.setId(users.getId());
-                    //update credentials
-                    viewModel.updateLogin(user);
-                }
+        viewModel.getCredentials().observe(this, users -> {
+            //check if credentials changed
+            if(!(users.getUsername().equals(username) && users.getPassword().equals(password))){
+                User user = new User(username, password);
+                user.setId(users.getId());
+                //update credentials
+                viewModel.updateLogin(user);
             }
         });
     }

@@ -1,14 +1,5 @@
 package com.example.nesa.scrapers;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-
-import com.example.nesa.MainActivity;
-import com.example.nesa.R;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
 
@@ -16,9 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ContentScrapers {
 
@@ -34,15 +23,6 @@ public class ContentScrapers {
             userInfo.add(new AccountInfo(text, i));
         }
         return userInfo;
-    }
-
-    public static ArrayList<String> scrapeLinks(Document page) {
-        ArrayList<String> links = new ArrayList<>();
-        links.add(0, page.select("#menu1").first().attr("href"));
-        links.add(1, page.select("#menu21311").first().attr("href"));
-        links.add(2, page.select("#menu21111").first().attr("href"));
-        links.add(3, page.select("#menu21411").first().attr("href"));
-        return links;
     }
 
     public static void scrapeMarks(Document page) {

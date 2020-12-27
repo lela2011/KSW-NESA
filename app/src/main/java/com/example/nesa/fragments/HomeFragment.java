@@ -1,7 +1,6 @@
 package com.example.nesa.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.nesa.MainActivity;
 import com.example.nesa.R;
-import com.example.nesa.ViewModel;
 import com.example.nesa.databinding.FragmentHomeBinding;
-import com.example.nesa.tables.AccountInfo;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
 
 public class HomeFragment extends Fragment {
 
@@ -50,30 +42,24 @@ public class HomeFragment extends Fragment {
         personalInfoTextViews.add(binding.phone);
         personalInfoTextViews.add(binding.mobilephone);
 
-        MainActivity.viewModel.getAccountInfo().observe(getActivity(), new Observer<List<AccountInfo>>() {
-            @Override
-            public void onChanged(List<AccountInfo> accountInfos) {
-                if(accountInfos.size() == 8 && personalInfoTextViews.size() == 8){
-                    for(int i = 0; i<8; i++){
-                        personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
-                    }
+        MainActivity.viewModel.getAccountInfo().observe(getActivity(), accountInfos -> {
+            if(accountInfos.size() == 8 && personalInfoTextViews.size() == 8){
+                for(int i = 0; i<8; i++){
+                    personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
                 }
             }
         });
 
-        MainActivity.viewModel.getBalance().observe(getActivity(), new Observer<Float>() {
-            @Override
-            public void onChanged(Float aFloat) {
-                if(aFloat != null){
-                    String balance = aFloat + " " + getString(R.string.chf);
-                    binding.balance.setText(balance);
-                    if(aFloat >= 100){
-                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                    } else if(aFloat > 0) {
-                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                    } else {
-                        binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                    }
+        MainActivity.viewModel.getBalance().observe(getActivity(), aFloat -> {
+            if(aFloat != null){
+                String balance = aFloat + " " + getString(R.string.chf);
+                binding.balance.setText(balance);
+                if(aFloat >= 100){
+                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else if(aFloat > 0) {
+                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                } else {
+                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
             }
         });

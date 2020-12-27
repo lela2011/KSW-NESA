@@ -5,7 +5,6 @@ import com.example.nesa.SplashActivity;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.util.HashMap;
 import java.util.concurrent.Callable;

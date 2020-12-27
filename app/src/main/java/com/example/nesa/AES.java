@@ -14,12 +14,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AES {
     private static SecretKeySpec secretKey;
-    private static byte[] key;
+
     //set key for encryption and decryption
     public static void setKey(String myKey){
-        MessageDigest sha = null;
+        MessageDigest sha;
         try {
-            key = myKey.getBytes(StandardCharsets.UTF_8);
+            byte[] key = myKey.getBytes(StandardCharsets.UTF_8);
             sha = MessageDigest.getInstance("SHA-1");
             key = sha.digest(key);
             key = Arrays.copyOf(key, 16);

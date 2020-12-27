@@ -1,6 +1,6 @@
 package com.example.nesa;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +28,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
         return new BankStatementHolder(binding);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull BankStatementHolder holder, int position) {
         BankStatement currentStatement = statements.get(position);
@@ -61,13 +62,10 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
             titleView = binding.title;
             amountView = binding.amount;
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(statements.get(position));
-                    }
+            binding.getRoot().setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(statements.get(position));
                 }
             });
         }

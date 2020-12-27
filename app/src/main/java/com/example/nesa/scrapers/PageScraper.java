@@ -1,19 +1,9 @@
 package com.example.nesa.scrapers;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-
-import com.example.nesa.SplashActivity;
-import com.example.nesa.tables.User;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 

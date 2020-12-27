@@ -1,7 +1,5 @@
 package com.example.nesa;
 
-import org.jsoup.Connection;
-
 import java.util.HashMap;
 
 public class CookieAndAuth {

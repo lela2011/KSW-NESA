@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 public class isDeviceOnlineFuture implements Callable<Boolean> {
     @Override
-    public Boolean call() throws Exception {
+    public Boolean call() {
         try {
             HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
             urlc.setRequestProperty("User-Agent", "Test");

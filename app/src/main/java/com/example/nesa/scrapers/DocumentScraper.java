@@ -7,7 +7,6 @@ import com.example.nesa.SplashActivity;
 import org.jsoup.nodes.Document;
 
 import java.util.HashMap;
-import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,8 +27,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        Document mainPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
-        return mainPage;
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
     }
 
     public static Document getMarkPage() {
@@ -43,8 +41,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        Document markPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
-        return markPage;
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
     }
 
     public static Document getAbsencesPage() {
@@ -58,8 +55,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        Document absencesPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21111", cookies, formData);
-        return absencesPage;
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21111", cookies, formData);
     }
 
     public static Document getBankPage() {
@@ -73,15 +69,13 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        Document bankPage = scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
-        return bankPage;
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
     }
 
     public static Document scrapePage(String url, HashMap<String, String> cookies, HashMap<String, String> formData) {
         Future<Document> pageFuture = executorService.submit(new PageScraper(cookies, formData, url));
         try {
-            Document page = pageFuture.get();
-            return page;
+            return pageFuture.get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -91,8 +85,7 @@ public class DocumentScraper {
     public static CookieAndAuth cookiesAndAuth() {
         Future<CookieAndAuth> login = executorService.submit(new CookieAndAuthScraper());
         try {
-            CookieAndAuth loginResponse = login.get();
-            return loginResponse;
+            return login.get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

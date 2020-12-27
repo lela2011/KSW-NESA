@@ -1,7 +1,6 @@
 package com.example.nesa;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,7 +20,7 @@ public class LoginCredentialChecker implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         try{
             //connect to login page
             Connection.Response loginForm = Jsoup.connect(SplashActivity.LOGIN_FORM_URL)

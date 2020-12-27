@@ -18,27 +18,19 @@ public class BankStatementRepository {
     }
 
     public void update(List<BankStatement> statement) {
-        Database.databaseWriteExecutor.execute(() ->{
-            bankStatementDAO.update(statement);
-        });
+        Database.databaseWriteExecutor.execute(() -> bankStatementDAO.update(statement));
     }
 
     public void insertAll(List<BankStatement> statement) {
-        Database.databaseWriteExecutor.execute(()->{
-            bankStatementDAO.insertAll(statement);
-        });
+        Database.databaseWriteExecutor.execute(()-> bankStatementDAO.insertAll(statement));
     }
 
     public void insert(BankStatement statement) {
-        Database.databaseWriteExecutor.execute(()->{
-            bankStatementDAO.insert(statement);
-        });
+        Database.databaseWriteExecutor.execute(()-> bankStatementDAO.insert(statement));
     }
 
     public void deleteAll() {
-        Database.databaseWriteExecutor.execute(()->{
-            bankStatementDAO.deleteAll();
-        });
+        Database.databaseWriteExecutor.execute(()-> bankStatementDAO.deleteAll());
     }
 
     LiveData<List<BankStatement>> getBankStatement() {
