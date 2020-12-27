@@ -43,10 +43,8 @@ public class HomeFragment extends Fragment {
         personalInfoTextViews.add(binding.mobilephone);
 
         MainActivity.viewModel.getAccountInfo().observe(getActivity(), accountInfos -> {
-            if(accountInfos.size() == 8 && personalInfoTextViews.size() == 8){
-                for(int i = 0; i<8; i++){
+            for(int i = 0; i < accountInfos.size(); i++){
                     personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
-                }
             }
         });
 
