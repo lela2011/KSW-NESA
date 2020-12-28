@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
         boolean firstLogin = sharedPreferences.getBoolean(FIRST_LOGIN, true);
 
         if(!loginComplete){
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 Intent loginActivity = new Intent(context, LoginActivity.class);
                 startActivity(loginActivity);
                 finish();
@@ -90,7 +91,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onChanged(User user) {
                         username = user.getUsername();
                         password = user.getPassword();
-                        new Handler().postDelayed(() -> {
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             Intent mainActivity = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(mainActivity);
                             finish();
