@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nesa.databinding.ActivityMainBinding;
 import com.example.nesa.fragments.AbsencesFragment;
@@ -15,6 +16,7 @@ import com.example.nesa.fragments.GradesFragment;
 import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
 import com.example.nesa.scrapers.ContentScrapers;
+import com.example.nesa.scrapers.DocumentScraper;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,111 +24,136 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-    public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
-        public ActivityMainBinding binding;
-        public static String username;
-        public static String password;
-        public static ViewModel viewModel;
+    public ActivityMainBinding binding;
+    public static String username;
+    public static String password;
+    public static ViewModel viewModel;
 
-        Document mainPage, markPage, absencesPage, bankPage;
+    ExecutorService executor = Executors.newFixedThreadPool(2);
 
-        List<AccountInfo> oldInfo = new ArrayList<>();
+    Document mainPage, markPage, absencesPage, bankPage, emailPage;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            binding = ActivityMainBinding.inflate(getLayoutInflater());
-            View view = binding.getRoot();
-            setContentView(view);
+    boolean firstLogin;
 
-            BottomNavigationView bottomNav = binding.bottomNavigation;
-            bottomNav.setOnNavigationItemSelectedListener(navListener);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-            if(savedInstanceState == null){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
-            }
+        BottomNavigationView bottomNav = binding.bottomNavigation;
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-            viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-
-            if(SplashActivity.netWorkAvailable) {
-                mainPage = SplashActivity.mainPage;
-                markPage = SplashActivity.markPage;
-                absencesPage = SplashActivity.absencesPage;
-                bankPage = SplashActivity.bankPage;
-                initializeScraping();
-            }
-
-            username = SplashActivity.username;
-            password = SplashActivity.password;
-        }
-
-        @SuppressLint("NonConstantResourceId")
-        public final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
-            Fragment selectedFragment = null;
-
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    selectedFragment = new HomeFragment();
-                    break;
-                case R.id.nav_grades:
-                    selectedFragment = new GradesFragment();
-                    break;
-                case R.id.nav_absences:
-                    selectedFragment = new AbsencesFragment();
-                    break;
-                case R.id.nav_account:
-                    selectedFragment = new AccountFragment();
-                    break;
-                case R.id.nav_settings:
-                    selectedFragment = new SettingsFragment();
-                    break;
-
-            }
-
-            assert selectedFragment != null;
+        if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    selectedFragment).commit();
-
-            return true;
-        };
-
-        private void initializeScraping() {
-            scrapeMain();
-            scrapeAccount();
+                    new HomeFragment()).commit();
         }
 
-        private void scrapeMain() {
-            ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
-            viewModel.insertInfo(info);
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
+        firstLogin = SplashActivity.sharedPreferences.getBoolean(SplashActivity.FIRST_LOGIN, false);
+
+        if(firstLogin) {
+            mainPage = SplashActivity.mainPage;
+            markPage = SplashActivity.markPage;
+            absencesPage = SplashActivity.absencesPage;
+            bankPage = SplashActivity.bankPage;
+            emailPage = SplashActivity.emailPage;
+            initializeScraping();
         }
+        username = SplashActivity.username;
+        password = SplashActivity.password;
 
-        private void scrapeMarks() {
-
-        }
-
-        private void scrapeAbsences() {
-
-        }
-
-        private void scrapeAccount() {
-            ArrayList<BankStatement> debits = ContentScrapers.scrapeAccount(bankPage);
-            viewModel.insertBank(debits);
-        }
-
-        /*private boolean compareLists(List<AccountInfo> oldInfo, List<AccountInfo> newInfo) {
-            if (oldInfo.size() == newInfo.size()) {
-                for (int i = 0; i < oldInfo.size(); i++) {
-                    if (!(oldInfo.get(i).order == newInfo.get(i).order && oldInfo.get(i).value.equals(newInfo.get(i).value))) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
-                return false;
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
+                executor.execute(() -> {
+                    syncData();
+                });
             }
-        }*/
+        });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!firstLogin){
+            executor.execute(()-> {
+                syncData();
+            });
+        }
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
+        Fragment selectedFragment = null;
+
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                selectedFragment = new HomeFragment();
+                break;
+            case R.id.nav_grades:
+                selectedFragment = new GradesFragment();
+                break;
+            case R.id.nav_absences:
+                selectedFragment = new AbsencesFragment();
+                break;
+            case R.id.nav_account:
+                selectedFragment = new AccountFragment();
+                break;
+            case R.id.nav_settings:
+                selectedFragment = new SettingsFragment();
+                break;
+
+        }
+
+        assert selectedFragment != null;
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+
+        return true;
+    };
+
+    private void initializeScraping() {
+        scrapeMain();
+        scrapeBank();
+    }
+
+    private void scrapeMain() {
+        ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
+        info.addAll(ContentScrapers.scrapeEmail(emailPage));
+        viewModel.insertInfo(info);
+    }
+
+    private void scrapeMarks() {
+
+    }
+
+    private void scrapeAbsences() {
+
+    }
+
+    private void scrapeBank() {
+        ArrayList<BankStatement> debits = ContentScrapers.scrapeBank(bankPage);
+        viewModel.insertBank(debits);
+    }
+
+    private void syncData() {
+        if(SplashActivity.isDeviceOnline()) {
+            mainPage = DocumentScraper.getMainPage();
+            markPage = DocumentScraper.getMarkPage();
+            absencesPage = DocumentScraper.getAbsencesPage();
+            bankPage = DocumentScraper.getBankPage();
+            emailPage = DocumentScraper.getEmailPage();
+            initializeScraping();
+            binding.swipeRefresh.setRefreshing(false);
+        }
+    }
+}

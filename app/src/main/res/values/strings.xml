@@ -35,4 +35,6 @@
     <string name="date">Date</string>
     <string name="kanti_logo">kanti logo</string>
     <string name="hold_on_while_we_get_your_data">Hold on while we get your data</string>
+    <string name="private_mail">Private mail</string>
+    <string name="school_mail">School mail</string>
 </resources>

@@ -1,2 +1,3 @@
+include ':TestLibrary'
 include ':app'
 rootProject.name = "NESA"

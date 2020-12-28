@@ -72,6 +72,20 @@ public class DocumentScraper {
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
     }
 
+    public static Document getEmailPage() {
+        CookieAndAuth cookieAndAuth = cookiesAndAuth();
+
+        HashMap<String, String> cookies = cookieAndAuth.cookies;
+        String authToken = cookieAndAuth.authToken;
+
+        HashMap<String, String> formData = new HashMap<>();
+        formData.put("login", AES.decrypt(SplashActivity.username, SplashActivity.usernameKey));
+        formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
+        formData.put("loginhash", authToken);
+
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=22500", cookies, formData);
+    }
+
     public static Document scrapePage(String url, HashMap<String, String> cookies, HashMap<String, String> formData) {
         Future<Document> pageFuture = executorService.submit(new PageScraper(cookies, formData, url));
         try {

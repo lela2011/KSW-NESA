@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
         personalInfoTextViews.add(binding.familyorigin);
         personalInfoTextViews.add(binding.phone);
         personalInfoTextViews.add(binding.mobilephone);
+        personalInfoTextViews.add(binding.schoolMail);
+        personalInfoTextViews.add(binding.privatemail);
 
         MainActivity.viewModel.getAccountInfo().observe(getActivity(), accountInfos -> {
             for(int i = 0; i < accountInfos.size(); i++){

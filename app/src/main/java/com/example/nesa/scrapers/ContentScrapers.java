@@ -33,7 +33,7 @@ public class ContentScrapers {
 
     }
 
-    public static ArrayList<BankStatement> scrapeAccount(Document page){
+    public static ArrayList<BankStatement> scrapeBank(Document page){
 
         ArrayList<BankStatement> statements = new ArrayList<>();
 
@@ -50,5 +50,14 @@ public class ContentScrapers {
             statements.add(new BankStatement(pk ,i, date, name, amount, balance));
         }
         return statements;
+    }
+
+    public static ArrayList<AccountInfo> scrapeEmail(Document page) {
+        ArrayList<AccountInfo> emails = new ArrayList<>();
+        String schoolMail = page.select("#f0").get(0).attr("value");
+        String privateMail = page.select("#f1").get(0).attr("value");
+        emails.add(new AccountInfo(schoolMail, 9));
+        emails.add(new AccountInfo(privateMail, 10));
+        return emails;
     }
 }
