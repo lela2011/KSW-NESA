@@ -37,4 +37,6 @@
     <string name="hold_on_while_we_get_your_data">Hold on while we get your data</string>
     <string name="private_mail">Private mail</string>
     <string name="school_mail">School mail</string>
+    <string name="youre_offline">You\'re offline</string>
+    <string name="synced">Synced</string>
 </resources>

@@ -38,4 +38,6 @@
     <string name="hold_on_while_we_get_your_data">Warten Sie, während wir ihre Daten Laden</string>
     <string name="private_mail">Private E-Mail</string>
     <string name="school_mail">School E-Mail</string>
+    <string name="youre_offline">Sie sind offline</string>
+    <string name="synced">Synchronisiert</string>
 </resources>

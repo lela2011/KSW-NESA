@@ -3,6 +3,7 @@ package com.example.nesa;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -153,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
             bankPage = DocumentScraper.getBankPage();
             emailPage = DocumentScraper.getEmailPage();
             initializeScraping();
+            binding.swipeRefresh.setRefreshing(false);
+            runOnUiThread(()->{
+                Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show();
+            });
+        } else {
             binding.swipeRefresh.setRefreshing(false);
         }
     }
