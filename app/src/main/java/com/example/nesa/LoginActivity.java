@@ -46,13 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(view);
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-        //Check for internet permission on device
-        checkInternetPermission();
-        //Create dialog to explain why internet permission is needed
-        dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-        dialogBuilder.setMessage(R.string.internet_dialog_message)
-                .setTitle(R.string.internet_dialog_title)
-                .setPositiveButton(R.string.dialogButtonOk, (dialogInterface, i) -> requestPermissions(new String[]{Manifest.permission.INTERNET}, INTERNET_REQUEST)).create();
 
         //showing and hiding password
         binding.showHidePwd.setOnClickListener(view1 -> {
@@ -147,31 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                 viewModel.updateLogin(user);
             }
         });
-    }
-
-    //check internet permission
-    private void checkInternetPermission() {
-        //check if permission already granted
-        if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
-            //check if PermissionRationale should be shown
-            if (shouldShowRequestPermissionRationale(Manifest.permission.INTERNET)) {
-                runOnUiThread(() -> {
-                    //show modal
-                    dialogBuilder.show();
-                });
-            }
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //checking if request was about internet
-        if (requestCode == INTERNET_REQUEST) {
-            //checking if permission was granted
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission to internet granted", Toast.LENGTH_SHORT).show();
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     //Closing keyboard when input is finished
