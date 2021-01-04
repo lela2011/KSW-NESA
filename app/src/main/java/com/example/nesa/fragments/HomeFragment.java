@@ -1,5 +1,6 @@
 package com.example.nesa.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,17 @@ import com.example.nesa.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
+import static com.example.nesa.MainActivity.SHORTCUT_BANK;
+import static com.example.nesa.MainActivity.SHORTCUT_GRADES;
+
 public class HomeFragment extends Fragment {
 
     public FragmentHomeBinding binding;
+    private HomeFragmentShortcut shortcut;
+
+    public interface HomeFragmentShortcut {
+        void onShortcutClicked(int shortcut);
+    }
 
     @Nullable
     @Override
@@ -63,5 +72,36 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        binding.bank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shortcut.onShortcutClicked(SHORTCUT_BANK);
+            }
+        });
+
+        binding.marks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shortcut.onShortcutClicked(SHORTCUT_GRADES);
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof HomeFragmentShortcut) {
+            shortcut = (HomeFragmentShortcut) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + "must implement HomeFragmentShortcut");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shortcut = null;
     }
 }

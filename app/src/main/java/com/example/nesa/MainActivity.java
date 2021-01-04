@@ -12,7 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nesa.databinding.ActivityMainBinding;
 import com.example.nesa.fragments.AbsencesFragment;
-import com.example.nesa.fragments.AccountFragment;
+import com.example.nesa.fragments.BankFragment;
 import com.example.nesa.fragments.GradesFragment;
 import com.example.nesa.fragments.HomeFragment;
 import com.example.nesa.fragments.SettingsFragment;
@@ -25,16 +25,24 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.HomeFragmentShortcut {
 
     public ActivityMainBinding binding;
     public static String username;
     public static String password;
     public static ViewModel viewModel;
+
+    HomeFragment homeFragment;
+    GradesFragment gradesFragment;
+    AbsencesFragment absencesFragment;
+    BankFragment bankFragment;
+    SettingsFragment settingsFragment;
+
+    public static final int SHORTCUT_BANK = 1;
+    public static final int SHORTCUT_GRADES = 2;
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -51,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = binding.bottomNavigation;
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        homeFragment = new HomeFragment();
+        gradesFragment = new GradesFragment();
+        absencesFragment = new AbsencesFragment();
+        bankFragment = new BankFragment();
+        settingsFragment = new SettingsFragment();
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -98,19 +112,19 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.nav_home:
-                selectedFragment = new HomeFragment();
+                selectedFragment = homeFragment;
                 break;
             case R.id.nav_grades:
-                selectedFragment = new GradesFragment();
+                selectedFragment = gradesFragment;
                 break;
             case R.id.nav_absences:
-                selectedFragment = new AbsencesFragment();
+                selectedFragment = absencesFragment;
                 break;
             case R.id.nav_account:
-                selectedFragment = new AccountFragment();
+                selectedFragment = bankFragment;
                 break;
             case R.id.nav_settings:
-                selectedFragment = new SettingsFragment();
+                selectedFragment = settingsFragment;
                 break;
 
         }
@@ -161,5 +175,27 @@ public class MainActivity extends AppCompatActivity {
         } else {
             binding.swipeRefresh.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void onShortcutClicked(int shortcut) {
+        Fragment selectedFragment;
+        int selectedIcon;
+        switch (shortcut){
+            case SHORTCUT_BANK:
+                selectedFragment = bankFragment;
+                selectedIcon = R.id.nav_account;
+                break;
+            case SHORTCUT_GRADES:
+                selectedFragment = gradesFragment;
+                selectedIcon = R.id.nav_grades;
+                break;
+            default:
+                selectedFragment = homeFragment;
+                selectedIcon = R.id.nav_home;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+        binding.bottomNavigation.setSelectedItemId(selectedIcon);
     }
 }

@@ -20,7 +20,7 @@ import com.example.nesa.MainActivity;
 import com.example.nesa.R;
 import com.example.nesa.databinding.FragmentAccountBinding;
 
-public class AccountFragment extends Fragment {
+public class BankFragment extends Fragment {
 
     public FragmentAccountBinding binding;
 
