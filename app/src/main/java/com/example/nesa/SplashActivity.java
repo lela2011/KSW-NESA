@@ -14,11 +14,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.nesa.databinding.ActivitySplashBinding;
+import com.example.nesa.scrapers.ContentScrapers;
 import com.example.nesa.scrapers.DocumentScraper;
+import com.example.nesa.tables.AccountInfo;
+import com.example.nesa.tables.BankStatement;
 import com.example.nesa.tables.User;
 
 import org.jsoup.nodes.Document;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,6 +81,7 @@ public class SplashActivity extends AppCompatActivity {
                             username = user.getUsername();
                             password = user.getPassword();
                             getPages();
+                            initializeScraping();
                             editor.putBoolean(FIRST_LOGIN, false);
                             editor.apply();
                             Intent mainActivity = new Intent(SplashActivity.this, MainActivity.class);
@@ -122,6 +127,30 @@ public class SplashActivity extends AppCompatActivity {
             netWorkAvailable = false;
             return false;
         }
+    }
+
+    private void initializeScraping() {
+        scrapeMain();
+        scrapeBank();
+    }
+
+    private void scrapeMain() {
+        ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
+        info.addAll(ContentScrapers.scrapeEmail(emailPage));
+        viewModel.insertInfo(info);
+    }
+
+    private void scrapeMarks() {
+
+    }
+
+    private void scrapeAbsences() {
+
+    }
+
+    private void scrapeBank() {
+        ArrayList<BankStatement> debits = ContentScrapers.scrapeBank(bankPage);
+        viewModel.insertBank(debits);
     }
 
 }
