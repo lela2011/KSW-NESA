@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     private void initializeScraping() {
         scrapeMain();
         scrapeBank();
+        scrapeMarks();
     }
 
     private void scrapeMain() {
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     private void scrapeMarks() {
-
+        ContentScrapers.scrapeMarks(markPage);
     }
 
     private void scrapeAbsences() {

@@ -94,13 +94,16 @@ public class SplashActivity extends AppCompatActivity {
                 viewModel.getCredentials().observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        username = user.getUsername();
-                        password = user.getPassword();
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            Intent mainActivity = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(mainActivity);
-                            finish();
-                        }, SPLASH_TIME_OUT);
+                        if (user != null) {
+                            username = user.getUsername();
+                            password = user.getPassword();
+
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                Intent mainActivity = new Intent(SplashActivity.this, MainActivity.class);
+                                startActivity(mainActivity);
+                                finish();
+                            }, SPLASH_TIME_OUT);
+                        }
                     }
                 });
             }

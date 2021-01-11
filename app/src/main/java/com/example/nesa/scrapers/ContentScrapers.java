@@ -1,5 +1,7 @@
 package com.example.nesa.scrapers;
 
+import android.util.Log;
+
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
 
@@ -26,7 +28,35 @@ public class ContentScrapers {
     }
 
     public static void scrapeMarks(Document page) {
+        ArrayList<Element> overview = new ArrayList<>();
+        ArrayList<Element> detailView = new ArrayList<>();
 
+        Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
+        table.remove(0);
+        int i = 0;
+        int l = 2;
+        while (i < table.size()) {
+            if (l == 2) {
+                overview.add(table.get(i));
+                l = 1;
+            }
+            else if (l == 1) {
+                detailView.add(table.get(i));
+                l = 2;
+            }
+            i+=l;
+        }
+
+        for (int g = 0; g < overview.size(); g++) {
+            String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
+            String subjectName = overview.get(g).select("td:nth-child(1) > b").get(1).text();
+            Float gradeAverage = Float.parseFloat(overview.get(g).select("td").get(1).text());
+
+            for (int d = 0; d < detailView.size(); d++) {
+                //String date = detailView.get(d).select("");
+            }
+        }
+        Log.d("Hello", "waasssuuup");
     }
 
     public static void scrapeAbsences(Document page){
