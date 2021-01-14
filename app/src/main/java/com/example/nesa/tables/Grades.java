@@ -7,12 +7,34 @@ import androidx.room.PrimaryKey;
 public class Grades {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String subject;
+    private String subjectId;
+    private String exam;
     private float grade;
+    private float weight;
+    private String date;
 
-    public Grades(String subject, float grade) {
-        this.subject = subject;
+    public Grades(String exam, float grade, float weight, String date, String subjectId) {
+        this.exam = exam;
         this.grade = grade;
+        this.weight = weight;
+        this.date = date;
+        this.subjectId = subjectId;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getId() {
@@ -23,12 +45,12 @@ public class Grades {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getExam() {
+        return exam;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setExam(String subject) {
+        this.exam = subject;
     }
 
     public float getGrade() {
@@ -37,5 +59,13 @@ public class Grades {
 
     public void setGrade(float grade) {
         this.grade = grade;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 }

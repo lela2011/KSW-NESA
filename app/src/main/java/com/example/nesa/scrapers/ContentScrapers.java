@@ -2,8 +2,11 @@ package com.example.nesa.scrapers;
 
 import android.util.Log;
 
+import com.example.nesa.SubjectsAndGrades;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
+import com.example.nesa.tables.Grades;
+import com.example.nesa.tables.Subjects;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,9 +30,12 @@ public class ContentScrapers {
         return userInfo;
     }
 
-    public static void scrapeMarks(Document page) {
+    public static SubjectsAndGrades scrapeMarks(Document page) {
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
+        ArrayList<Subjects> subjects = new ArrayList<>();
+        ArrayList<Grades> gradesList = new ArrayList<>();
+        Float grade = 0f;
 
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
@@ -49,14 +55,28 @@ public class ContentScrapers {
 
         for (int g = 0; g < overview.size(); g++) {
             String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
-            String subjectName = overview.get(g).select("td:nth-child(1) > b").get(1).text();
-            Float gradeAverage = Float.parseFloat(overview.get(g).select("td").get(1).text());
-
-            for (int d = 0; d < detailView.size(); d++) {
-                //String date = detailView.get(d).select("");
+            String subjectName = overview.get(g).select("td:nth-child(1)").get(0).text().replace(subjectId + " ", "");
+            Float gradeAverage = Float.parseFloat(overview.get(g).select("td").get(1).text().replace("*", ""));
+            subjects.add(new Subjects(subjectName, gradeAverage, subjectId));
+            Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
+            grades.remove(0);
+            grades.remove(grades.size()-1);
+            for (int d = 0; d < grades.size(); d++) {
+                String date = grades.get(d).select("td").get(0).text();
+                String name = grades.get(d).select("td").get(1).text();
+                String detailString = grades.get(d).select("td > span").text();
+                String detailDiv = grades.get(d).select("td > div").text();
+                String gradeString = grades.get(d).select("td").get(2).text().replace(detailString, "").replace(detailDiv, "").replace(" ", "");
+                if (gradeString.equals("")) {
+                    grade = -1f;
+                } else {
+                    grade = Float.parseFloat(gradeString);
+                }
+                Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
+                gradesList.add(new Grades(name, grade, weight, date, subjectId));
             }
         }
-        Log.d("Hello", "waasssuuup");
+        return new SubjectsAndGrades(subjects, gradesList);
     }
 
     public static void scrapeAbsences(Document page){

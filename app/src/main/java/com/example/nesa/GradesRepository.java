@@ -2,6 +2,8 @@ package com.example.nesa;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.nesa.daos.GradesDAO;
 import com.example.nesa.tables.Grades;
 
@@ -21,5 +23,7 @@ public class GradesRepository {
         });
     }
 
-
+    public LiveData<List<Grades>> getBySubject(String passedSubject) {
+        return gradesDAO.getBySubject(passedSubject);
+    }
 }

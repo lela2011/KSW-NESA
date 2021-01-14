@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
+import com.example.nesa.tables.Grades;
+import com.example.nesa.tables.Subjects;
 import com.example.nesa.tables.User;
 
 import java.util.List;
@@ -16,12 +18,16 @@ public class ViewModel extends AndroidViewModel {
     private final LoginRepository loginRepository;
     private final InfoRepository infoRepository;
     private final BankRepository bankRepository;
+    private final GradesRepository gradesRepository;
+    private final SubjectsRepository subjectsRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
         loginRepository = new LoginRepository(application);
         infoRepository = new InfoRepository(application);
         bankRepository = new BankRepository(application);
+        gradesRepository = new GradesRepository(application);
+        subjectsRepository = new SubjectsRepository(application);
     }
     //update entry
     public void updateLogin(User user) {
@@ -66,5 +72,21 @@ public class ViewModel extends AndroidViewModel {
 
     public LiveData<Float> getBalance(){
         return bankRepository.getBalance();
+    }
+
+    public void insertGrades(List<Grades> grades) {
+        gradesRepository.insert(grades);
+    }
+
+    public LiveData<List<Grades>> getGradeBySubject(String passedSubject) {
+        return gradesRepository.getBySubject(passedSubject);
+    }
+
+    public void insertSubjects(List<Subjects> subjects) {
+        subjectsRepository.insert(subjects);
+    }
+
+    public LiveData<List<Subjects>> getSubjects() {
+        return subjectsRepository.getSubjects();
     }
 }

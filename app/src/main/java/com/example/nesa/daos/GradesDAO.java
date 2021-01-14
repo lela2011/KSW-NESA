@@ -22,6 +22,6 @@ public interface GradesDAO {
     @Delete
     void delete(Grades grades);
 
-    @Query("SELECT * FROM grades_table WHERE subject = :passedSubject")
-    LiveData<List<Grades>> getBysubject(String passedSubject);
+    @Query("SELECT * FROM grades_table WHERE subjectId = :passedSubject")
+    LiveData<List<Grades>> getBySubject(String passedSubject);
 }
