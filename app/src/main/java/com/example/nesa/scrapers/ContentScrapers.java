@@ -36,6 +36,7 @@ public class ContentScrapers {
         ArrayList<Subjects> subjects = new ArrayList<>();
         ArrayList<Grades> gradesList = new ArrayList<>();
         Float grade = 0f;
+        Float gradeAverage = 0f;
 
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
@@ -56,8 +57,13 @@ public class ContentScrapers {
         for (int g = 0; g < overview.size(); g++) {
             String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
             String subjectName = overview.get(g).select("td:nth-child(1)").get(0).text().replace(subjectId + " ", "");
-            Float gradeAverage = Float.parseFloat(overview.get(g).select("td").get(1).text().replace("*", ""));
-            subjects.add(new Subjects(subjectName, gradeAverage, subjectId));
+            String gradeAverageString = overview.get(g).select("td").get(1).text().replace("*", "").replace("-", "");
+            if(gradeAverageString.equals("")){
+                gradeAverage = -1f;
+            } else {
+                gradeAverage = Float.parseFloat(gradeAverageString);
+            }
+            subjects.add(new Subjects(subjectName, gradeAverage, subjectId, g));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             grades.remove(0);
             grades.remove(grades.size()-1);
@@ -73,7 +79,7 @@ public class ContentScrapers {
                     grade = Float.parseFloat(gradeString);
                 }
                 Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
-                gradesList.add(new Grades(name, grade, weight, date, subjectId));
+                gradesList.add(new Grades(name, grade, weight, date, subjectId, d));
             }
         }
         return new SubjectsAndGrades(subjects, gradesList);

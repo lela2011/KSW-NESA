@@ -13,12 +13,23 @@ public class Grades {
     private float weight;
     private String date;
 
-    public Grades(String exam, float grade, float weight, String date, String subjectId) {
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    private int order;
+
+    public Grades(String exam, float grade, float weight, String date, String subjectId, int order) {
         this.exam = exam;
         this.grade = grade;
         this.weight = weight;
         this.date = date;
         this.subjectId = subjectId;
+        this.order = order;
     }
 
     public String getSubjectId() {

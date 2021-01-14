@@ -20,6 +20,8 @@ import com.example.nesa.scrapers.ContentScrapers;
 import com.example.nesa.scrapers.DocumentScraper;
 import com.example.nesa.tables.AccountInfo;
 import com.example.nesa.tables.BankStatement;
+import com.example.nesa.tables.Grades;
+import com.example.nesa.tables.Subjects;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.nodes.Document;
@@ -149,7 +151,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     private void scrapeMarks() {
-        ContentScrapers.scrapeMarks(markPage);
+        SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
+        ArrayList<Grades> grades = subjectsAndGrades.gradesList;
+        ArrayList<Subjects> subjects = subjectsAndGrades.subjectsList;
     }
 
     private void scrapeAbsences() {

@@ -13,10 +13,21 @@ public class Subjects {
     private Float pluspoints;
     private Float gradeAverage;
 
-    public Subjects(String subjectName, Float gradeAverage, String id) {
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    private int order;
+
+    public Subjects(String subjectName, Float gradeAverage, String id, int order) {
         this.subjectName = subjectName;
         this.gradeAverage = gradeAverage;
         this.id = id;
+        this.order = order;
     }
 
     public String getId() {
