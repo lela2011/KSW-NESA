@@ -79,7 +79,8 @@ public class ContentScrapers {
                     grade = Float.parseFloat(gradeString);
                 }
                 Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
-                gradesList.add(new Grades(name, grade, weight, date, subjectId, d));
+                String gradeId = date + "_" + name;
+                gradesList.add(new Grades(gradeId, name, grade, weight, date, subjectId, d));
             }
         }
         return new SubjectsAndGrades(subjects, gradesList);

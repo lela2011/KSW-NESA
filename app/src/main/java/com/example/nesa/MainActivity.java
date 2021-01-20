@@ -154,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
         ArrayList<Grades> grades = subjectsAndGrades.gradesList;
         ArrayList<Subjects> subjects = subjectsAndGrades.subjectsList;
+
+        viewModel.insertSubjects(subjects);
+        viewModel.insertGrades(grades);
     }
 
     private void scrapeAbsences() {

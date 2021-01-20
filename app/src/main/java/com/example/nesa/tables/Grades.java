@@ -1,12 +1,14 @@
 package com.example.nesa.tables;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "grades_table")
 public class Grades {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @NonNull
+    @PrimaryKey
+    private String id;
     private String subjectId;
     private String exam;
     private float grade;
@@ -23,7 +25,8 @@ public class Grades {
 
     private int order;
 
-    public Grades(String exam, float grade, float weight, String date, String subjectId, int order) {
+    public Grades(String id, String exam, float grade, float weight, String date, String subjectId, int order) {
+        this.id = id;
         this.exam = exam;
         this.grade = grade;
         this.weight = weight;
@@ -48,11 +51,11 @@ public class Grades {
         this.date = date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
