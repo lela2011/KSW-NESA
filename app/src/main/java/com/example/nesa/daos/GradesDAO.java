@@ -25,4 +25,10 @@ public interface GradesDAO {
 
     @Query("SELECT * FROM grades_table WHERE subjectId = :passedSubject")
     LiveData<List<Grades>> getBySubject(String passedSubject);
+
+    @Query("SELECT * FROM grades_table ORDER BY subjectNumber ASC, `order` ASC")
+    List<Grades> getAllGradesOrdered();
+
+    @Query("SELECT COUNT(*) FROM grades_table")
+    int size();
 }

@@ -14,6 +14,7 @@ public class Grades {
     private float grade;
     private float weight;
     private String date;
+    private int subjectNumber;
 
     public int getOrder() {
         return order;
@@ -25,7 +26,7 @@ public class Grades {
 
     private int order;
 
-    public Grades(String id, String exam, float grade, float weight, String date, String subjectId, int order) {
+    public Grades(String id, String exam, float grade, float weight, String date, String subjectId, int order, int subjectNumber) {
         this.id = id;
         this.exam = exam;
         this.grade = grade;
@@ -33,6 +34,7 @@ public class Grades {
         this.date = date;
         this.subjectId = subjectId;
         this.order = order;
+        this.subjectNumber = subjectNumber;
     }
 
     public String getSubjectId() {
@@ -81,5 +83,13 @@ public class Grades {
 
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    public int getSubjectNumber() {
+        return subjectNumber;
+    }
+
+    public void setSubjectNumber() {
+        this.subjectNumber = subjectNumber;
     }
 }
