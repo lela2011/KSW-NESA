@@ -21,20 +21,32 @@ public class GradesRepository {
 
     public void insert(List<Grades> grades) {
         Database.databaseWriteExecutor.execute(()->{
+            int newGradesSize = 0;
             if (gradesDAO.size() != 0) {
-                List<Grades> orderedGrades = gradesDAO.getAllGradesOrdered();
+                List<Grades> oldGrades = gradesDAO.getAllGradesOrdered();
                 List<Grades> newGrades = new ArrayList<>(grades);
 
-                for (int i = 0; i < grades.size(); i++) {
-                    for (int k = 0; k < orderedGrades.size(); k++) {
-                        if (grades.get(i).equals(grades.get(k))) {
-                            newGrades.remove(i);
-                            orderedGrades.remove(k);
+                for(int i = 0; i < oldGrades.size(); i++){
+                    for(int k = 0; k < newGrades.size(); k++) {
+                        k = newGradesSize;
+                        if(oldGrades.get(i).getId().equals(newGrades.get(k).getId())){
+                            newGrades.remove(k);
                             break;
                         }
+                        newGradesSize++;
                     }
                 }
-                gradesDAO.insert(newGrades);
+
+                List<String> subjectsModified = new ArrayList<>();
+                for(int i = 0; i<newGrades.size(); i++){
+                    if(!subjectsModified.contains(newGrades.get(i).getSubjectId())){
+                        subjectsModified.add(newGrades.get(i).getSubjectId());
+                    }
+                }
+
+                for(int i = 0; i < subjectsModified.size(); i++){
+                    gradesDAO.deleteBySubject(subjectsModified.get(i));
+                }
             } else {
                 gradesDAO.insert(grades);
             }
