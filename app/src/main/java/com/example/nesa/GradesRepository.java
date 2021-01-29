@@ -9,7 +9,9 @@ import com.example.nesa.daos.GradesDAO;
 import com.example.nesa.tables.Grades;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GradesRepository {
     GradesDAO gradesDAO;
@@ -22,7 +24,8 @@ public class GradesRepository {
     public void insert(List<Grades> grades) {
         Database.databaseWriteExecutor.execute(()->{
             int newGradesSize = 0;
-            if (gradesDAO.size() != 0) {
+            int oldGradesSize = gradesDAO.size();
+            if (oldGradesSize < grades.size() && oldGradesSize != 0) {
                 List<Grades> oldGrades = gradesDAO.getAllGradesOrdered();
                 List<Grades> newGrades = new ArrayList<>(grades);
 
@@ -48,19 +51,19 @@ public class GradesRepository {
                     gradesDAO.deleteBySubject(subjectsModified.get(i));
                 }
 
-                String subId = null;
-                ArrayList<Grades> tempGrades = new ArrayList<>();
-                ArrayList<ArrayList> nestedGrades = new ArrayList<>();
+                List<Grades> gradesToAdd = new ArrayList<>();
 
-                for (int i = 0; i < subjectsModified.size(); i++) {
-                    subId = subjectsModified.get(i);
-                    for (int k = 0; k < newGrades.size(); k++) {
-                        if (subId.equals(newGrades.get(k).getSubjectId())) {
-
-                        }
+                for(Grades grade : grades) {
+                    if(subjectsModified.contains(grade.getSubjectId())){
+                        gradesToAdd.add(grade);
                     }
                 }
 
+                gradesDAO.insert(gradesToAdd);
+
+            } else if (grades.size() < oldGradesSize) {
+                gradesDAO.deleteAll();
+                gradesDAO.insert(grades);
             } else {
                 gradesDAO.insert(grades);
             }
