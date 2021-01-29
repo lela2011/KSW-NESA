@@ -47,6 +47,20 @@ public class GradesRepository {
                 for(int i = 0; i < subjectsModified.size(); i++){
                     gradesDAO.deleteBySubject(subjectsModified.get(i));
                 }
+
+                String subId = null;
+                ArrayList<Grades> tempGrades = new ArrayList<>();
+                ArrayList<ArrayList> nestedGrades = new ArrayList<>();
+
+                for (int i = 0; i < subjectsModified.size(); i++) {
+                    subId = subjectsModified.get(i);
+                    for (int k = 0; k < newGrades.size(); k++) {
+                        if (subId.equals(newGrades.get(k).getSubjectId())) {
+
+                        }
+                    }
+                }
+
             } else {
                 gradesDAO.insert(grades);
             }
