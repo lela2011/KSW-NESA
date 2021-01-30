@@ -13,16 +13,16 @@
         android:roundIcon="@mipmap/icon_nesa_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA">
-        <activity android:name=".DetailedBankStatement" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name="ch.kanti.nesa.DetailedBankStatement" />
+        <activity android:name="ch.kanti.nesa.MainActivity" />
+        <activity android:name="ch.kanti.nesa.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name="ch.kanti.nesa.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

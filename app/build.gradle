@@ -4,10 +4,10 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.nesa"
+        applicationId "ch.kanti.nesa"
         minSdkVersion 29
         targetSdkVersion 30
         versionCode 1
