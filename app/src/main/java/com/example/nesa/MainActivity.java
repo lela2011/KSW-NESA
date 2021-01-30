@@ -98,11 +98,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 });
             }
         });
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         if(!firstLogin){
             executor.execute(()-> {
                 syncData();

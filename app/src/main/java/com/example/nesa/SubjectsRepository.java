@@ -20,6 +20,7 @@ public class SubjectsRepository {
 
     public void insert(List<Subjects> subjects) {
         Database.databaseWriteExecutor.execute(() -> {
+            subjectsDAO.deleteAll();
             subjectsDAO.insert(subjects);
         });
     }

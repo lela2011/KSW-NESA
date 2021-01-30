@@ -17,8 +17,11 @@ public interface SubjectsDAO {
     @Update
     void update(Subjects subjects);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     void insert(List<Subjects> subjects);
+
+    @Query("DELETE FROM subjects_table")
+    void deleteAll();
 
     @Query("SELECT * FROM subjects_table")
     LiveData<List<Subjects>> getSubjects();

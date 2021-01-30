@@ -32,6 +32,9 @@ public interface GradesDAO {
     @Query("SELECT * FROM grades_table WHERE subjectId = :passedSubject")
     LiveData<List<Grades>> getBySubject(String passedSubject);
 
+    @Query("SELECT * FROM grades_table WHERE subjectId = 'new_grade'")
+    LiveData<List<Grades>> getNewGrades();
+
     @Query("SELECT * FROM grades_table ORDER BY subjectNumber ASC, `order` ASC")
     List<Grades> getAllGradesOrdered();
 

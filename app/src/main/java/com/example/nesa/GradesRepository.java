@@ -61,6 +61,12 @@ public class GradesRepository {
 
                 gradesDAO.insert(gradesToAdd);
 
+                for(Grades grade : newGrades){
+                    grade.setSubjectId("new_grade");
+                }
+
+                gradesDAO.insert(newGrades);
+
             } else if (grades.size() < oldGradesSize) {
                 gradesDAO.deleteAll();
                 gradesDAO.insert(grades);
