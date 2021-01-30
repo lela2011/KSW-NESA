@@ -12,22 +12,15 @@ public class Subjects {
     private String subjectName;
     private Float pluspoints;
     private Float gradeAverage;
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     private int order;
+    private int isSet;
 
-    public Subjects(String subjectName, Float gradeAverage, String id, int order) {
+    public Subjects(String subjectName, Float gradeAverage, String id, int order, int isSet) {
         this.subjectName = subjectName;
         this.gradeAverage = gradeAverage;
         this.id = id;
         this.order = order;
+        this.isSet = isSet;
     }
 
     public String getId() {
@@ -60,5 +53,13 @@ public class Subjects {
 
     public void setGradeAverage(Float gradeAverage) {
         this.gradeAverage = gradeAverage;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

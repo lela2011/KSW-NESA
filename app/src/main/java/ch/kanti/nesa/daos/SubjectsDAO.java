@@ -3,6 +3,7 @@ package ch.kanti.nesa.daos;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -15,7 +16,7 @@ public interface SubjectsDAO {
     @Update
     void update(Subjects subjects);
 
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Subjects> subjects);
 
     @Query("DELETE FROM subjects_table")
@@ -23,4 +24,7 @@ public interface SubjectsDAO {
 
     @Query("SELECT * FROM subjects_table")
     LiveData<List<Subjects>> getSubjects();
+
+    @Query("SELECT id FROM subjects_table WHERE isSet = 0")
+    List<String> getSubjectIds();
 }

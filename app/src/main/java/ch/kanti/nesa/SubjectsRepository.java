@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Subjects;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubjectsRepository {
@@ -19,8 +21,19 @@ public class SubjectsRepository {
 
     public void insert(List<Subjects> subjects) {
         Database.databaseWriteExecutor.execute(() -> {
-            subjectsDAO.deleteAll();
-            subjectsDAO.insert(subjects);
+            List<String> oldSubjectIds = subjectsDAO.getSubjectIds();
+            List<String> newSubjectIds = new ArrayList<>();
+            for (Subjects subject : subjects) {
+                newSubjectIds.add(subject.getId());
+            }
+            Collections.sort(oldSubjectIds);
+            Collections.sort(newSubjectIds);
+            if(oldSubjectIds.equals(newSubjectIds)) {
+                subjectsDAO.insert(subjects);
+            } else {
+                subjectsDAO.deleteAll();
+                subjectsDAO.insert(subjects);
+            }
         });
     }
 
