@@ -63,22 +63,24 @@ public class ContentScrapers {
             }
             subjects.add(new Subjects(subjectName, gradeAverage, subjectId, g, 0));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
-            grades.remove(0);
-            grades.remove(grades.size()-1);
-            for (int d = 0; d < grades.size(); d++) {
-                String date = grades.get(d).select("td").get(0).text();
-                String name = grades.get(d).select("td").get(1).text();
-                String detailString = grades.get(d).select("td > span").text();
-                String detailDiv = grades.get(d).select("td > div").text();
-                String gradeString = grades.get(d).select("td").get(2).text().replace(detailString, "").replace(detailDiv, "").replace(" ", "");
-                if (gradeString.equals("")) {
-                    grade = -1f;
-                } else {
-                    grade = Float.parseFloat(gradeString);
+            if (grades.size() != 0){
+                grades.remove(0);
+                grades.remove(grades.size()-1);
+                for (int d = 0; d < grades.size(); d++) {
+                    String date = grades.get(d).select("td").get(0).text();
+                    String name = grades.get(d).select("td").get(1).text();
+                    String detailString = grades.get(d).select("td > span").text();
+                    String detailDiv = grades.get(d).select("td > div").text();
+                    String gradeString = grades.get(d).select("td").get(2).text().replace(detailString, "").replace(detailDiv, "").replace(" ", "");
+                    if (gradeString.equals("")) {
+                        grade = -1f;
+                    } else {
+                        grade = Float.parseFloat(gradeString);
+                    }
+                    Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
+                    String gradeId = date + "_" + name;
+                    gradesList.add(new Grades(gradeId, name, grade, weight, date, subjectId, d, g));
                 }
-                Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
-                String gradeId = date + "_" + name;
-                gradesList.add(new Grades(gradeId, name, grade, weight, date, subjectId, d, g));
             }
         }
         return new SubjectsAndGrades(subjects, gradesList);

@@ -1,7 +1,19 @@
 package ch.kanti.nesa.tables;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 @Entity(tableName = "login_table")
 public class User {

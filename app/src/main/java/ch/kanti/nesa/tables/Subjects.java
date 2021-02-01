@@ -62,4 +62,12 @@ public class Subjects {
     public void setOrder(int order) {
         this.order = order;
     }
+
+    public int getIsSet() {
+        return isSet;
+    }
+
+    public void setIsSet(int isSet) {
+        this.isSet = isSet;
+    }
 }
