@@ -52,7 +52,14 @@ public class GradesFragment extends Fragment {
         adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subjects subject) {
-                Toast.makeText(getActivity(), "Item was clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        adapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Subjects subject) {
+                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was long clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }

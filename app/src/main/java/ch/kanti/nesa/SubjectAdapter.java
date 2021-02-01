@@ -15,13 +15,16 @@ import com.example.nesa.databinding.RecviewSubjectBinding;
 
 import ch.kanti.nesa.tables.Subjects;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     private List<Subjects> dataList = new ArrayList<>();
-    private OnItemClickListener listener;
+    private OnItemClickListener clickListener;
+    private OnItemLongClickListener longClickListener;
+    private static DecimalFormat df = new DecimalFormat("#.###");
 
     @NonNull
     @Override
@@ -39,7 +42,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         if (currentItem.getGradeAverage() == -1.0f) {
             gradeAverage = "-";
         } else {
-            gradeAverage = String.valueOf(gradeAverageFloat);
+            gradeAverage = String.valueOf(df.format(gradeAverageFloat));
         }
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.subjectAverage.setText(gradeAverage);
@@ -75,9 +78,20 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(dataList.get(position));
+                    if (clickListener != null && position != RecyclerView.NO_POSITION) {
+                        clickListener.onItemClick(dataList.get(position));
                     }
+                }
+            });
+
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = getAdapterPosition();
+                    if(longClickListener != null && position != RecyclerView.NO_POSITION) {
+                        longClickListener.onItemLongClick(dataList.get(position));
+                    }
+                    return true;
                 }
             });
         }
@@ -87,7 +101,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         void onItemClick(Subjects subject);
     }
 
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Subjects subject);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+        this.clickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+        this.longClickListener = listener;
     }
 }
