@@ -45,6 +45,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             gradeAverage = String.valueOf(df.format(gradeAverageFloat));
         }
         holder.subjectName.setText(currentItem.getSubjectName());
+        holder.subjectId.setText(currentItem.getId());
         holder.subjectAverage.setText(gradeAverage);
         if (gradeAverageFloat >= 5.0f) {
             holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.green));
@@ -69,10 +70,11 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder {
-        private final TextView subjectName, subjectAverage;
+        private final TextView subjectName, subjectId, subjectAverage;
         public SubjectViewHolder(@NonNull RecviewSubjectBinding binding) {
             super(binding.getRoot());
             subjectName = binding.subjectName;
+            subjectId = binding.subjectId;
             subjectAverage = binding.subjectAverage;
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
