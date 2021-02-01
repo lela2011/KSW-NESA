@@ -1,5 +1,6 @@
 package ch.kanti.nesa;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +33,25 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         Subjects currentItem = dataList.get(position);
+        Context context = holder.subjectAverage.getContext();
         String gradeAverage = "";
+        Float gradeAverageFloat = currentItem.getGradeAverage();
         if (currentItem.getGradeAverage() == -1.0f) {
             gradeAverage = "-";
         } else {
-            gradeAverage = String.valueOf(currentItem.getGradeAverage());
+            gradeAverage = String.valueOf(gradeAverageFloat);
         }
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.subjectAverage.setText(gradeAverage);
-        if (currentItem.getGradeAverage() >= 5.0f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(holder.subjectAverage.getContext(), R.color.green));
+        if (gradeAverageFloat >= 5.0f) {
+            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.green));
         }
-        else if (currentItem.getGradeAverage() < 5.0f && currentItem.getGradeAverage() >= 4.0f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(holder.subjectAverage.getContext(), R.color.orange));
-        } else if (currentItem.getGradeAverage() < 4.0f && currentItem.getGradeAverage() >= 1.0f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(holder.subjectAverage.getContext(), R.color.red));
+        else if (gradeAverageFloat < 5.0f && gradeAverageFloat >= 4.0f) {
+            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.orange));
+        } else if (gradeAverageFloat < 4.0f && gradeAverageFloat >= 1.0f) {
+            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.red));
+        } else {
+            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.primaryTextColor));
         }
     }
 
