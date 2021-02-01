@@ -13,14 +13,15 @@ public class Subjects {
     private Float pluspoints;
     private Float gradeAverage;
     private int order;
-    private int isSet;
+    private int counts;
 
-    public Subjects(String subjectName, Float gradeAverage, String id, int order, int isSet) {
+    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int counts) {
         this.subjectName = subjectName;
         this.gradeAverage = gradeAverage;
+        this.pluspoints = pluspoints;
         this.id = id;
         this.order = order;
-        this.isSet = isSet;
+        this.counts = counts;
     }
 
     public String getId() {
@@ -63,11 +64,11 @@ public class Subjects {
         this.order = order;
     }
 
-    public int getIsSet() {
-        return isSet;
+    public int getCounts() {
+        return counts;
     }
 
-    public void setIsSet(int isSet) {
-        this.isSet = isSet;
+    public void setCounts(int counts) {
+        this.counts = counts;
     }
 }

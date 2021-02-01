@@ -89,4 +89,12 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<List<Subjects>> getSubjects() {
         return subjectsRepository.getSubjects();
     }
+
+    public LiveData<Float> getSubjectAverage() {
+        return subjectsRepository.getAverage();
+    }
+
+    public LiveData<Float> getPluspoints() {
+        return subjectsRepository.getPluspoints();
+    }
 }

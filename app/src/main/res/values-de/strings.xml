@@ -40,4 +40,6 @@
     <string name="school_mail">School E-Mail</string>
     <string name="youre_offline">Sie sind offline</string>
     <string name="synced">Synchronisiert</string>
+    <string name="average">Ø</string>
+    <string name="plus">+</string>
 </resources>

@@ -49,6 +49,20 @@ public class GradesFragment extends Fragment {
             }
         });
 
+        MainActivity.viewModel.getSubjectAverage().observe(getActivity(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                binding.average.setText(String.valueOf(aFloat));
+            }
+        });
+
+        MainActivity.viewModel.getPluspoints().observe(getActivity(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                binding.pluspoints.setText(String.valueOf(aFloat));
+            }
+        });
+
         adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subjects subject) {

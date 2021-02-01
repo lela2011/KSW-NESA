@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ContentScrapers {
@@ -61,7 +62,7 @@ public class ContentScrapers {
             } else {
                 gradeAverage = Float.parseFloat(gradeAverageString);
             }
-            subjects.add(new Subjects(subjectName, gradeAverage, subjectId, g, 0));
+            subjects.add(new Subjects(subjectName, gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, 1));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             if (grades.size() != 0){
                 grades.remove(0);
@@ -116,5 +117,35 @@ public class ContentScrapers {
         emails.add(new AccountInfo(schoolMail, 9));
         emails.add(new AccountInfo(privateMail, 10));
         return emails;
+    }
+
+    public static float calculatePluspoints(float gradeExact){
+        DecimalFormat df = new DecimalFormat("#.###");
+        float grade = Float.parseFloat(df.format(gradeExact));
+        if (grade >= 5.75f) {
+            return 2f;
+        } else if (grade >= 5.25f) {
+            return 1.5f;
+        } else if (grade >= 4.75f) {
+            return 1f;
+        } else if (grade >= 4.24f) {
+            return 0.5f;
+        } else if (grade >= 3.75f) {
+            return 0f;
+        } else if(grade >= 3.25f) {
+            return -1f;
+        } else if (grade >= 2.75f) {
+            return -2f;
+        } else if (grade >= 2.25f) {
+            return -3f;
+        } else if (grade >= 1.75f) {
+            return -4f;
+        } else if (grade >= 1.25f) {
+            return -5f;
+        } else if (grade >= 1.0f) {
+            return -6f;
+        } else {
+            return -10f;
+        }
     }
 }

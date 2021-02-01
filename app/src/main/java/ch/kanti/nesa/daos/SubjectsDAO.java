@@ -28,6 +28,12 @@ public interface SubjectsDAO {
     @Query("SELECT * FROM subjects_table")
     LiveData<List<Subjects>> getSubjects();
 
-    @Query("SELECT id FROM subjects_table WHERE isSet = 0")
+    @Query("SELECT id FROM subjects_table")
     List<String> getSubjectIds();
+
+    @Query("SELECT avg(gradeAverage) FROM subjects_table WHERE counts = 1 AND gradeAverage != -1.0")
+    LiveData<Float> getAverage();
+
+    @Query("SELECT sum(pluspoints) FROM subjects_table WHERE counts = 1 AND pluspoints != -10")
+    LiveData<Float> getPluspoints();
 }

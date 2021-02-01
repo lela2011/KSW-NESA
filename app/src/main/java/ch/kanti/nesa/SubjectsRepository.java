@@ -42,4 +42,12 @@ public class SubjectsRepository {
     public LiveData<List<Subjects>> getSubjects() {
         return subjectsDAO.getSubjects();
     }
+
+    public LiveData<Float> getAverage() {
+        return subjectsDAO.getAverage();
+    }
+
+    public LiveData<Float> getPluspoints() {
+        return subjectsDAO.getPluspoints();
+    }
 }
