@@ -78,13 +78,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.gradeAverage.setText(String.valueOf(aFloat));
-                if (aFloat >= 5.0f) {
-                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                } else if (aFloat >= 4.0f) {
-                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                } else {
-                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                }
+                /*if(aFloat != null) {
+                    if (aFloat >= 5.0f) {
+                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
+                    } else if (aFloat >= 4.0f) {
+                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getActivity(), R.color.orange));
+                    } else {
+                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getActivity(), R.color.red));
+                    }
+                }*/
             }
         });
 
@@ -92,11 +94,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.pluspoints.setText(String.valueOf(aFloat));
-                if (aFloat > 0) {
-                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                } else {
-                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                }
+                /*if (aFloat != null) {
+                    if (aFloat > 0) {
+                        binding.pluspoints.setTextColor(ContextCompat.getColor(getActivity() , R.color.green));
+                    } else {
+                        binding.pluspoints.setTextColor(ContextCompat.getColor(getActivity(), R.color.red));
+                    }
+                }*/
             }
         });
 

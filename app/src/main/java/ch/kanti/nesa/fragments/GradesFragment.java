@@ -55,13 +55,13 @@ public class GradesFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.average.setText(String.valueOf(aFloat));
-                if (aFloat >= 5.0f) {
+                /*if (aFloat >= 5.0f) {
                     binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
                 } else if (aFloat >= 4.0f) {
                     binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
                 } else {
                     binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                }
+                }*/
             }
         });
 
@@ -69,11 +69,11 @@ public class GradesFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.pluspoints.setText(String.valueOf(aFloat));
-                if (aFloat > 0) {
+                /*if (aFloat > 0) {
                     binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
                 } else {
                     binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                }
+                }*/
             }
         });
 

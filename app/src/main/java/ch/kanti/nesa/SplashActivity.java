@@ -20,6 +20,8 @@ import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
+import ch.kanti.nesa.tables.Grades;
+import ch.kanti.nesa.tables.Subjects;
 import ch.kanti.nesa.tables.User;
 
 import org.jsoup.nodes.Document;
@@ -137,6 +139,7 @@ public class SplashActivity extends AppCompatActivity {
     private void initializeScraping() {
         scrapeMain();
         scrapeBank();
+        scrapeMarks();
     }
 
     private void scrapeMain() {
@@ -146,7 +149,12 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void scrapeMarks() {
+        SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
+        ArrayList<Grades> grades = subjectsAndGrades.gradesList;
+        ArrayList<Subjects> subjects = subjectsAndGrades.subjectsList;
 
+        viewModel.insertSubjects(subjects);
+        viewModel.insertGrades(grades);
     }
 
     private void scrapeAbsences() {
