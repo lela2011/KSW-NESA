@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="16sp"
-                android:layout_marginBottom="8dp"/>
+                />
 
             <TextView
                 android:id="@+id/subject_name"
