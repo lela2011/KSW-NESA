@@ -13,11 +13,14 @@ import java.util.List;
 
 @Dao
 public interface SubjectsDAO {
-    @Update
-    void update(Subjects subjects);
+    //@Update
+    //void update(Subjects subjects);
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Subjects> subjects);
+
+    @Query("UPDATE subjects_table SET gradeAverage = :average WHERE id = :id")
+    void updateAverage(Float average, String id);
 
     @Query("DELETE FROM subjects_table")
     void deleteAll();

@@ -29,7 +29,9 @@ public class SubjectsRepository {
             Collections.sort(oldSubjectIds);
             Collections.sort(newSubjectIds);
             if(oldSubjectIds.equals(newSubjectIds)) {
-                subjectsDAO.insert(subjects);
+                for(Subjects subject : subjects) {
+                    subjectsDAO.updateAverage(subject.getGradeAverage(), subject.getId());
+                }
             } else {
                 subjectsDAO.deleteAll();
                 subjectsDAO.insert(subjects);
