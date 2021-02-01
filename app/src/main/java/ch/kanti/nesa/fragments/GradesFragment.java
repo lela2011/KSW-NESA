@@ -8,11 +8,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nesa.R;
 import com.example.nesa.databinding.FragmentGradesBinding;
 
 import java.util.List;
@@ -53,6 +55,13 @@ public class GradesFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.average.setText(String.valueOf(aFloat));
+                if (aFloat >= 5.0f) {
+                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else if (aFloat >= 4.0f) {
+                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                } else {
+                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
             }
         });
 
@@ -60,6 +69,11 @@ public class GradesFragment extends Fragment {
             @Override
             public void onChanged(Float aFloat) {
                 binding.pluspoints.setText(String.valueOf(aFloat));
+                if (aFloat > 0) {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
             }
         });
 

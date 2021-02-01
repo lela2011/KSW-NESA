@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import ch.kanti.nesa.MainActivity;
 import com.example.nesa.R;
@@ -69,6 +70,32 @@ public class HomeFragment extends Fragment {
                     binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
                 } else {
                     binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
+            }
+        });
+
+        MainActivity.viewModel.getSubjectAverage().observe(getActivity(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                binding.gradeAverage.setText(String.valueOf(aFloat));
+                if (aFloat >= 5.0f) {
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else if (aFloat >= 4.0f) {
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                } else {
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
+            }
+        });
+
+        MainActivity.viewModel.getPluspoints().observe(getActivity(), new Observer<Float>() {
+            @Override
+            public void onChanged(Float aFloat) {
+                binding.pluspoints.setText(String.valueOf(aFloat));
+                if (aFloat > 0) {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
             }
         });
