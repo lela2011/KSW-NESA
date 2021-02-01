@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.futures;
 
 import android.util.Log;
 
@@ -9,6 +9,10 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
+
+import ch.kanti.nesa.AES;
+import ch.kanti.nesa.LoginActivity;
+import ch.kanti.nesa.SplashActivity;
 
 public class LoginCredentialChecker implements Callable<Integer> {
     //variable definition

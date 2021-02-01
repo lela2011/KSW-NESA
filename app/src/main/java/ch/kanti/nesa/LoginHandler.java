@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import ch.kanti.nesa.futures.LoginCredentialChecker;
+
 public class LoginHandler {
     //run credential checking on background thread
     public static int checkLoginCredentials(String encryptedUsername, String encryptedPassword) {
