@@ -23,13 +23,4 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        binding.reloadDataBtn.setOnClickListener(v -> {
-            Intent splashActivity = new Intent(getActivity(), SplashActivity.class);
-            startActivity(splashActivity);
-        });
-    }
 }

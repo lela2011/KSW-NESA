@@ -89,13 +89,10 @@ public class HomeFragment extends Fragment {
                 if(aFloat != null) {
                     if (aFloat >= 5.0f) {
                         binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                        //binding.gradeAverage.setTextColor(getActivity().getColor(R.color.green));
                     } else if (aFloat >= 4.0f) {
                         binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                        //binding.gradeAverage.setTextColor(getActivity().getColor(R.color.orange));
                     } else {
                         binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                        //binding.gradeAverage.setTextColor(getActivity().getColor(R.color.red));
                     }
                 }
             }
@@ -107,7 +104,6 @@ public class HomeFragment extends Fragment {
                 binding.pluspoints.setText(String.valueOf(df.format(aFloat)));
                 if (aFloat != null) {
                     if (aFloat > 0) {
-                        //binding.pluspoints.setTextColor(Color.YELLOW);
                         binding.pluspoints.setTextColor(ContextCompat.getColor(getContext() , R.color.green));
                     } else {
                         binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));

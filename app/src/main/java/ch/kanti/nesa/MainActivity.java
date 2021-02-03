@@ -39,12 +39,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public static String password;
     public static ViewModel viewModel;
 
-    HomeFragment homeFragment;
-    GradesFragment gradesFragment;
-    AbsencesFragment absencesFragment;
-    BankFragment bankFragment;
-    SettingsFragment settingsFragment;
-
     public static final int SHORTCUT_BANK = 1;
     public static final int SHORTCUT_GRADES = 2;
 
@@ -63,12 +57,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
         BottomNavigationView bottomNav = binding.bottomNavigation;
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-        /*homeFragment = new HomeFragment();
-        gradesFragment = new GradesFragment();
-        absencesFragment = new AbsencesFragment();
-        bankFragment = new BankFragment();
-        settingsFragment = new SettingsFragment();*/
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -132,10 +120,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         assert selectedFragment != null;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
-
-        /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        }*/
 
         return true;
     };
