@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         BottomNavigationView bottomNav = binding.bottomNavigation;
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        homeFragment = new HomeFragment();
+        /*homeFragment = new HomeFragment();
         gradesFragment = new GradesFragment();
         absencesFragment = new AbsencesFragment();
         bankFragment = new BankFragment();
-        settingsFragment = new SettingsFragment();
+        settingsFragment = new SettingsFragment();*/
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -112,19 +112,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
         switch (item.getItemId()) {
             case R.id.nav_home:
-                selectedFragment = homeFragment;
+                selectedFragment = new HomeFragment();
                 break;
             case R.id.nav_grades:
-                selectedFragment = gradesFragment;
+                selectedFragment = new GradesFragment();
                 break;
             case R.id.nav_absences:
-                selectedFragment = absencesFragment;
+                selectedFragment = new AbsencesFragment();
                 break;
             case R.id.nav_account:
-                selectedFragment = bankFragment;
+                selectedFragment = new BankFragment();
                 break;
             case R.id.nav_settings:
-                selectedFragment = settingsFragment;
+                selectedFragment = new SettingsFragment();
                 break;
 
         }
@@ -132,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         assert selectedFragment != null;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
+
+        /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        }*/
 
         return true;
     };
@@ -189,15 +193,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         int selectedIcon;
         switch (shortcut){
             case SHORTCUT_BANK:
-                selectedFragment = bankFragment;
+                selectedFragment = new BankFragment();
                 selectedIcon = R.id.nav_account;
                 break;
             case SHORTCUT_GRADES:
-                selectedFragment = gradesFragment;
+                selectedFragment = new GradesFragment();
                 selectedIcon = R.id.nav_grades;
                 break;
             default:
-                selectedFragment = homeFragment;
+                selectedFragment = new HomeFragment();
                 selectedIcon = R.id.nav_home;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

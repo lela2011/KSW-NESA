@@ -11,18 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.BankAdapter;
 import ch.kanti.nesa.DetailedBankStatement;
-import ch.kanti.nesa.MainActivity;
+import ch.kanti.nesa.ViewModel;
+
 import com.example.nesa.R;
 import com.example.nesa.databinding.FragmentAccountBinding;
 
 public class BankFragment extends Fragment {
 
     public FragmentAccountBinding binding;
+    public ViewModel viewModel;
 
     @Nullable
     @Override
@@ -32,8 +35,9 @@ public class BankFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -42,17 +46,17 @@ public class BankFragment extends Fragment {
         BankAdapter adapter = new BankAdapter();
         recyclerView.setAdapter(adapter);
 
-        MainActivity.viewModel.getBankStatements().observe(getActivity(), statements -> {
+        viewModel.getBankStatements().observe(getViewLifecycleOwner(), statements -> {
             adapter.setStatements(statements);
             float balanceFloat = statements.get(statements.size()-1).balance;
             @SuppressLint("DefaultLocale") String balance = String.format("%.2f",balanceFloat);
             binding.balance.setText(balance);
             if(balanceFloat >= 100){
-                binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
+                binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
             } else if(balanceFloat > 0) {
-                binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.orange));
+                binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
             } else {
-                binding.balance.setTextColor(ContextCompat.getColor(getActivity(), R.color.red));
+                binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
             }
         });
 
@@ -64,9 +68,5 @@ public class BankFragment extends Fragment {
             intent.putExtra("Balance", statement.balance);
             startActivity(intent);
         });
-
     }
-
-
-
 }

@@ -30,7 +30,7 @@ public class SubjectsRepository {
             Collections.sort(newSubjectIds);
             if(oldSubjectIds.equals(newSubjectIds)) {
                 for(Subjects subject : subjects) {
-                    subjectsDAO.updateAverage(subject.getGradeAverage(), subject.getId());
+                    subjectsDAO.updateAverage(subject.getGradeAverage(), subject.getPluspoints(), subject.getId());
                 }
             } else {
                 subjectsDAO.deleteAll();

@@ -19,8 +19,8 @@ public interface SubjectsDAO {
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Subjects> subjects);
 
-    @Query("UPDATE subjects_table SET gradeAverage = :average WHERE id = :id")
-    void updateAverage(Float average, String id);
+    @Query("UPDATE subjects_table SET gradeAverage = :average, pluspoints = :pluspoints WHERE id = :id")
+    void updateAverage(Float average, Float pluspoints, String id);
 
     @Query("DELETE FROM subjects_table")
     void deleteAll();
