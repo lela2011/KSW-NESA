@@ -1,25 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.NESA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.NESA" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColorVariant</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryColorVariant</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
-        <item name="colorError">#B00020</item>
-        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
 
+        <item name="backgroundColor">#FFFFFF</item>
         <item name="colorSurface">#FFFFFF</item>
-        <item name="colorOnSurface">#000000</item>
 
-        <item name="android:colorBackground">#FFFFFF</item>
-        <item name="colorOnBackground">#000000</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+        <item name="colorOnBackground">@color/onBackground</item>
 
+        <item name="materialCardViewStyle">@style/CardView.Light.Custom</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
+
+    <style name="CardView.Light.Custom" parent="CardView.Light">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
 </resources>

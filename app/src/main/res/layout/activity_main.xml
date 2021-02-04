@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="?android:windowBackground"
-        android:elevation="0dp"
         app:menu="@menu/bottom_navigation"/>
 
 </RelativeLayout>

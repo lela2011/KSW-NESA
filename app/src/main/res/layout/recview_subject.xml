@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp">
+    android:layout_marginVertical="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
                 android:id="@+id/subject_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 />
 
@@ -32,7 +31,7 @@
                 android:id="@+id/subject_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:textColor="?attr/colorOnSurface"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="32sp" />
@@ -52,7 +51,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:text=""
+            android:textColor="?attr/colorOnBackground"
             android:textSize="32sp" />
 
     </LinearLayout>

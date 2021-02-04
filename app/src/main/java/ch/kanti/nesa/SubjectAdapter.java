@@ -1,6 +1,8 @@
 package ch.kanti.nesa;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.example.nesa.databinding.RecviewSubjectBinding;
 
 import ch.kanti.nesa.tables.Subjects;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         } else if (gradeAverageFloat < 4.0f && gradeAverageFloat >= 1.0f) {
             holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.red));
         } else {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.primaryTextColor));
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
+            holder.subjectAverage.setTextColor(typedValue.data);
         }
     }
 

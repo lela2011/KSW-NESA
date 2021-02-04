@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
                 } else if(loginResultCode == LOGIN_SUCCESSFUL){
                     binding.loginErrorMessage.setText(R.string.loginSuccessful);
-                    binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryDarkColor));
+                    binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
                     //check if user already saved in database
                     checkTableSize(encryptedUsername, encryptedPassword);
                     //Set login completed
