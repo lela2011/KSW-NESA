@@ -8,8 +8,11 @@
 
   <color name="error">#B00020</color>
 
-  <color name="background">#FFFFFF</color>
-  <color name="surface">#FFFFFF</color>
+  <color name="backgroundLCD">#FFFFFF</color>
+  <color name="surfaceLCD">#FFFFFF</color>
+
+  <color name="backgroundOLED">#FFFFFF</color>
+  <color name="surfaceOLED">#FFFFFF</color>
 
   <color name="onBackground">#000000</color>
   <color name="onSurface">#000000</color>
@@ -22,4 +25,5 @@
   <color name="green">#08A60F</color>
   <color name="red">#FF1100</color>
   <color name="orange">#FF6D00</color>
+  <color name="icon_nesa_background">#000000</color>
 </resources>
