@@ -15,6 +15,7 @@ public class DetailedBankStatement extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_NESA_OLED);
         binding = ActivityDetailedBankStatementBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

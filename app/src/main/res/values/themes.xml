@@ -22,8 +22,6 @@
         <item name="colorOnBackground">@color/onBackground</item>
 
         <item name="materialCardViewStyle">@style/CardView.LCD.Light</item>
-
-        <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
     <style name="CardView.LCD.Light" parent="CardView.Light">

@@ -25,7 +25,7 @@
 
         <item name="materialCardViewStyle">@style/CardView.LCD.Dark</item>
 
-        <item name="android:textColor">?attr/colorOnBackground</item>
+
     </style>
 
     <style name="CardView.LCD.Dark" parent="CardView.Dark">
@@ -59,7 +59,7 @@
         <item name="colorOnBackground">@color/onBackground</item>
 
         <item name="materialCardViewStyle">@style/CardView.OLED</item>
-        <item name="android:textColor">?attr/colorOnBackground</item>
+
 
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Custom</item>
 

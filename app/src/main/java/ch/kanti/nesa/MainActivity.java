@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.Theme_NESA_OLED);
+        setTheme(R.style.Theme_NESA_OLED);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
