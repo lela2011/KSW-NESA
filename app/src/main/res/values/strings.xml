@@ -41,4 +41,5 @@
     <string name="synced">Synced</string>
     <string name="average">Ø</string>
     <string name="plus">+</string>
+    <string name="back_to_overview">Back to overview</string>
 </resources>

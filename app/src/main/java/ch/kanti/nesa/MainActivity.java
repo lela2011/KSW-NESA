@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     public static final int SHORTCUT_BANK = 1;
     public static final int SHORTCUT_GRADES = 2;
+    public static final int GRADES_FRAGMENT = 1;
+    public static final int HOME_FRAGMENT = 0;
+    public static final int ABSENCES_FRAGMENT = 2;
+    public static final int BANK_FRAGMENT = 3;
+    public static final int SETTINGS_FRAGMENT = 4;
+
+    public int currentFragment = HOME_FRAGMENT;
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -102,18 +109,23 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         switch (item.getItemId()) {
             case R.id.nav_home:
                 selectedFragment = new HomeFragment();
+                currentFragment = HOME_FRAGMENT;
                 break;
             case R.id.nav_grades:
                 selectedFragment = new GradesFragment();
+                currentFragment = GRADES_FRAGMENT;
                 break;
             case R.id.nav_absences:
                 selectedFragment = new AbsencesFragment();
+                currentFragment = ABSENCES_FRAGMENT;
                 break;
             case R.id.nav_account:
                 selectedFragment = new BankFragment();
+                currentFragment = BANK_FRAGMENT;
                 break;
             case R.id.nav_settings:
                 selectedFragment = new SettingsFragment();
+                currentFragment = SETTINGS_FRAGMENT;
                 break;
 
         }
@@ -172,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
     }
 
+
+
     @Override
     public void onShortcutClicked(int shortcut) {
         Fragment selectedFragment;
@@ -180,14 +194,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             case SHORTCUT_BANK:
                 selectedFragment = new BankFragment();
                 selectedIcon = R.id.nav_account;
+                currentFragment = BANK_FRAGMENT;
                 break;
             case SHORTCUT_GRADES:
                 selectedFragment = new GradesFragment();
                 selectedIcon = R.id.nav_grades;
+                currentFragment = GRADES_FRAGMENT;
                 break;
             default:
                 selectedFragment = new HomeFragment();
                 selectedIcon = R.id.nav_home;
+                currentFragment = HOME_FRAGMENT;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();

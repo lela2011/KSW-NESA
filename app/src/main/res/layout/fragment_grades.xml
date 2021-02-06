@@ -12,6 +12,14 @@
         android:layout_marginTop="8dp"
         tools:listitem="@layout/recview_subject"/>
 
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/back_to_overview"
+            android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -21,9 +21,11 @@ import com.example.nesa.databinding.FragmentGradesBinding;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import ch.kanti.nesa.GradeAdapter;
 import ch.kanti.nesa.MainActivity;
 import ch.kanti.nesa.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
 
 public class GradesFragment extends Fragment {
@@ -31,6 +33,13 @@ public class GradesFragment extends Fragment {
     public FragmentGradesBinding binding;
     public static final DecimalFormat df = new DecimalFormat("#.###");
     public ViewModel viewModel;
+    public static final int SUBJECT_VIEW = 1;
+    public static final int GRADE_VIEW = 0;
+    public static int currentAdapter;
+
+    public static RecyclerView recyclerView;
+    public static SubjectAdapter adapter;
+    public GradeAdapter gradeAdapter;
 
     @Nullable
     @Override
@@ -44,12 +53,15 @@ public class GradesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
-        RecyclerView recyclerView = binding.subjectRecyclerView;
+        recyclerView = binding.subjectRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        SubjectAdapter adapter = new SubjectAdapter();
+        adapter = new SubjectAdapter();
         recyclerView.setAdapter(adapter);
+        currentAdapter = SUBJECT_VIEW;
+
+        gradeAdapter = new GradeAdapter();
 
         viewModel.getSubjects().observe(getViewLifecycleOwner(), new Observer<List<Subjects>>() {
             @Override
@@ -58,16 +70,53 @@ public class GradesFragment extends Fragment {
             }
         });
 
+
+
+        adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Subjects subject) {
+                viewModel.getGradeBySubject(subject.getId()).observe(getViewLifecycleOwner(), new Observer<List<Grades>>() {
+                    @Override
+                    public void onChanged(List<Grades> grades) {
+                        recyclerView.setAdapter(gradeAdapter);
+                        currentAdapter = GRADE_VIEW;
+                        gradeAdapter.setStatements(grades);
+                        binding.backButton.setVisibility(View.VISIBLE);
+                        binding.average.setText(df.format(subject.getGradeAverage()));
+                        binding.pluspoints.setText(df.format(subject.getPluspoints()));
+                    }
+                });
+            }
+        });
+
+        adapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Subjects subject) {
+                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was long clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.setAdapter(adapter);
+                binding.backButton.setVisibility(View.GONE);
+                setAverageAndPluspointsOverview();
+            }
+        });
+    }
+
+    public void setAverageAndPluspointsOverview() {
         viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {
                 binding.average.setText(df.format(aFloat));
                 if (aFloat >= 5.0f) {
-                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.green));
                 } else if (aFloat >= 4.0f) {
-                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.orange));
                 } else {
-                    binding.average.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.red));
                 }
             }
         });
@@ -77,24 +126,10 @@ public class GradesFragment extends Fragment {
             public void onChanged(Float aFloat) {
                 binding.pluspoints.setText(df.format(aFloat));
                 if (aFloat > 0) {
-                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.green));
                 } else {
-                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
                 }
-            }
-        });
-
-        adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Subjects subject) {
-                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        adapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(Subjects subject) {
-                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was long clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
