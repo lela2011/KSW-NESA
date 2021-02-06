@@ -1,6 +1,8 @@
 package ch.kanti.nesa.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,7 @@ public class GradesFragment extends Fragment {
     public static int currentAdapter;
 
     public static RecyclerView recyclerView;
-    public static SubjectAdapter adapter;
+    public static SubjectAdapter subjectAdapter;
     public GradeAdapter gradeAdapter;
 
     @Nullable
@@ -57,39 +59,70 @@ public class GradesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        adapter = new SubjectAdapter();
-        recyclerView.setAdapter(adapter);
-        currentAdapter = SUBJECT_VIEW;
-
+        subjectAdapter = new SubjectAdapter();
         gradeAdapter = new GradeAdapter();
+        currentAdapter = SUBJECT_VIEW;
 
         viewModel.getSubjects().observe(getViewLifecycleOwner(), new Observer<List<Subjects>>() {
             @Override
             public void onChanged(List<Subjects> subjects) {
-                adapter.setStatements(subjects);
+                recyclerView.setAdapter(subjectAdapter);
+                subjectAdapter.setStatements(subjects);
+                binding.backButton.setVisibility(View.GONE);
+                currentAdapter = SUBJECT_VIEW;
             }
         });
 
+        setAverageAndPluspointsOverview();
 
-
-        adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
+        subjectAdapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subjects subject) {
                 viewModel.getGradeBySubject(subject.getId()).observe(getViewLifecycleOwner(), new Observer<List<Grades>>() {
                     @Override
                     public void onChanged(List<Grades> grades) {
-                        recyclerView.setAdapter(gradeAdapter);
-                        currentAdapter = GRADE_VIEW;
-                        gradeAdapter.setStatements(grades);
-                        binding.backButton.setVisibility(View.VISIBLE);
-                        binding.average.setText(df.format(subject.getGradeAverage()));
-                        binding.pluspoints.setText(df.format(subject.getPluspoints()));
+                        if (currentAdapter == SUBJECT_VIEW) {
+                            recyclerView.setAdapter(gradeAdapter);
+                            currentAdapter = GRADE_VIEW;
+                            gradeAdapter.setStatements(grades);
+                            Float average = subject.getGradeAverage();
+                            Float pluspoints = subject.getPluspoints();
+                            binding.backButton.setVisibility(View.VISIBLE);
+                            binding.average.setText(df.format(subject.getGradeAverage()));
+                            binding.pluspoints.setText(df.format(subject.getPluspoints()));
+
+                            if (average >= 5.0f) {
+                                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.green));
+                            } else if (average >= 4.0f) {
+                                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.orange));
+                            } else if (average == -1.0f) {
+                                binding.average.setText("-");
+                                TypedValue typedValue = new TypedValue();
+                                Resources.Theme theme = binding.average.getContext().getTheme();
+                                theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
+                                binding.average.setTextColor(typedValue.data);
+                            } else {
+                                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.red));
+                            }
+
+                            if (pluspoints > 0) {
+                                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.green));
+                            } else if (pluspoints == -10.0f) {
+                                binding.pluspoints.setText("-");
+                                TypedValue typedValue = new TypedValue();
+                                Resources.Theme theme = binding.pluspoints.getContext().getTheme();
+                                theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
+                                binding.pluspoints.setTextColor(typedValue.data);
+                            } else {
+                                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
+                            }
+                        }
                     }
                 });
             }
         });
 
-        adapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
+        subjectAdapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Subjects subject) {
                 Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was long clicked", Toast.LENGTH_SHORT).show();
@@ -99,8 +132,9 @@ public class GradesFragment extends Fragment {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(subjectAdapter);
                 binding.backButton.setVisibility(View.GONE);
+                currentAdapter = SUBJECT_VIEW;
                 setAverageAndPluspointsOverview();
             }
         });

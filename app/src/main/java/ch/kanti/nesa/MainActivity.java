@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     };
 
     private void initializeScraping() {
-        scrapeMain();
+        //scrapeMain();
         scrapeBank();
         scrapeMarks();
     }
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     private void syncData() {
         if(SplashActivity.isDeviceOnline()) {
-            mainPage = DocumentScraper.getMainPage();
+            //mainPage = DocumentScraper.getMainPage();
             markPage = DocumentScraper.getMarkPage();
             absencesPage = DocumentScraper.getAbsencesPage();
             bankPage = DocumentScraper.getBankPage();
