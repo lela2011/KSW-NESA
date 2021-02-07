@@ -4,13 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/subject_recycler_view"
-        android:layout_marginTop="8dp"
-        tools:listitem="@layout/recview_grade"/>
+        android:layout_height="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/subject_recycler_view"
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/recview_grade"/>
+
+        <ImageView
+            android:id="@+id/empty"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/empty"/>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -64,6 +64,11 @@ public class GradesFragment extends Fragment {
             @Override
             public void onChanged(List<Grades> grades) {
                 gradeAdapter.setStatements(grades);
+                if (grades.size() == 0) {
+                    binding.empty.setVisibility(View.VISIBLE);
+                } else {
+                    binding.empty.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
