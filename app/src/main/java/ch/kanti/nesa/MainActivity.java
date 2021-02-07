@@ -15,6 +15,7 @@ import com.example.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
 import ch.kanti.nesa.fragments.GradesFragment;
+import ch.kanti.nesa.fragments.SubjectsFragment;
 import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
 import ch.kanti.nesa.scrapers.ContentScrapers;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 currentFragment = HOME_FRAGMENT;
                 break;
             case R.id.nav_grades:
-                selectedFragment = new GradesFragment();
+                selectedFragment = new SubjectsFragment();
                 currentFragment = GRADES_FRAGMENT;
                 break;
             case R.id.nav_absences:
@@ -131,8 +132,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
 
         assert selectedFragment != null;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                selectedFragment).commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .commit();
 
         return true;
     };
@@ -197,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 currentFragment = BANK_FRAGMENT;
                 break;
             case SHORTCUT_GRADES:
-                selectedFragment = new GradesFragment();
+                selectedFragment = new SubjectsFragment();
                 selectedIcon = R.id.nav_grades;
                 currentFragment = GRADES_FRAGMENT;
                 break;
@@ -209,5 +213,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
         binding.bottomNavigation.setSelectedItemId(selectedIcon);
+    }
+
+    @Override
+    public void onBackPressed() {
+        GradesFragment gradesFragment = (GradesFragment) getSupportFragmentManager().findFragmentByTag("GRADES_FRAGMENT");
+        if (gradesFragment != null && gradesFragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectsFragment()).commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

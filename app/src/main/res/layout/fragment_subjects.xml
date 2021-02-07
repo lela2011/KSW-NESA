@@ -10,7 +10,8 @@
         android:layout_height="0dp"
         android:id="@+id/subject_recycler_view"
         android:layout_marginTop="8dp"
-        tools:listitem="@layout/recview_grade"/>
+        tools:listitem="@layout/recview_subject"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
