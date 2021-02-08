@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import ch.kanti.nesa.SplashActivity;
-import com.example.nesa.databinding.FragmentSettingsBinding;
+import ch.kanti.nesa.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
 

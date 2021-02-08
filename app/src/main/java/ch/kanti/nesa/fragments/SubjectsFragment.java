@@ -16,9 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nesa.R;
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.SubjectSettings;
-import com.example.nesa.databinding.FragmentSubjectsBinding;
+import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 
 import java.text.DecimalFormat;
 import java.util.List;

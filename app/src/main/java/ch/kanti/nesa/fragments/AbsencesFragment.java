@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.nesa.databinding.FragmentAbsencesBinding;
+import ch.kanti.nesa.databinding.FragmentAbsencesBinding;
 
 public class AbsencesFragment extends Fragment {
 

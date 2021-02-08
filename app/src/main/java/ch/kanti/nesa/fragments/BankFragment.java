@@ -19,8 +19,8 @@ import ch.kanti.nesa.BankAdapter;
 import ch.kanti.nesa.DetailedBankStatement;
 import ch.kanti.nesa.ViewModel;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.FragmentAccountBinding;
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.databinding.FragmentAccountBinding;
 
 public class BankFragment extends Fragment {
 

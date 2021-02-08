@@ -18,8 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import ch.kanti.nesa.MainActivity;
 import ch.kanti.nesa.ViewModel;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.FragmentHomeBinding;
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.databinding.FragmentHomeBinding;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
