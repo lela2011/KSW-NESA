@@ -97,4 +97,8 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<Float> getPluspoints() {
         return subjectsRepository.getPluspoints();
     }
+
+    public void updateNameCountsSubject(String name, int counts, String id) {
+        subjectsRepository.updateNameCounts(name, counts, id);
+    }
 }

@@ -1,5 +1,6 @@
 package ch.kanti.nesa.fragments;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nesa.R;
+import com.example.nesa.SubjectSettings;
 import com.example.nesa.databinding.FragmentSubjectsBinding;
 
 import java.text.DecimalFormat;
@@ -30,6 +32,8 @@ import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
 
+import static android.app.Activity.RESULT_OK;
+
 public class SubjectsFragment extends Fragment {
 
     public FragmentSubjectsBinding binding;
@@ -38,6 +42,8 @@ public class SubjectsFragment extends Fragment {
 
     public static RecyclerView recyclerView;
     public static SubjectAdapter subjectAdapter;
+
+    public static final int SETTINGS_REQUEST_CODE = 1;
 
     @Nullable
     @Override
@@ -107,8 +113,26 @@ public class SubjectsFragment extends Fragment {
         subjectAdapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Subjects subject) {
-                Toast.makeText(getActivity(), "Item " + subject.getSubjectName() + " was long clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), SubjectSettings.class);
+                intent.putExtra("subjectName", subject.getSubjectName());
+                intent.putExtra("pluspointsCount", subject.getCounts());
+                intent.putExtra("subjectId", subject.getId());
+                startActivityForResult(intent, SETTINGS_REQUEST_CODE);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
+            String subjectNameNew = data.getStringExtra("subjectName");
+            int countsNew = data.getIntExtra("pluspointsCount", 1);
+            String subjectId = data.getStringExtra("subjectId");
+
+            viewModel.updateNameCountsSubject(subjectNameNew, countsNew, subjectId);
+        } else {
+            Toast.makeText(getContext(), "Update failed!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

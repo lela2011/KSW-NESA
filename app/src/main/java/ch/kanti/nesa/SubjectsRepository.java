@@ -50,4 +50,10 @@ public class SubjectsRepository {
     public LiveData<Float> getPluspoints() {
         return subjectsDAO.getPluspoints();
     }
+
+    public void updateNameCounts(String name, int counts, String id) {
+        Database.databaseWriteExecutor.execute(()->{
+            subjectsDAO.updateNamesCount(name, counts, id);
+        });
+    }
 }
