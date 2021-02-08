@@ -14,8 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.LoginActivityBinding;
+import ch.kanti.nesa.databinding.LoginActivityBinding;
 import ch.kanti.nesa.tables.User;
 
 import java.util.concurrent.ExecutorService;

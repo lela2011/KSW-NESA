@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.ActivityDetailedBankStatementBinding;
+import ch.kanti.nesa.databinding.ActivityDetailedBankStatementBinding;
 
 public class DetailedBankStatement extends AppCompatActivity {
 

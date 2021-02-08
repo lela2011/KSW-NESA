@@ -1,9 +1,7 @@
 package ch.kanti.nesa.fragments;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nesa.R;
-import com.example.nesa.SubjectSettings;
+import ch.kanti.nesa.SubjectSettings;
 import com.example.nesa.databinding.FragmentSubjectsBinding;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-import ch.kanti.nesa.GradeAdapter;
-import ch.kanti.nesa.MainActivity;
 import ch.kanti.nesa.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
-import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
 
 import static android.app.Activity.RESULT_OK;

@@ -10,8 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.ActivityMainBinding;
+import ch.kanti.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
 import ch.kanti.nesa.fragments.GradesFragment;

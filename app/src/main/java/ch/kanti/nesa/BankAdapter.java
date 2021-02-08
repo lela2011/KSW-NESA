@@ -9,8 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.BankRecyclerItemBinding;
+import ch.kanti.nesa.databinding.BankRecyclerItemBinding;
 import ch.kanti.nesa.tables.BankStatement;
 
 import java.util.ArrayList;

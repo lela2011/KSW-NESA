@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nesa">
+    package="ch.kanti.nesa">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SubjectSettings"></activity>
+        <activity android:name="ch.kanti.nesa.SubjectSettings"/>
         <activity android:name="ch.kanti.nesa.DetailedBankStatement" />
         <activity android:name="ch.kanti.nesa.MainActivity" />
         <activity android:name="ch.kanti.nesa.SplashActivity">

@@ -1,4 +1,4 @@
-package com.example.nesa;
+package ch.kanti.nesa;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.nesa.databinding.ActivitySubjectSettingsBinding;
+import ch.kanti.nesa.databinding.ActivitySubjectSettingsBinding;
 
 public class SubjectSettings extends AppCompatActivity {
     ActivitySubjectSettingsBinding binding;

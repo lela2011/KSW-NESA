@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.RecviewSubjectBinding;
+import ch.kanti.nesa.databinding.RecviewSubjectBinding;
 
 import ch.kanti.nesa.tables.Subjects;
 

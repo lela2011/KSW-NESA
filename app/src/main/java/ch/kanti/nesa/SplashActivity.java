@@ -13,8 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.nesa.R;
-import com.example.nesa.databinding.ActivitySplashBinding;
+import ch.kanti.nesa.databinding.ActivitySplashBinding;
 
 import ch.kanti.nesa.futures.isDeviceOnlineFuture;
 import ch.kanti.nesa.scrapers.ContentScrapers;
