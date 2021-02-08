@@ -27,6 +27,7 @@ import ch.kanti.nesa.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.tables.Subjects;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class SubjectsFragment extends Fragment {
@@ -110,7 +111,8 @@ public class SubjectsFragment extends Fragment {
             public void onItemLongClick(Subjects subject) {
                 Intent intent = new Intent(getContext(), SubjectSettings.class);
                 intent.putExtra("subjectName", subject.getSubjectName());
-                intent.putExtra("pluspointsCount", subject.getCounts());
+                intent.putExtra("pluspointsCount", subject.getCountsPluspoints());
+                intent.putExtra("averageCount", subject.getCountsAverage());
                 intent.putExtra("subjectId", subject.getId());
                 startActivityForResult(intent, SETTINGS_REQUEST_CODE);
             }
@@ -122,12 +124,15 @@ public class SubjectsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
             String subjectNameNew = data.getStringExtra("subjectName");
-            int countsNew = data.getIntExtra("pluspointsCount", 1);
+            int countsPluspointsNew = data.getIntExtra("pluspointsCount", 1);
+            int countsAverageNew = data.getIntExtra("averageCounts", 1);
             String subjectId = data.getStringExtra("subjectId");
 
-            viewModel.updateNameCountsSubject(subjectNameNew, countsNew, subjectId);
+            viewModel.updateNameCountsSubject(subjectNameNew, countsPluspointsNew, countsAverageNew, subjectId);
+        } else if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_CANCELED) {
+            Toast.makeText(getContext(), "Not saved", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Update failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Update Failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

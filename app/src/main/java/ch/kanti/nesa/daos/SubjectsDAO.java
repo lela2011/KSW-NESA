@@ -31,12 +31,12 @@ public interface SubjectsDAO {
     @Query("SELECT id FROM subjects_table")
     List<String> getSubjectIds();
 
-    @Query("SELECT avg(gradeAverage) FROM subjects_table WHERE counts = 1 AND gradeAverage != -1.0")
+    @Query("SELECT avg(gradeAverage) FROM subjects_table WHERE countsAverage = 1 AND gradeAverage != -1.0")
     LiveData<Float> getAverage();
 
-    @Query("SELECT sum(pluspoints) FROM subjects_table WHERE counts = 1 AND pluspoints != -10")
+    @Query("SELECT sum(pluspoints) FROM subjects_table WHERE countsPluspoints = 1 AND pluspoints != -10")
     LiveData<Float> getPluspoints();
 
-    @Query("UPDATE subjects_table SET subjectName = :name, counts = :counts WHERE id = :id")
-    void updateNamesCount(String name, int counts, String id);
+    @Query("UPDATE subjects_table SET subjectName = :name, countsPluspoints = :countsPluspoints, countsAverage = :countsAverage WHERE id = :id")
+    void updateNamesCount(String name, int countsPluspoints, int countsAverage, String id);
 }

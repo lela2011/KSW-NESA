@@ -18,31 +18,42 @@ public class SubjectSettings extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        int count = intent.getIntExtra("pluspointsCount", 1);
+        int countPluspoints = intent.getIntExtra("pluspointsCount", 1);
+        int countAverage = intent.getIntExtra("averageCount", 1);
+
         String subjectName = intent.getStringExtra("subjectName");
         String subjectId = intent.getStringExtra("subjectId");
 
         binding.subjectName.setText(subjectName);
         binding.subjectNameEdit.setText(subjectName);
-        binding.addPluspointsCheck.setChecked(count == 1);
+        binding.addPluspointsCheck.setChecked(countPluspoints == 1);
+        binding.averageCheck.setChecked(countAverage == 1);
 
         binding.applySettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent data = new Intent();
                 String subjectNameNew = String.valueOf(binding.subjectNameEdit.getText());
-                int countsNew;
+                int countsPluspointsNew;
+                int countsAverageNew;
                 if (!subjectNameNew.matches("")) {
                     if (binding.addPluspointsCheck.isChecked()) {
-                        countsNew = 1;
+                        countsPluspointsNew = 1;
                     } else {
-                        countsNew = 0;
+                        countsPluspointsNew = 0;
                     }
 
-                    Intent newIntent = new Intent();
-                    newIntent.putExtra("subjectName", subjectNameNew);
-                    newIntent.putExtra("pluspointsCount", countsNew);
-                    newIntent.putExtra("subjectId", subjectId);
-                    setResult(RESULT_OK, intent);
+                    if (binding.averageCheck.isChecked()) {
+                        countsAverageNew = 1;
+                    } else {
+                        countsAverageNew = 0;
+                    }
+
+                    data.putExtra("subjectName", subjectNameNew);
+                    data.putExtra("pluspointsCount", countsPluspointsNew);
+                    data.putExtra("averageCounts", countsAverageNew);
+                    data.putExtra("subjectId", subjectId);
+                    setResult(RESULT_OK, data);
                     finish();
                 } else {
                     Toast.makeText(SubjectSettings.this, "Please enter a name!", Toast.LENGTH_SHORT).show();

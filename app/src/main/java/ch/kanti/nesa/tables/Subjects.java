@@ -13,15 +13,17 @@ public class Subjects {
     private Float pluspoints;
     private Float gradeAverage;
     private int order;
-    private int counts;
+    private int countsPluspoints;
+    private int countsAverage;
 
-    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int counts) {
+    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage) {
         this.subjectName = subjectName;
         this.gradeAverage = gradeAverage;
         this.pluspoints = pluspoints;
         this.id = id;
         this.order = order;
-        this.counts = counts;
+        this.countsPluspoints = countsPluspoints;
+        this.countsAverage = countsAverage;
     }
 
     public String getId() {
@@ -64,11 +66,19 @@ public class Subjects {
         this.order = order;
     }
 
-    public int getCounts() {
-        return counts;
+    public int getCountsPluspoints() {
+        return countsPluspoints;
     }
 
-    public void setCounts(int counts) {
-        this.counts = counts;
+    public void setCountsPluspoints(int countsPluspoints) {
+        this.countsPluspoints = countsPluspoints;
+    }
+
+    public int getCountsAverage() {
+        return countsAverage;
+    }
+
+    public void setCountsAverage(int countsAverage) {
+        this.countsAverage = countsAverage;
     }
 }

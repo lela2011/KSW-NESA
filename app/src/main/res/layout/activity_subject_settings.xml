@@ -11,29 +11,44 @@
         android:id="@+id/subject_name"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:text="Mathematik"
         android:gravity="center"
         android:textSize="48dp"/>
 
-    <EditText
-        android:id="@+id/subject_name_edit"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="64dp"
-        android:hint="Subject Name"
-        android:inputType="text"/>
+        android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/add_pluspoints_check"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Add pluspoints"
-        android:textSize="32dp"
-        android:gravity="center"
-        android:layout_margin="64dp"/>
+        <EditText
+            android:id="@+id/subject_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Subject Name"
+            android:inputType="text"/>
+
+        <CheckBox
+            android:id="@+id/add_pluspoints_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add pluspoints"
+            android:textSize="32dp"
+            android:layout_margin="16dp"
+            android:gravity="center"/>
+
+        <CheckBox
+            android:id="@+id/average_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="use for average"
+            android:textSize="32dp"
+            android:gravity="center"/>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/apply_settings"

@@ -98,7 +98,7 @@ public class ViewModel extends AndroidViewModel {
         return subjectsRepository.getPluspoints();
     }
 
-    public void updateNameCountsSubject(String name, int counts, String id) {
-        subjectsRepository.updateNameCounts(name, counts, id);
+    public void updateNameCountsSubject(String name, int countsPluspoints, int countsAverage, String id) {
+        subjectsRepository.updateNameCounts(name, countsPluspoints, countsAverage, id);
     }
 }
