@@ -49,12 +49,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.subjectId.setText(currentItem.getId());
         holder.subjectAverage.setText(gradeAverage);
-        if (gradeAverageFloat >= 5.0f) {
+        if (gradeAverageFloat >= 6.0f) {
+            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.gold));
+        } else if (gradeAverageFloat >= 4.5f) {
             holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.green));
-        }
-        else if (gradeAverageFloat < 5.0f && gradeAverageFloat >= 4.0f) {
+        } else if (gradeAverageFloat >= 3.75f) {
             holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.orange));
-        } else if (gradeAverageFloat < 4.0f && gradeAverageFloat >= 1.0f) {
+        } else if (gradeAverageFloat >= 1.0f) {
             holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.red));
         } else {
             TypedValue typedValue = new TypedValue();

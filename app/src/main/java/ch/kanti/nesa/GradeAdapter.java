@@ -1,7 +1,9 @@
 package ch.kanti.nesa;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -44,12 +46,13 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
         }
         holder.grade.setText(gradeString);
         holder.gradeName.setText(currentItem.getExam());
-        if (grade >= 5.0f) {
+        if (grade >= 6.0f) {
+            holder.grade.setTextColor(ContextCompat.getColor(context, R.color.gold));
+        } else if (grade >= 4.5f) {
             holder.grade.setTextColor(ContextCompat.getColor(context, R.color.green));
-        }
-        else if (grade < 5.0f && grade >= 4.0f) {
+        } else if (grade >= 3.75f) {
             holder.grade.setTextColor(ContextCompat.getColor(context, R.color.orange));
-        } else if (grade < 4.0f && grade >= 1.0f) {
+        } else if (grade >= 1.0f) {
             holder.grade.setTextColor(ContextCompat.getColor(context, R.color.red));
         } else {
             TypedValue typedValue = new TypedValue();
