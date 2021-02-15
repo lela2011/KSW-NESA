@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
@@ -20,6 +21,7 @@ public class ViewModel extends AndroidViewModel {
     private final BankRepository bankRepository;
     private final GradesRepository gradesRepository;
     private final SubjectsRepository subjectsRepository;
+    private final AbsenceRepository absenceRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
@@ -28,6 +30,7 @@ public class ViewModel extends AndroidViewModel {
         bankRepository = new BankRepository(application);
         gradesRepository = new GradesRepository(application);
         subjectsRepository = new SubjectsRepository(application);
+        absenceRepository = new AbsenceRepository(application);
     }
     //update entry
     public void updateLogin(User user) {
@@ -100,5 +103,9 @@ public class ViewModel extends AndroidViewModel {
 
     public void updateNameCountsSubject(String name, int countsPluspoints, int countsAverage, String id) {
         subjectsRepository.updateNameCounts(name, countsPluspoints, countsAverage, id);
+    }
+
+    public void insertAbsences(List<Absence> absences) {
+        absenceRepository.insert(absences);
     }
 }
