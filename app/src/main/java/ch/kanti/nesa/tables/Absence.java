@@ -40,4 +40,12 @@ public class Absence {
     public void setCourse(String course) {
         this.course = course;
     }
+
+    public int getPk() {
+        return pk;
+    }
+
+    public void setPk(int pk) {
+        this.pk = pk;
+    }
 }

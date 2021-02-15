@@ -19,6 +19,7 @@ import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
+import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
@@ -163,7 +164,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     private void scrapeAbsences() {
-        ContentScrapers.scrapeAbsences(absencesPage);
+        ArrayList<Absence> absences = ContentScrapers.scrapeAbsences(absencesPage);
+        viewModel.insertAbsences(absences);
     }
 
     private void scrapeBank() {
