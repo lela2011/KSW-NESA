@@ -45,4 +45,7 @@
     <string name="grade_details">Grade details</string>
     <string name="weight">Weight</string>
     <string name="grade">Grade</string>
+    <string name="open_absences">Open:</string>
+    <string name="course">Course</string>
+    <string name="time">Time</string>
 </resources>

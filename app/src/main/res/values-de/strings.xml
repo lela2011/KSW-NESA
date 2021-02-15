@@ -46,4 +46,7 @@
     <string name="grade_details">Noten Details</string>
     <string name="weight">Gewicht</string>
     <string name="grade">Note</string>
+    <string name="open_absences">Offen:</string>
+    <string name="course">Kurs</string>
+    <string name="time">Zeit</string>
 </resources>
