@@ -1,5 +1,6 @@
 package ch.kanti.nesa.fragments;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.GradeDetailActivity;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.FragmentGradesBinding;
 
@@ -100,5 +102,18 @@ public class GradesFragment extends Fragment {
         } else {
             binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
         }
+
+        gradeAdapter.setOnItemClickListener(new GradeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Grades grade) {
+                Intent intent = new Intent(getContext(), GradeDetailActivity.class);
+                intent.putExtra("date", grade.getDate());
+                intent.putExtra("name", grade.getExam());
+                intent.putExtra("weight", grade.getWeight());
+                intent.putExtra("grade", grade.getGrade());
+
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -42,4 +42,7 @@
     <string name="average">Ø</string>
     <string name="plus">+</string>
     <string name="back_to_overview">Back to overview</string>
+    <string name="grade_details">Grade details</string>
+    <string name="weight">Weight</string>
+    <string name="grade">Grade</string>
 </resources>

@@ -15,7 +15,10 @@
         android:theme="@style/Theme.NESA"
         android:usesCleartextTraffic="true">
         <activity android:name="ch.kanti.nesa.SubjectSettings"/>
-        <activity android:name="ch.kanti.nesa.DetailedBankStatement" />
+        <activity android:name="ch.kanti.nesa.DetailedBankStatement"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name="ch.kanti.nesa.GradeDetailActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name="ch.kanti.nesa.MainActivity" />
         <activity android:name="ch.kanti.nesa.SplashActivity">
             <intent-filter>

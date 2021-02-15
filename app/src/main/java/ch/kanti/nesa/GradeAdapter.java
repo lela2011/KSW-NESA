@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
 
     private List<Grades> dataList = new ArrayList<>();
     private static DecimalFormat df = new DecimalFormat("#.###");
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -79,6 +81,24 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
             super(binding.getRoot());
             gradeName = binding.gradeName;
             grade = binding.grade;
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(dataList.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Grades grade);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

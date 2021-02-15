@@ -43,4 +43,7 @@
     <string name="average">Ø</string>
     <string name="plus">+</string>
     <string name="back_to_overview">Zurück zur Übersicht</string>
+    <string name="grade_details">Noten Details</string>
+    <string name="weight">Gewicht</string>
+    <string name="grade">Note</string>
 </resources>
