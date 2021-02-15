@@ -31,12 +31,13 @@ public class LoginCredentialChecker implements Callable<Integer> {
             Connection.Response loginForm = Jsoup.connect(SplashActivity.LOGIN_FORM_URL)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
+                    .timeout(30000)
                     .execute();
             Document loginPage = loginForm.parse();
             //read out cookies
             HashMap<String, String> cookies = new HashMap<>(loginForm.cookies());
             //get authToken
-            String authToken = loginPage.select("div.mdl-cell:nth-child(3) > input:nth-child(3)")
+            String authToken = loginPage.select("div.mdl-cell:nth-child(4) > input:nth-child(3)") //div.mdl-cell:nth-child(3) > input:nth-child(3)
                     .first()
                     .attr("value");
             //add username and password to request

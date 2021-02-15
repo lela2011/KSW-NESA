@@ -19,7 +19,7 @@ public class CookieAndAuthScraper implements Callable<CookieAndAuth> {
                 .execute();
 
         HashMap<String, String> cookies = new HashMap<>(loginResponse.cookies());
-        String authToken = loginResponse.parse().select("div.mdl-cell:nth-child(3) > input:nth-child(3)").first().attr("value");
+        String authToken = loginResponse.parse().select("div.mdl-cell:nth-child(4) > input:nth-child(3)").first().attr("value"); //div.mdl-cell:nth-child(3) > input:nth-child(3)
 
         return new CookieAndAuth(cookies, authToken);
     }

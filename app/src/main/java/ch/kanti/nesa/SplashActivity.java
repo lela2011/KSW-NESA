@@ -44,8 +44,8 @@ public class SplashActivity extends AppCompatActivity {
     public static SharedPreferences.Editor editor;
     public static String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
     public static String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
-    public static String LOGIN_FORM_URL = "https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=";
-    public static String ACTION_URL = "https://ksw.nesa-sg.ch/index.php?pageid=";
+    public static String LOGIN_FORM_URL = "https://test.nesa-sg.ch/schulung/ksw/loginto.php?mode=0&lang=";
+    public static String ACTION_URL = "https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=";
     public static String username, password;
     public static Document mainPage, markPage, absencesPage, bankPage, emailPage;
 
