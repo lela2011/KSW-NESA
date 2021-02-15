@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         //scrapeMain();
         scrapeBank();
         scrapeMarks();
+        scrapeAbsences();
     }
 
     private void scrapeMain() {
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     private void scrapeAbsences() {
-
+        ContentScrapers.scrapeAbsences(absencesPage);
     }
 
     private void scrapeBank() {

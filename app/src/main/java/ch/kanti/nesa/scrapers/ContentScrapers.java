@@ -1,6 +1,7 @@
 package ch.kanti.nesa.scrapers;
 
 import ch.kanti.nesa.SubjectsAndGrades;
+import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
@@ -87,8 +88,25 @@ public class ContentScrapers {
         return new SubjectsAndGrades(subjects, gradesList);
     }
 
-    public static void scrapeAbsences(Document page){
+    public static ArrayList<Absence> scrapeAbsences(Document page){
+        ArrayList<Absence> absencesList = new ArrayList<>();
 
+        Elements absences = page.select("#uebersicht_bloecke > page:nth-child(1) > div:nth-child(2) > form:nth-child(3) > table:nth-child(2) > tbody:nth-child(2) > tr");
+        absences.remove(0);
+        for (int i = 0; i<2; i++) {
+            absences.remove(absences.size()-1);
+        }
+
+        for (Element absenceElement : absences) {
+            String date = absenceElement.select("td").get(0).text().replace(" ", "").replace("(*)", "");
+            String time = absenceElement.select("td").get(1).text();
+            String course = absenceElement.select("td").get(2).text();
+
+            Absence absence = new Absence(date, time, course);
+            absencesList.add(absence);
+        }
+
+        return absencesList;
     }
 
     public static ArrayList<BankStatement> scrapeBank(Document page){
