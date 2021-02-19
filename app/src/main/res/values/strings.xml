@@ -48,4 +48,6 @@
     <string name="open_absences">Open:</string>
     <string name="course">Course</string>
     <string name="time">Time</string>
+    <string name="absenceType">Absence</string>
+    <string name="delayType">Delay</string>
 </resources>

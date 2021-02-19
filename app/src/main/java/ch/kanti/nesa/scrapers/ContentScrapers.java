@@ -102,8 +102,28 @@ public class ContentScrapers {
             String time = absenceElement.select("td").get(1).text();
             String course = absenceElement.select("td").get(2).text();
 
-            Absence absence = new Absence(date, time, course);
+            Absence absence = new Absence(date, time, course, 0);
             absencesList.add(absence);
+        }
+
+        try {
+            Elements delays = page.select("table.mdl-data-table:nth-child(5) > tbody:nth-child(2) > tr");
+            if (delays.size() != 0) {
+                delays.remove(0);
+                delays.remove(delays.size()-1);
+                delays.remove(delays.size()-1);
+
+                for (Element delay : delays) {
+                    String date = delay.select("td").get(0).text().replace(" ", "").replace("(*)", "");
+                    String time = delay.select("td").get(1).text();
+                    String delayTime = delay.select("td").get(3).text() + " min";
+
+                    Absence delayObj = new Absence(date, time, delayTime, 1);
+                    absencesList.add(delayObj);
+                }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return absencesList;

@@ -2,6 +2,8 @@ package ch.kanti.nesa;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 import ch.kanti.nesa.daos.AbsenceDAO;
@@ -20,5 +22,9 @@ public class AbsenceRepository {
            absenceDAO.deleteAll();
            absenceDAO.insertAll(absences);
         });
+    }
+
+    public LiveData<List<Absence>> getAbsences() {
+        return absenceDAO.getAbsences();
     }
 }

@@ -49,4 +49,6 @@
     <string name="open_absences">Offen:</string>
     <string name="course">Kurs</string>
     <string name="time">Zeit</string>
+    <string name="absenceType">Absenz</string>
+    <string name="delayType">Verspätung</string>
 </resources>

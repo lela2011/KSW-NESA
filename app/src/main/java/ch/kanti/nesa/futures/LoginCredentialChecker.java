@@ -37,7 +37,7 @@ public class LoginCredentialChecker implements Callable<Integer> {
             //read out cookies
             HashMap<String, String> cookies = new HashMap<>(loginForm.cookies());
             //get authToken
-            String authToken = loginPage.select("div.mdl-cell:nth-child(4) > input:nth-child(3)") //div.mdl-cell:nth-child(3) > input:nth-child(3)
+            String authToken = loginPage.select("div.mdl-cell:nth-child(3) > input:nth-child(3)") //div.mdl-cell:nth-child(3) > input:nth-child(3)
                     .first()
                     .attr("value");
             //add username and password to request

@@ -108,4 +108,8 @@ public class ViewModel extends AndroidViewModel {
     public void insertAbsences(List<Absence> absences) {
         absenceRepository.insert(absences);
     }
+
+    public LiveData<List<Absence>> getAbsences () {
+        return absenceRepository.getAbsences();
+    }
 }

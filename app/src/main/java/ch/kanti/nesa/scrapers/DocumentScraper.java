@@ -28,7 +28,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        return scrapePage("https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=1", cookies, formData);
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
     }
 
     public static Document getMarkPage() {
@@ -42,7 +42,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        return scrapePage("https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=21311", cookies, formData);
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
     }
 
     public static Document getAbsencesPage() {
@@ -56,7 +56,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        return scrapePage("https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=21111", cookies, formData);
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21111", cookies, formData);
     }
 
     public static Document getBankPage() {
@@ -70,7 +70,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        return scrapePage("https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=21411", cookies, formData);
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
     }
 
     public static Document getEmailPage() {
@@ -84,7 +84,7 @@ public class DocumentScraper {
         formData.put("passwort", AES.decrypt(SplashActivity.password, SplashActivity.passwordKey));
         formData.put("loginhash", authToken);
 
-        return scrapePage("https://test.nesa-sg.ch/schulung/ksw/index.php?pageid=22500", cookies, formData);
+        return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=22500", cookies, formData);
     }
 
     public static Document scrapePage(String url, HashMap<String, String> cookies, HashMap<String, String> formData) {

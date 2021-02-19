@@ -10,11 +10,13 @@ public class Absence {
     private String date;
     private String time;
     private String course;
+    private int type;
 
-    public Absence(String date, String time, String course) {
+    public Absence(String date, String time, String course, int type) {
         this.date = date;
         this.time = time;
         this.course = course;
+        this.type = type;
     }
 
     public String getDate() {
@@ -47,5 +49,13 @@ public class Absence {
 
     public void setPk(int pk) {
         this.pk = pk;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
