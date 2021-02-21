@@ -35,10 +35,12 @@ public class GradesFragment extends Fragment {
     RecyclerView recyclerView;
     GradeAdapter gradeAdapter;
 
+
     public static final DecimalFormat df = new DecimalFormat("#.###");
 
     String subjectId;
     Float average, pluspoints;
+    int subjectPosition;
 
     @Nullable
     @Override
@@ -47,6 +49,7 @@ public class GradesFragment extends Fragment {
         subjectId = getArguments().getString("subject");
         average = getArguments().getFloat("average");
         pluspoints = getArguments().getFloat("pluspoints");
+        subjectPosition = getArguments().getInt("position");
         return binding.getRoot();
     }
 
@@ -115,5 +118,9 @@ public class GradesFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    public int getSubjectPosition() {
+        return subjectPosition;
     }
 }

@@ -41,10 +41,15 @@ public class SubjectsFragment extends Fragment {
 
     public static final int SETTINGS_REQUEST_CODE = 1;
 
+    int position;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSubjectsBinding.inflate(inflater, container, false);
+        if (getArguments() != null){
+            position = getArguments().getInt("position", 0);
+        }
         return binding.getRoot();
     }
 
@@ -64,6 +69,7 @@ public class SubjectsFragment extends Fragment {
             @Override
             public void onChanged(List<Subjects> subjects) {
                 subjectAdapter.setStatements(subjects);
+                recyclerView.scrollToPosition(position);
             }
         });
 
@@ -95,11 +101,12 @@ public class SubjectsFragment extends Fragment {
 
         subjectAdapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Subjects subject) {
+            public void onItemClick(Subjects subject, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString("subject", subject.getId());
                 bundle.putFloat("average", subject.getGradeAverage());
                 bundle.putFloat("pluspoints", subject.getPluspoints());
+                bundle.putInt("position", position);
                 GradesFragment newSubject = new GradesFragment();
                 newSubject.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();

@@ -221,7 +221,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public void onBackPressed() {
         GradesFragment gradesFragment = (GradesFragment) getSupportFragmentManager().findFragmentByTag("GRADES_FRAGMENT");
         if (gradesFragment != null && gradesFragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectsFragment()).commit();
+            int subjectPosition = gradesFragment.getSubjectPosition();
+            SubjectsFragment subjectsFragment = new SubjectsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", subjectPosition);
+            subjectsFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, subjectsFragment).commit();
         } else {
             super.onBackPressed();
         }

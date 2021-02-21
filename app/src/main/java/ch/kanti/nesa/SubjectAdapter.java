@@ -87,7 +87,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (clickListener != null && position != RecyclerView.NO_POSITION) {
-                        clickListener.onItemClick(dataList.get(position));
+                        clickListener.onItemClick(dataList.get(position), position);
                     }
                 }
             });
@@ -106,7 +106,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     }
 
     public interface OnItemClickListener{
-        void onItemClick(Subjects subject);
+        void onItemClick(Subjects subject, int position);
     }
 
     public interface OnItemLongClickListener{
