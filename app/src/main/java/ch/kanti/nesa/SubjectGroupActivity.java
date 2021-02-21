@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import ch.kanti.nesa.databinding.ActivitySubjectGroupBinding;
+
 public class SubjectGroupActivity extends AppCompatActivity {
+
+    ActivitySubjectGroupBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject_group);
+        binding = ActivitySubjectGroupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 }
