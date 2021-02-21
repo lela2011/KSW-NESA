@@ -63,7 +63,7 @@ public class ContentScrapers {
             } else {
                 gradeAverage = Float.parseFloat(gradeAverageString);
             }
-            subjects.add(new Subjects(subjectName, gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, 1, 1));
+            subjects.add(new Subjects(subjectName, gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, 1, 1, 1, 0));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             if (grades.size() != 0){
                 grades.remove(0);

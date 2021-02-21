@@ -14,20 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA"
         android:usesCleartextTraffic="true">
-        <activity android:name="ch.kanti.nesa.SubjectSettings"/>
-        <activity android:name="ch.kanti.nesa.DetailedBankStatement"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name="ch.kanti.nesa.GradeDetailActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name="ch.kanti.nesa.MainActivity" />
-        <activity android:name="ch.kanti.nesa.SplashActivity">
+        <activity android:name=".SubjectGroupActivity"></activity>
+        <activity android:name=".SubjectSettings" />
+        <activity
+            android:name=".DetailedBankStatement"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".GradeDetailActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ch.kanti.nesa.LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
