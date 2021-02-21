@@ -56,4 +56,8 @@ public class SubjectsRepository {
             subjectsDAO.updateNamesCount(name, countsPluspoints, countsAverage, id);
         });
     }
+
+    public LiveData<List<String>> getNonSetSubjectIds() {
+        return subjectsDAO.getNonSetSubjectIds();
+    }
 }

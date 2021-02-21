@@ -39,4 +39,7 @@ public interface SubjectsDAO {
 
     @Query("UPDATE subjects_table SET subjectName = :name, countsPluspoints = :countsPluspoints, countsAverage = :countsAverage WHERE id = :id")
     void updateNamesCount(String name, int countsPluspoints, int countsAverage, String id);
+
+    @Query("SELECT id FROM subjects_table WHERE partOfSet = 0 AND isSet = 0")
+    LiveData<List<String>> getNonSetSubjectIds();
 }

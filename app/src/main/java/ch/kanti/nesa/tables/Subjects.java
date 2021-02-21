@@ -17,8 +17,9 @@ public class Subjects {
     private int countsAverage;
     private int isDisplayed;
     private int partOfSet;
+    private int isSet;
 
-    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage, int isDisplayed, int partOfSet) {
+    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage, int isDisplayed, int partOfSet, int isSet) {
         this.subjectName = subjectName;
         this.gradeAverage = gradeAverage;
         this.pluspoints = pluspoints;
@@ -28,6 +29,7 @@ public class Subjects {
         this.countsAverage = countsAverage;
         this.isDisplayed = isDisplayed;
         this.partOfSet = partOfSet;
+        this.isSet = isSet;
     }
 
     public String getId() {
@@ -100,5 +102,13 @@ public class Subjects {
 
     public void setPartOfSet(int partOfSet) {
         this.partOfSet = partOfSet;
+    }
+
+    public int getIsSet() {
+        return isSet;
+    }
+
+    public void setIsSet(int isSet) {
+        this.isSet = isSet;
     }
 }

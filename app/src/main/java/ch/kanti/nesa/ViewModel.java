@@ -112,4 +112,8 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<List<Absence>> getAbsences () {
         return absenceRepository.getAbsences();
     }
+
+    public LiveData<List<String>> getNonSetSubjectIds () {
+        return subjectsRepository.getNonSetSubjectIds();
+    }
 }
