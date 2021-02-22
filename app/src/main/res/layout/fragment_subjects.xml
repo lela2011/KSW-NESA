@@ -61,7 +61,14 @@
             android:gravity="center"
             android:textSize="32sp"
             android:layout_marginVertical="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_group_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/add"/>
 
     </LinearLayout>
 

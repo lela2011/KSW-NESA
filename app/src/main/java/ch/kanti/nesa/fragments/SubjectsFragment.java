@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.R;
+import ch.kanti.nesa.SubjectGroupActivity;
 import ch.kanti.nesa.SubjectSettings;
 import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 
@@ -70,6 +71,14 @@ public class SubjectsFragment extends Fragment {
             public void onChanged(List<Subjects> subjects) {
                 subjectAdapter.setStatements(subjects);
                 recyclerView.scrollToPosition(position);
+            }
+        });
+
+        binding.addGroupFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SubjectGroupActivity.class);
+                startActivity(intent);
             }
         });
 

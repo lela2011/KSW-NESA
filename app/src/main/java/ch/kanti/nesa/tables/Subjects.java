@@ -9,6 +9,7 @@ public class Subjects {
     @NonNull
     @PrimaryKey
     private String id;
+    private String weight;
     private String subjectName;
     private Float pluspoints;
     private Float gradeAverage;
@@ -19,8 +20,9 @@ public class Subjects {
     private int partOfSet;
     private int isSet;
 
-    public Subjects(String subjectName, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage, int isDisplayed, int partOfSet, int isSet) {
+    public Subjects(String subjectName,String weight, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage, int isDisplayed, int partOfSet, int isSet) {
         this.subjectName = subjectName;
+        this.weight = weight;
         this.gradeAverage = gradeAverage;
         this.pluspoints = pluspoints;
         this.id = id;
@@ -34,6 +36,14 @@ public class Subjects {
 
     public String getId() {
         return id;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public void setId(String id) {
