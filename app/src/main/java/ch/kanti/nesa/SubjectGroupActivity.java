@@ -62,6 +62,8 @@ public class SubjectGroupActivity extends AppCompatActivity {
                     ids = ids.substring(0, ids.length() - 1);
                     weights = weights.substring(0, weights.length() -1);
                     Subjects subjectGroup = new Subjects(groupName, weights, -1f, -10f, ids, 0, 1, 1, 1, 0, 1);
+                    viewModel.insertSubjectSet(subjectGroup);
+                    finish();
                 } else {
                     Toast.makeText(SubjectGroupActivity.this, "Please enter name", Toast.LENGTH_SHORT).show();
                 }

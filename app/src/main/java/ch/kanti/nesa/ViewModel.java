@@ -116,4 +116,8 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<List<String>> getNonSetSubjectIds () {
         return subjectsRepository.getNonSetSubjectIds();
     }
+
+    public void insertSubjectSet(Subjects subject) {
+        subjectsRepository.insertSubjectSet(subject);
+    }
 }

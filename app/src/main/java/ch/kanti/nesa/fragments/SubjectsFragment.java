@@ -111,14 +111,18 @@ public class SubjectsFragment extends Fragment {
         subjectAdapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subjects subject, int position) {
-                Bundle bundle = new Bundle();
-                bundle.putString("subject", subject.getId());
-                bundle.putFloat("average", subject.getGradeAverage());
-                bundle.putFloat("pluspoints", subject.getPluspoints());
-                bundle.putInt("position", position);
-                GradesFragment newSubject = new GradesFragment();
-                newSubject.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
+                if (subject.getIsSet() == 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("subject", subject.getId());
+                    bundle.putFloat("average", subject.getGradeAverage());
+                    bundle.putFloat("pluspoints", subject.getPluspoints());
+                    bundle.putInt("position", position);
+                    GradesFragment newSubject = new GradesFragment();
+                    newSubject.setArguments(bundle);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
+                } else {
+                    Toast.makeText(getContext(), "Clicked Subject group", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

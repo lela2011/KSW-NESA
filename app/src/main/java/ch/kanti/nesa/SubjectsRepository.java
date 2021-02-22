@@ -8,6 +8,7 @@ import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Subjects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,4 +61,21 @@ public class SubjectsRepository {
     public LiveData<List<String>> getNonSetSubjectIds() {
         return subjectsDAO.getNonSetSubjectIds();
     }
+
+    public void insertSubjectSet(Subjects subject) {
+        Database.databaseWriteExecutor.execute(() -> {
+            ArrayList<String> subjectIds = new ArrayList<String>();
+            subjectIds.addAll(Arrays.asList(subject.getId().split("&")));
+            for (String id : subjectIds) {
+                subjectsDAO.updateToSet(id, 0, 1);
+            }
+            subjectsDAO.insertSingle(subject);
+        });
+    }
+
+    /*public LiveData<List<Subjects>> getSetLiveDAte(List<String> ids) {
+        for (String id : ids) {
+            subjectsDAO.getSubjectById(id);
+        }
+    }*/
 }
