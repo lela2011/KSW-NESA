@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.R;
-import ch.kanti.nesa.SubjectGroupActivity;
 import ch.kanti.nesa.SubjectSettings;
 import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 
@@ -74,14 +73,6 @@ public class SubjectsFragment extends Fragment {
             }
         });
 
-        binding.addGroupFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SubjectGroupActivity.class);
-                startActivity(intent);
-            }
-        });
-
         viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), new Observer<Float>() {
             @Override
             public void onChanged(Float aFloat) {
@@ -111,18 +102,14 @@ public class SubjectsFragment extends Fragment {
         subjectAdapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subjects subject, int position) {
-                if (subject.getIsSet() == 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("subject", subject.getId());
-                    bundle.putFloat("average", subject.getGradeAverage());
-                    bundle.putFloat("pluspoints", subject.getPluspoints());
-                    bundle.putInt("position", position);
-                    GradesFragment newSubject = new GradesFragment();
-                    newSubject.setArguments(bundle);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
-                } else {
-                    Toast.makeText(getContext(), "Clicked Subject group", Toast.LENGTH_SHORT).show();
-                }
+                Bundle bundle = new Bundle();
+                bundle.putString("subject", subject.getId());
+                bundle.putFloat("average", subject.getGradeAverage());
+                bundle.putFloat("pluspoints", subject.getPluspoints());
+                bundle.putInt("position", position);
+                GradesFragment newSubject = new GradesFragment();
+                newSubject.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
             }
         });
 

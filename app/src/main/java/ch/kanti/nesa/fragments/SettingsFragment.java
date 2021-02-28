@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import ch.kanti.nesa.SplashActivity;
-import ch.kanti.nesa.SubjectGroupActivity;
 import ch.kanti.nesa.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -28,12 +26,5 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SubjectGroupActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

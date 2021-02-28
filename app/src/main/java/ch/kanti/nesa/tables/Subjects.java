@@ -16,11 +16,10 @@ public class Subjects {
     private int order;
     private int countsPluspoints;
     private int countsAverage;
-    private int isDisplayed;
-    private int partOfSet;
-    private int isSet;
 
-    public Subjects(String subjectName,String weight, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage, int isDisplayed, int partOfSet, int isSet) {
+    
+
+    public Subjects(String subjectName, String weight, Float gradeAverage, Float pluspoints, String id, int order, int countsPluspoints, int countsAverage) {
         this.subjectName = subjectName;
         this.weight = weight;
         this.gradeAverage = gradeAverage;
@@ -29,13 +28,14 @@ public class Subjects {
         this.order = order;
         this.countsPluspoints = countsPluspoints;
         this.countsAverage = countsAverage;
-        this.isDisplayed = isDisplayed;
-        this.partOfSet = partOfSet;
-        this.isSet = isSet;
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getWeight() {
@@ -44,10 +44,6 @@ public class Subjects {
 
     public void setWeight(String weight) {
         this.weight = weight;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getSubjectName() {
@@ -96,29 +92,5 @@ public class Subjects {
 
     public void setCountsAverage(int countsAverage) {
         this.countsAverage = countsAverage;
-    }
-
-    public int getIsDisplayed() {
-        return isDisplayed;
-    }
-
-    public void setIsDisplayed(int isDisplayed) {
-        this.isDisplayed = isDisplayed;
-    }
-
-    public int getPartOfSet() {
-        return partOfSet;
-    }
-
-    public void setPartOfSet(int partOfSet) {
-        this.partOfSet = partOfSet;
-    }
-
-    public int getIsSet() {
-        return isSet;
-    }
-
-    public void setIsSet(int isSet) {
-        this.isSet = isSet;
     }
 }

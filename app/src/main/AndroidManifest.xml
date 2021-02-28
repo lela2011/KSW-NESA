@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SubjectGroupActivity"></activity>
         <activity android:name=".SubjectSettings" />
         <activity
             android:name=".DetailedBankStatement"

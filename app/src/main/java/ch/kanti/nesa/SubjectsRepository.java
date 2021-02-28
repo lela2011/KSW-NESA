@@ -1,6 +1,7 @@
 package ch.kanti.nesa;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -57,25 +58,4 @@ public class SubjectsRepository {
             subjectsDAO.updateNamesCount(name, countsPluspoints, countsAverage, id);
         });
     }
-
-    public LiveData<List<String>> getNonSetSubjectIds() {
-        return subjectsDAO.getNonSetSubjectIds();
-    }
-
-    public void insertSubjectSet(Subjects subject) {
-        Database.databaseWriteExecutor.execute(() -> {
-            ArrayList<String> subjectIds = new ArrayList<String>();
-            subjectIds.addAll(Arrays.asList(subject.getId().split("&")));
-            for (String id : subjectIds) {
-                subjectsDAO.updateToSet(id, 0, 1);
-            }
-            subjectsDAO.insertSingle(subject);
-        });
-    }
-
-    /*public LiveData<List<Subjects>> getSetLiveDAte(List<String> ids) {
-        for (String id : ids) {
-            subjectsDAO.getSubjectById(id);
-        }
-    }*/
 }
