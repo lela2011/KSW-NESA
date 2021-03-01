@@ -9,6 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import ch.kanti.nesa.databinding.LoginActivityBinding;
 import ch.kanti.nesa.tables.User;
 
+import java.lang.reflect.Array;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final int LOGIN_SUCCESSFUL = 1;
     public static final int LOGIN_ERROR = 2;
     public static final int LOGIN_FAILED = -1;
+    String department;
     //Keys for encryption
 
     public static ViewModel viewModel;
@@ -65,6 +71,12 @@ public class LoginActivity extends AppCompatActivity {
         });
         //save credentials on button press
         binding.loginSubmit.setOnClickListener(v -> getLoginCredentials());
+
+        Spinner spinner = binding.fmsorgymmispinner;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
     }
 
     //Reading out credentials, encrypting, checking for validity, writing into database
@@ -74,38 +86,45 @@ public class LoginActivity extends AppCompatActivity {
         //encrypt username and password
         String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), SplashActivity.usernameKey);
         String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), SplashActivity.passwordKey);
-        //clear the input fields
-        binding.usernameET.getText().clear();
-        binding.passwordET.getText().clear();
-        //check if credentials are correct
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(()->{
-            //get return value from checking credentials
-            int loginResultCode = LoginHandler.checkLoginCredentials(encryptedUsername, encryptedPassword);
-            //displaying results
-            runOnUiThread(()->{
-                if(loginResultCode == LOGIN_FAILED){
-                    binding.loginErrorMessage.setText(R.string.loginErrorCredentials);
-                    binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                } else if(loginResultCode == LOGIN_ERROR){
-                    binding.loginErrorMessage.setText(R.string.loginErrorFailed);
-                    binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                } else if(loginResultCode == LOGIN_SUCCESSFUL){
-                    binding.loginErrorMessage.setText(R.string.loginSuccessful);
-                    binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
-                    //check if user already saved in database
-                    checkTableSize(encryptedUsername, encryptedPassword);
-                    //Set login completed
-                    SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);
-                    SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, true);
-                    SplashActivity.editor.apply();
-                    //Start main Activity
-                    Intent splashActivity = new Intent(LoginActivity.this, SplashActivity.class);
-                    startActivity(splashActivity);
-                    finish();
-                }
+        department = binding.fmsorgymmispinner.getSelectedItem().toString();
+        if (department.isEmpty()) {
+            Toast.makeText(this, "Please select department", Toast.LENGTH_SHORT).show();
+        } else {
+            SplashActivity.sharedPreferences.edit().putString("department", department).apply();
+            //clear the input fields
+            binding.usernameET.getText().clear();
+            binding.passwordET.getText().clear();
+            //check if credentials are correct
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(()->{
+                //get return value from checking credentials
+                int loginResultCode = LoginHandler.checkLoginCredentials(encryptedUsername, encryptedPassword);
+                //displaying results
+                runOnUiThread(()->{
+                    if(loginResultCode == LOGIN_FAILED){
+                        binding.loginErrorMessage.setText(R.string.loginErrorCredentials);
+                        binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
+                    } else if(loginResultCode == LOGIN_ERROR){
+                        binding.loginErrorMessage.setText(R.string.loginErrorFailed);
+                        binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
+                    } else if(loginResultCode == LOGIN_SUCCESSFUL){
+                        binding.loginErrorMessage.setText(R.string.loginSuccessful);
+                        binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
+                        //check if user already saved in database
+                        checkTableSize(encryptedUsername, encryptedPassword);
+                        //Set login completed
+                        SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);
+                        SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, true);
+                        SplashActivity.editor.apply();
+                        //Start main Activity
+                        Intent splashActivity = new Intent(LoginActivity.this, SplashActivity.class);
+                        startActivity(splashActivity);
+                        finish();
+                    }
+                });
             });
-        });
+        }
+
     }
     //check if there already is a user added to database
     public void checkTableSize(String username, String password){
@@ -121,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     //add user to database
     public void insertCredentials(String username, String password) {
-        User user = new User(username, password);
+        User user = new User(username, password, department);
         viewModel.insertLogin(user);
     }
     //update credentials
@@ -130,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         viewModel.getCredentials().observe(this, users -> {
             //check if credentials changed
             if(!(users.getUsername().equals(username) && users.getPassword().equals(password))){
-                User user = new User(username, password);
+                User user = new User(username, password, department);
                 user.setId(users.getId());
                 //update credentials
                 viewModel.updateLogin(user);

@@ -1,5 +1,8 @@
 package ch.kanti.nesa.scrapers;
 
+import android.util.Log;
+
+import ch.kanti.nesa.SplashActivity;
 import ch.kanti.nesa.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
@@ -13,6 +16,9 @@ import org.jsoup.select.Elements;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContentScrapers {
 
@@ -31,12 +37,26 @@ public class ContentScrapers {
     }
 
     public static SubjectsAndGrades scrapeMarks(Document page) {
+        ArrayList<String> gymProm = new ArrayList<>();
+        gymProm.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
+
+        ArrayList<String> fms12Prom = new ArrayList<>();
+        fms12Prom.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "PE", "PY", "RH", ".+[(]SP[)]"));
+
+        ArrayList<String> fms3Prom = new ArrayList<>();
+        fms3Prom.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
+
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
         ArrayList<Subjects> subjects = new ArrayList<>();
         ArrayList<Grades> gradesList = new ArrayList<>();
         Float grade = 0f;
         Float gradeAverage = 0f;
+
+        String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
+        ArrayList<String> yearChars = new ArrayList<>();
+        yearChars.addAll(Arrays.asList(year.split("")));
+        int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
 
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
@@ -55,7 +75,40 @@ public class ContentScrapers {
         }
 
         for (int g = 0; g < overview.size(); g++) {
+            int counts = 0;
             String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
+            String[] chechSubIds = subjectId.split("-");
+            String department = SplashActivity.sharedPreferences.getString("department", "Gymnasium");
+            if (department.equals("Gymnasium")) {
+                for (String expr : gymProm) {
+                    /*Pattern p = Pattern.compile(expr);
+                    Matcher m = p.matcher(subjectId);*/
+                    if (chechSubIds[0].equals(expr)) {
+                        counts = 1;
+                        break;
+                    }
+                }
+            } else {
+                if (yearFinal < 3) {
+                    for (String expr : fms12Prom) {
+                        Pattern p = Pattern.compile(expr);
+                        Matcher m = p.matcher(subjectId);
+                        if (m.find()) {
+                            counts = 1;
+                            break;
+                        }
+                    }
+                } else {
+                    for (String expr : fms3Prom) {
+                        Pattern p = Pattern.compile(expr);
+                        Matcher m = p.matcher(subjectId);
+                        if (m.find()) {
+                            counts = 1;
+                            break;
+                        }
+                    }
+                }
+            }
             String subjectName = overview.get(g).select("td:nth-child(1)").get(0).text().replace(subjectId + " ", "");
             String gradeAverageString = overview.get(g).select("td").get(1).text().replace("*", "").replace("-", "");
             if(gradeAverageString.equals("")){
@@ -63,7 +116,7 @@ public class ContentScrapers {
             } else {
                 gradeAverage = Float.parseFloat(gradeAverageString);
             }
-            subjects.add(new Subjects(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, 1, 1));
+            subjects.add(new Subjects(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, counts, counts));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             if (grades.size() != 0){
                 grades.remove(0);

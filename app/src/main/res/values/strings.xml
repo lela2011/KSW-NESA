@@ -50,4 +50,9 @@
     <string name="time">Time</string>
     <string name="absenceType">Absence</string>
     <string name="delayType">Delay</string>
+    <string name="department">Department</string>
+    <string-array name="spinner">
+        <item>Gymnasium</item>
+        <item>FMS</item>
+    </string-array>
 </resources>

@@ -23,10 +23,12 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private String department;
     //initialize object
-    public User(String username, String password) {
+    public User(String username, String password, String department) {
         this.username = username;
         this.password = password;
+        this.department = department;
     }
     //get id
     public int getId() {
@@ -51,5 +53,13 @@ public class User {
     //set password
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
