@@ -2,6 +2,9 @@ package ch.kanti.nesa.scrapers;
 
 import android.util.Log;
 
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+
 import ch.kanti.nesa.SplashActivity;
 import ch.kanti.nesa.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
@@ -38,13 +41,13 @@ public class ContentScrapers {
 
     public static SubjectsAndGrades scrapeMarks(Document page) {
         ArrayList<String> gymProm = new ArrayList<>();
-        gymProm.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
+        gymProm.addAll(Arrays.asList("B", "C", "D", "F", "(?!EW)E", "(?!MU)M", "P", "^(?!BG)G$", "^G{2}$", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
 
         ArrayList<String> fms12Prom = new ArrayList<>();
-        fms12Prom.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "PE", "PY", "RH", ".+[(]SP[)]"));
+        fms12Prom.addAll(Arrays.asList("D", "F", "(?!EW)E", "(?!MU)M", "B", "C", "P", "^(?!GE)G$", "^G{2}$", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "(?!PY)PE", "(?!PE)PY", "RH", ".+[(]SP[)]"));
 
         ArrayList<String> fms3Prom = new ArrayList<>();
-        fms3Prom.addAll(Arrays.asList("D", "F", "E", "M", "B", "C", "P", "G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
+        fms3Prom.addAll(Arrays.asList("D", "F", "(?!EW)E", "M", "B", "C", "P", "(?!GG)G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
 
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
@@ -77,13 +80,13 @@ public class ContentScrapers {
         for (int g = 0; g < overview.size(); g++) {
             int counts = 0;
             String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
-            String[] chechSubIds = subjectId.split("-");
+            String[] checkSubIds = subjectId.split("-");
             String department = SplashActivity.sharedPreferences.getString("department", "Gymnasium");
             if (department.equals("Gymnasium")) {
                 for (String expr : gymProm) {
-                    /*Pattern p = Pattern.compile(expr);
-                    Matcher m = p.matcher(subjectId);*/
-                    if (chechSubIds[0].equals(expr)) {
+                    Pattern p = Pattern.compile(expr);
+                    Matcher m = p.matcher(checkSubIds[0]);
+                    if (m.matches()) {
                         counts = 1;
                         break;
                     }
