@@ -1,9 +1,7 @@
 package ch.kanti.nesa;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,7 @@ import java.util.List;
 public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHolder> {
 
     private List<Grades> dataList = new ArrayList<>();
-    private static DecimalFormat df = new DecimalFormat("#.###");
+    private static final DecimalFormat df = new DecimalFormat("#.###");
     private OnItemClickListener listener;
 
     @NonNull

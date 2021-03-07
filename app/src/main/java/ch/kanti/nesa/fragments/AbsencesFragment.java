@@ -23,7 +23,6 @@ import ch.kanti.nesa.tables.Absence;
 public class AbsencesFragment extends Fragment {
 
     public FragmentAbsencesBinding binding;
-    private ViewModel viewModel;
 
     @Nullable
     @Override
@@ -35,7 +34,7 @@ public class AbsencesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
+        ViewModel viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
         RecyclerView recyclerView = binding.absencesRecview;
 

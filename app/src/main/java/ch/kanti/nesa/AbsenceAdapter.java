@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.databinding.RecviewAbsenceBinding;
@@ -48,7 +47,7 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
         notifyDataSetChanged();
     }
 
-    class AbsenceViewHolder extends RecyclerView.ViewHolder {
+    static class AbsenceViewHolder extends RecyclerView.ViewHolder {
         private final TextView date, time, course, type;
         //define views
         public AbsenceViewHolder(@NonNull RecviewAbsenceBinding binding) {

@@ -1,6 +1,5 @@
 package ch.kanti.nesa.tables;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -87,7 +86,7 @@ public class Grades {
         return subjectNumber;
     }
 
-    public void setSubjectNumber() {
+    public void setSubjectNumber(int subjectNumber) {
         this.subjectNumber = subjectNumber;
     }
 

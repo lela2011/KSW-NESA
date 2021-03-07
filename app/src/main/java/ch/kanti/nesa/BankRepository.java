@@ -2,7 +2,6 @@ package ch.kanti.nesa;
 
 import android.app.Application;
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import androidx.lifecycle.LiveData;
 

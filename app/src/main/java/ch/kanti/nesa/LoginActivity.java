@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import ch.kanti.nesa.databinding.LoginActivityBinding;
 import ch.kanti.nesa.tables.User;
 
-import java.lang.reflect.Array;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

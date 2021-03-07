@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/icon_nesa_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".SubjectSettings" />
         <activity
             android:name=".DetailedBankStatement"

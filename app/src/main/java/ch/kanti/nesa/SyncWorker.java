@@ -3,8 +3,6 @@ package ch.kanti.nesa;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.Operation;
-import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 

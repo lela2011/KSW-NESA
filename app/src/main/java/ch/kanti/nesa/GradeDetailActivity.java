@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.ActivityGradeDetailBinding;
 
 public class GradeDetailActivity extends AppCompatActivity {

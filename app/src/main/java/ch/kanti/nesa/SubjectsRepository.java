@@ -2,7 +2,6 @@ package ch.kanti.nesa;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -10,7 +9,6 @@ import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Subjects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

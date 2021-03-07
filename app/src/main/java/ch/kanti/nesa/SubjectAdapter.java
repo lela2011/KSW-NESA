@@ -16,7 +16,6 @@ import ch.kanti.nesa.databinding.RecviewSubjectBinding;
 
 import ch.kanti.nesa.tables.Subjects;
 
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private List<Subjects> dataList = new ArrayList<>();
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
-    private static DecimalFormat df = new DecimalFormat("#.###");
+    private static final DecimalFormat df = new DecimalFormat("#.###");
 
     @NonNull
     @Override

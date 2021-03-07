@@ -1,10 +1,5 @@
 package ch.kanti.nesa.scrapers;
 
-import android.util.Log;
-
-import androidx.work.Constraints;
-import androidx.work.NetworkType;
-
 import ch.kanti.nesa.SplashActivity;
 import ch.kanti.nesa.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
@@ -40,14 +35,11 @@ public class ContentScrapers {
     }
 
     public static SubjectsAndGrades scrapeMarks(Document page) {
-        ArrayList<String> gymProm = new ArrayList<>();
-        gymProm.addAll(Arrays.asList("B", "C", "D", "F", "(?!EW)E", "(?!MU)M", "P", "^(?!BG)G$", "^G{2}$", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
+        ArrayList<String> gymProm = new ArrayList<>(Arrays.asList("B", "C", "D", "F", "(?!EW)E", "(?!MU)M", "P", "^(?!BG)G$", "^G{2}$", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
 
-        ArrayList<String> fms12Prom = new ArrayList<>();
-        fms12Prom.addAll(Arrays.asList("D", "F", "(?!EW)E", "(?!MU)M", "B", "C", "P", "^(?!GE)G$", "^G{2}$", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "(?!PY)PE", "(?!PE)PY", "RH", ".+[(]SP[)]"));
+        ArrayList<String> fms12Prom = new ArrayList<>(Arrays.asList("D", "F", "(?!EW)E", "(?!MU)M", "B", "C", "P", "^(?!GE)G$", "^G{2}$", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "(?!PY)PE", "(?!PE)PY", "RH", ".+[(]SP[)]"));
 
-        ArrayList<String> fms3Prom = new ArrayList<>();
-        fms3Prom.addAll(Arrays.asList("D", "F", "(?!EW)E", "M", "B", "C", "P", "(?!GG)G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
+        ArrayList<String> fms3Prom = new ArrayList<>(Arrays.asList("D", "F", "(?!EW)E", "M", "B", "C", "P", "(?!GG)G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
 
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
@@ -57,8 +49,7 @@ public class ContentScrapers {
         Float gradeAverage = 0f;
 
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
-        ArrayList<String> yearChars = new ArrayList<>();
-        yearChars.addAll(Arrays.asList(year.split("")));
+        ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
         int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
 
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
@@ -174,7 +165,7 @@ public class ContentScrapers {
                 String delayTime = delay.select("td").get(3).text() + " min";
                 String excused = delay.select("td").get(1).text();
                 int excusedInt = 0;
-                if(excused != "Nein") {
+                if(!excused.equals("Nein")) {
                     excusedInt = 1;
                 }
 
