@@ -1,6 +1,8 @@
 package ch.kanti.nesa;
 
 import android.app.Application;
+import android.content.Context;
+import android.provider.ContactsContract;
 
 import androidx.lifecycle.LiveData;
 
@@ -11,11 +13,21 @@ import java.util.List;
 
 public class BankRepository {
     BankDAO bankDAO;
+    Context context;
 
     public BankRepository(Application application) {
         Database database = Database.getInstance(application);
         bankDAO = database.bankStatementDAO();
+        context = application.getApplicationContext();
     }
+
+    public BankRepository(Context context) {
+        Database database = Database.getInstance(context);
+        bankDAO = database.bankStatementDAO();
+        this.context = context;
+    }
+
+
 
     public void insert(List<BankStatement> statement) {
         Database.databaseWriteExecutor.execute(()-> {

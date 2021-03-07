@@ -6,9 +6,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "grades_table")
 public class Grades {
-    @NonNull
-    @PrimaryKey
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    int id;
     private String subjectId;
     private String exam;
     private float grade;
@@ -26,8 +25,7 @@ public class Grades {
 
     private int order;
 
-    public Grades(String id, String exam, float grade, float weight, String date, String subjectId, int order, int subjectNumber) {
-        this.id = id;
+    public Grades(String exam, String subjectId, String date, float grade, float weight, int order, int subjectNumber) {
         this.exam = exam;
         this.grade = grade;
         this.weight = weight;
@@ -53,11 +51,11 @@ public class Grades {
         this.date = date;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -91,5 +89,13 @@ public class Grades {
 
     public void setSubjectNumber() {
         this.subjectNumber = subjectNumber;
+    }
+
+    public boolean compare(Grades toCompare) {
+        return this.getExam().equals(toCompare.getExam()) &&
+                this.getSubjectId().equals(toCompare.getSubjectId()) &&
+                this.getDate().equals(toCompare.getDate()) &&
+                this.getGrade() == toCompare.getGrade() &&
+                this.getWeight() == toCompare.getWeight();
     }
 }

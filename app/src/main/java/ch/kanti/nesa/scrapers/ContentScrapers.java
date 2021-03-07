@@ -136,8 +136,7 @@ public class ContentScrapers {
                         grade = Float.parseFloat(gradeString);
                     }
                     Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
-                    String gradeId = date + "_" + name;
-                    gradesList.add(new Grades(gradeId, name, grade, weight, date, subjectId, d, g));
+                    gradesList.add(new Grades(name, subjectId, date, grade, weight, d, g));
                 }
             }
         }
@@ -156,30 +155,32 @@ public class ContentScrapers {
         for (Element absenceElement : absences) {
             String date = absenceElement.select("td").get(0).text().replace(" ", "").replace("(*)", "");
             String time = absenceElement.select("td").get(1).text();
+            int excused = 0;
             String course = absenceElement.select("td").get(2).text();
 
-            Absence absence = new Absence(date, time, course, 0);
+            Absence absence = new Absence(date, time, course, 0, excused);
             absencesList.add(absence);
         }
 
-        try {
-            Elements delays = page.select("table.mdl-data-table:nth-child(5) > tbody:nth-child(2) > tr");
-            if (delays.size() != 0) {
-                delays.remove(0);
-                delays.remove(delays.size()-1);
-                delays.remove(delays.size()-1);
+        Elements delays = page.select("table.mdl-data-table:nth-child(5) > tbody:nth-child(2) > tr");
+        if (delays.size() != 0) {
+            delays.remove(0);
+            delays.remove(delays.size()-1);
+            delays.remove(delays.size()-1);
 
-                for (Element delay : delays) {
-                    String date = delay.select("td").get(0).text().replace(" ", "").replace("(*)", "");
-                    String time = delay.select("td").get(1).text();
-                    String delayTime = delay.select("td").get(3).text() + " min";
-
-                    Absence delayObj = new Absence(date, time, delayTime, 1);
-                    absencesList.add(delayObj);
+            for (Element delay : delays) {
+                String date = delay.select("td").get(0).text().replace(" ", "").replace("(*)", "");
+                String time = delay.select("td").get(1).text();
+                String delayTime = delay.select("td").get(3).text() + " min";
+                String excused = delay.select("td").get(1).text();
+                int excusedInt = 0;
+                if(excused != "Nein") {
+                    excusedInt = 1;
                 }
+
+                Absence delayObj = new Absence(date, time, delayTime, 1, excusedInt);
+                absencesList.add(delayObj);
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
 
         return absencesList;

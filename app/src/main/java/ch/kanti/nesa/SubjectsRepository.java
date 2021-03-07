@@ -1,6 +1,7 @@
 package ch.kanti.nesa;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -15,10 +16,18 @@ import java.util.List;
 
 public class SubjectsRepository {
     SubjectsDAO subjectsDAO;
+    Context context;
 
     public SubjectsRepository(Application application) {
         Database database = Database.getInstance(application);
         subjectsDAO = database.subjectsDAO();
+        context = application.getApplicationContext();
+    }
+
+    public SubjectsRepository(Context context) {
+        Database database = Database.getInstance(context);
+        subjectsDAO = database.subjectsDAO();
+        this.context = context;
     }
 
     public void insert(List<Subjects> subjects) {

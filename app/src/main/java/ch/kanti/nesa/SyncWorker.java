@@ -3,6 +3,8 @@ package ch.kanti.nesa;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Operation;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -33,7 +35,18 @@ public class SyncWorker extends Worker {
         SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);
         ArrayList<BankStatement> bankStatements = ContentScrapers.scrapeBank(bankPage);
 
+        Context context = getApplicationContext();
 
-        return null;
+        GradesRepository gradesRepository = new GradesRepository(context);
+        SubjectsRepository subjectsRepository = new SubjectsRepository(context);
+        BankRepository bankRepository = new BankRepository(context);
+        AbsenceRepository absenceRepository = new AbsenceRepository(context);
+
+        gradesRepository.insert(subjectsAndGrades.gradesList);
+        subjectsRepository.insert(subjectsAndGrades.subjectsList);
+        bankRepository.insert(bankStatements);
+        absenceRepository.insert(absences);
+
+        return Result.success();
     }
 }

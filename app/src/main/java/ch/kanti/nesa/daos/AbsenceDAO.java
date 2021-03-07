@@ -17,6 +17,9 @@ public interface AbsenceDAO {
     @Query("DELETE FROM absences_table")
     void deleteAll();
 
-    @Query("SELECT * FROM absences_table")
+    @Query("SELECT * FROM absences_table WHERE excused = 0")
     LiveData<List<Absence>> getAbsences();
+
+    @Query("SELECT * FROM absences_table")
+    List<Absence> getAbsencesSync();
 }

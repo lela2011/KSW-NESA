@@ -11,12 +11,14 @@ public class Absence {
     private String time;
     private String course;
     private int type;
+    private int excused;
 
-    public Absence(String date, String time, String course, int type) {
+    public Absence(String date, String time, String course, int type, int excused) {
         this.date = date;
         this.time = time;
         this.course = course;
         this.type = type;
+        this.excused = excused;
     }
 
     public String getDate() {
@@ -57,5 +59,13 @@ public class Absence {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getExcused() {
+        return excused;
+    }
+
+    public void setExcused(int excused) {
+        this.excused = excused;
     }
 }
