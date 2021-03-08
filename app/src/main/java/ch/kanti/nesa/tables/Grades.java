@@ -97,4 +97,10 @@ public class Grades {
                 this.getGrade() == toCompare.getGrade() &&
                 this.getWeight() == toCompare.getWeight();
     }
+
+    public boolean gradeModified(Grades toCompare) {
+        return this.getExam().equals(toCompare.getExam()) &&
+                this.getSubjectId().equals(toCompare.getSubjectId()) &&
+                this.getDate().equals(toCompare.getDate());
+    }
 }

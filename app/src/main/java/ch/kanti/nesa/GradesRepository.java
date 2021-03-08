@@ -34,9 +34,9 @@ public class GradesRepository {
     public void insert(List<Grades> grades) {
         Database.databaseWriteExecutor.execute(() -> {
             int newGradesSize = 0;
-            //grades.add(3, new Grades("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
-            //grades.remove(1);
-            //grades.get(1).setGrade(6.0f);
+            grades.add(3, new Grades("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
+            grades.remove(1);
+            grades.get(4).setGrade(6.0f);
             int oldGradesSize = gradesDAO.size();
             if (oldGradesSize != 0) { //oldGradesSize <= grades.size() &&
                 List<Grades> oldGrades = gradesDAO.getAllGradesOrdered();
@@ -59,60 +59,81 @@ public class GradesRepository {
                     }
                 }
 
-                List<String> subjectsModified = new ArrayList<>();
-                for (int i = 0; i < newGrades.size(); i++) {
-                    if (!subjectsModified.contains(newGrades.get(i).getSubjectId())) {
-                        subjectsModified.add(newGrades.get(i).getSubjectId());
-                    }
-                }
+                List<Grades> modifiedGrades = new ArrayList<>();
 
                 for (int i = 0; i < oldGrades.size(); i++) {
-                    if (!subjectsModified.contains(oldGrades.get(i).getSubjectId())) {
-                        subjectsModified.add(oldGrades.get(i).getSubjectId());
+                    for (int k = 0; k < newGrades.size(); k++) {
+                        if (oldGrades.get(i).gradeModified(newGrades.get(k))) {
+                            modifiedGrades.add(newGrades.get(k));
+                            oldGrades.remove(i);
+                            newGrades.remove(k);
+                            i--;
+                            break;
+                        }
                     }
                 }
 
-                for (int i = 0; i < subjectsModified.size(); i++) {
-                    gradesDAO.deleteBySubject(subjectsModified.get(i));
+                List<Notification> notificationList = new ArrayList<>();
+
+                for (Grades grade : oldGrades) {
+                    gradesDAO.deleteByGrade(grade.getSubjectId(), grade.getExam(), grade.getDate());
+                    String deletedText = context.getString(R.string.deletedGrades1) + grade.getExam() + context.getString(R.string.deletedGrades2);
+                    Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
+                            .setContentTitle(grade.getExam())
+                            .setContentText(deletedText)
+                            .setStyle(new NotificationCompat.InboxStyle()
+                            .addLine(context.getString(R.string.subject) + grade.getSubjectId())
+                            .addLine(context.getString(R.string.exam) + grade.getExam())
+                            .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                            .setBigContentTitle(deletedText))
+                            .setSmallIcon(R.drawable.ktstgallen)
+                            .build();
+                    notificationList.add(notificationDel);
                 }
 
-                List<Grades> gradesToAdd = new ArrayList<>();
 
-                for (Grades grade : grades) {
-                    if (subjectsModified.contains(grade.getSubjectId())) {
-                        gradesToAdd.add(grade);
-                    }
+                gradesDAO.insert(newGrades);
+                for (Grades grade : newGrades) {
+                    String addedText = context.getString(R.string.addedGrades1) + grade.getExam() + context.getString(R.string.addedGrades2);
+                    Notification notificationAdd = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
+                            .setContentTitle(grade.getExam())
+                            .setContentText(addedText)
+                            .setStyle(new NotificationCompat.InboxStyle()
+                                    .addLine(context.getString(R.string.subject) + grade.getSubjectId())
+                                    .addLine(context.getString(R.string.exam) + grade.getExam())
+                                    .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                                    .setBigContentTitle(addedText))
+                            .setSmallIcon(R.drawable.ktstgallen)
+                            .build();
+                    notificationList.add(notificationAdd);
                 }
 
-                gradesDAO.insert(gradesToAdd);
 
-                List<Grades> gradesModified = new ArrayList<>();
-
-                gradesModified.addAll(newGrades);
-                gradesModified.addAll(oldGrades);
+                for (Grades grade : modifiedGrades) {
+                    gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
+                    String moddedText = context.getString(R.string.modifiedGrades1) + grade.getExam() + context.getString(R.string.modifiedGrades2);
+                    Notification notificationMod = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
+                            .setContentTitle(grade.getExam())
+                            .setContentText(moddedText)
+                            .setStyle(new NotificationCompat.InboxStyle()
+                                    .addLine(context.getString(R.string.subject) + grade.getSubjectId())
+                                    .addLine(context.getString(R.string.exam) + grade.getExam())
+                                    .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                                    .setBigContentTitle(moddedText))
+                            .setSmallIcon(R.drawable.ktstgallen)
+                            .build();
+                    notificationList.add(notificationMod);
+                }
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-                for (int i = 0; i < gradesModified.size(); i++) {
-                    Grades grade = gradesModified.get(i);
-                    Notification notification = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
-                            .setContentTitle(grade.getExam())
-                            .setContentText("The grade \"" + grade.getExam() + "\" was modified")
-                            .setStyle(new NotificationCompat.InboxStyle()
-                                    .addLine("Subject: " + grade.getSubjectId())
-                                    .addLine("Exam: " + grade.getExam())
-                                    .addLine("Grade: " + grade.getGrade())
-                                    .setBigContentTitle("The grade \"" + grade.getExam() + "\" was modified"))
-                            .setSmallIcon(R.mipmap.icon_nesa)
-                            .build();
-
-                    notificationManager.notify(i, notification);
+                if (notificationList.size() < 10) {
+                    for (int i = 0; i < notificationList.size(); i++) {
+                        notificationManager.notify(i, notificationList.get(i));
+                    }
                 }
 
-            } else if (grades.size() < oldGradesSize) {
-                gradesDAO.deleteAll();
-                gradesDAO.insert(grades);
-            } else if (oldGradesSize == 0) {
+            } else {
                 gradesDAO.insert(grades);
             }
         });

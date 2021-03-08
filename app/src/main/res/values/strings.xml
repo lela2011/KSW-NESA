@@ -55,4 +55,13 @@
         <item>Gymnasium</item>
         <item>FMS</item>
     </string-array>
+    <string name="deletedGrades1">The grade "</string>
+    <string name="deletedGrades2">" was deleted</string>
+    <string name="subject">Subject: </string>
+    <string name="exam">Exam: </string>
+    <string name="gradeNot">Grade: </string>
+    <string name="modifiedGrades1">The grade "</string>
+    <string name="modifiedGrades2">" was modified</string>
+    <string name="addedGrades1">The grade "</string>
+    <string name="addedGrades2">" was added</string>
 </resources>

@@ -40,4 +40,10 @@ public interface GradesDAO {
 
     @Query("SELECT COUNT(*) FROM grades_table")
     int size();
+
+    @Query("DELETE FROM grades_table WHERE subjectId = :id AND exam = :name AND date = :date")
+    void deleteByGrade(String id, String name, String date);
+
+    @Query("UPDATE grades_table SET grade = :grade, weight = :weight WHERE subjectId = :id AND exam = :name AND date = :date")
+    void updateGrade(String id, String name, String date, float grade, float weight);
 }

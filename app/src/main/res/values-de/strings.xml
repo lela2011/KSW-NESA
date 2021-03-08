@@ -52,4 +52,13 @@
     <string name="absenceType">Absenz</string>
     <string name="delayType">Verspätung</string>
     <string name="department">Ausbildung</string>
+    <string name="deletedGrades1">Die Note "</string>
+    <string name="deletedGrades2">" wurde gelöscht</string>
+    <string name="subject">Fach: </string>
+    <string name="exam">Prüfung: </string>
+    <string name="gradeNot">Note: </string>
+    <string name="modifiedGrades1">Die Note "</string>
+    <string name="modifiedGrades2">" wurde geändert</string>
+    <string name="addedGrades1">Die Note "</string>
+    <string name="addedGrades2">" wurde hinzugefügt</string>
 </resources>
