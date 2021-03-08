@@ -3,6 +3,15 @@ package ch.kanti.nesa;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.util.Log;
+
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import java.util.concurrent.TimeUnit;
 
 public class App extends Application {
 
@@ -15,6 +24,18 @@ public class App extends Application {
         super.onCreate();
         createNotificationChannels();
 
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        workManager.enqueueUniquePeriodicWork("Sync Grades", ExistingPeriodicWorkPolicy.KEEP, workRequest);
+
+        Log.d("Work", "Work executed");
     }
 
     private void createNotificationChannels() {

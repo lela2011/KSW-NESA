@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
@@ -90,6 +91,8 @@ public class GradesRepository {
                 gradesModified.addAll(newGrades);
                 gradesModified.addAll(oldGrades);
 
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
                 for (int i = 0; i < gradesModified.size(); i++) {
                     Grades grade = gradesModified.get(i);
                     Notification notification = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
@@ -103,7 +106,6 @@ public class GradesRepository {
                             .setSmallIcon(R.mipmap.icon_nesa)
                             .build();
 
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(i, notification);
                 }
 
