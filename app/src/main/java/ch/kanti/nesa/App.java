@@ -28,14 +28,12 @@ public class App extends Application {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 15, TimeUnit.MINUTES)
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 16, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueueUniquePeriodicWork("Sync Grades", ExistingPeriodicWorkPolicy.KEEP, workRequest);
-
-        Log.d("Work", "Work executed");
+        workManager.enqueueUniquePeriodicWork("Sync Grades", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 
     private void createNotificationChannels() {
