@@ -3,7 +3,9 @@ package ch.kanti.nesa;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -13,30 +15,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.kanti.nesa.daos.GradesDAO;
+import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Grades;
 
 public class GradesRepository {
     GradesDAO gradesDAO;
+    SubjectsDAO subjectsDao;
     Context context;
 
     public GradesRepository(Application application) {
         Database database = Database.getInstance(application);
         gradesDAO = database.gradesDAO();
+        subjectsDao = database.subjectsDAO();
         context = application.getApplicationContext();
     }
 
     public GradesRepository(Context context) {
         Database database = Database.getInstance(context);
         gradesDAO = database.gradesDAO();
+        subjectsDao = database.subjectsDAO();
         this.context = context;
     }
 
     public void insert(List<Grades> grades) {
         Database.databaseWriteExecutor.execute(() -> {
             int newGradesSize = 0;
-            grades.add(3, new Grades("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
-            grades.remove(1);
-            grades.get(4).setGrade(6.0f);
+            //grades.add(3, new Grades("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
+            //grades.remove(1);
+            //grades.get(4).setGrade(6.0f);
             int oldGradesSize = gradesDAO.size();
             if (oldGradesSize != 0) { //oldGradesSize <= grades.size() &&
                 List<Grades> oldGrades = gradesDAO.getAllGradesOrdered();
@@ -78,6 +84,18 @@ public class GradesRepository {
                 for (Grades grade : oldGrades) {
                     gradesDAO.deleteByGrade(grade.getSubjectId(), grade.getExam(), grade.getDate());
                     String deletedText = context.getString(R.string.deletedGrades1) + grade.getExam() + context.getString(R.string.deletedGrades2);
+
+                    float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());
+                    float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("notification", true);
+                    intent.putExtra("subjectID", grade.getSubjectId());
+                    intent.putExtra("average", subjectAverage);
+                    intent.putExtra("pluspoints", subjectPluspoints);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                     Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(deletedText)
@@ -87,6 +105,8 @@ public class GradesRepository {
                             .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
                             .setBigContentTitle(deletedText))
                             .setSmallIcon(R.drawable.ktstgallen)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
                             .build();
                     notificationList.add(notificationDel);
                 }
@@ -95,6 +115,18 @@ public class GradesRepository {
                 gradesDAO.insert(newGrades);
                 for (Grades grade : newGrades) {
                     String addedText = context.getString(R.string.addedGrades1) + grade.getExam() + context.getString(R.string.addedGrades2);
+
+                    float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());
+                    float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("notification", true);
+                    intent.putExtra("subjectID", grade.getSubjectId());
+                    intent.putExtra("average", subjectAverage);
+                    intent.putExtra("pluspoints", subjectPluspoints);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                     Notification notificationAdd = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(addedText)
@@ -104,6 +136,8 @@ public class GradesRepository {
                                     .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
                                     .setBigContentTitle(addedText))
                             .setSmallIcon(R.drawable.ktstgallen)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
                             .build();
                     notificationList.add(notificationAdd);
                 }
@@ -112,6 +146,18 @@ public class GradesRepository {
                 for (Grades grade : modifiedGrades) {
                     gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
                     String moddedText = context.getString(R.string.modifiedGrades1) + grade.getExam() + context.getString(R.string.modifiedGrades2);
+
+                    float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());
+                    float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("notification", true);
+                    intent.putExtra("subjectID", grade.getSubjectId());
+                    intent.putExtra("average", subjectAverage);
+                    intent.putExtra("pluspoints", subjectPluspoints);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                     Notification notificationMod = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(moddedText)
@@ -121,6 +167,8 @@ public class GradesRepository {
                                     .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
                                     .setBigContentTitle(moddedText))
                             .setSmallIcon(R.drawable.ktstgallen)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
                             .build();
                     notificationList.add(notificationMod);
                 }

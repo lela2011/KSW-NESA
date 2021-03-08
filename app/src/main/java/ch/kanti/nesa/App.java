@@ -28,7 +28,7 @@ public class App extends Application {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 16, TimeUnit.MINUTES)
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 30, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build();
 

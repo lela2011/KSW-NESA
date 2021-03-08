@@ -1,6 +1,7 @@
 package ch.kanti.nesa;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -97,10 +98,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         });
 
         if(!firstLogin){
-            executor.execute(()-> {
-                syncData();
-            });
+            executor.execute(this::syncData);
         }
+
+        Intent intent = getIntent();
+        lauchSubject(intent);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -227,8 +229,34 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             bundle.putInt("position", subjectPosition);
             subjectsFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, subjectsFragment).commit();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_grades);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        lauchSubject(intent);
+    }
+
+    private void lauchSubject(Intent intent) {
+        if(intent != null) {
+            if(intent.getBooleanExtra("notification", false)) {
+                String subjectId = intent.getStringExtra("subjectID");
+                float average = intent.getFloatExtra("average", -1.0f);
+                float pluspoints = intent.getFloatExtra("pluspoints", -10.0f);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("subject", subjectId);
+                bundle.putFloat("average", average);
+                bundle.putFloat("pluspoints", pluspoints);
+                bundle.putInt("position", 0);
+                GradesFragment newSubject = new GradesFragment();
+                newSubject.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
+            }
         }
     }
 }

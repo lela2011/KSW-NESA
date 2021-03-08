@@ -39,6 +39,9 @@ public interface SubjectsDAO {
     @Query("SELECT gradeAverage FROM subjects_table WHERE id = :id")
     Float getSubjectAverage(String id);
 
+    @Query("SELECT pluspoints FROM subjects_table WHERE id = :id")
+    Float getSubjectPluspoints(String id);
+
     @Query("SELECT sum(pluspoints) FROM subjects_table WHERE countsPluspoints = 1 AND pluspoints != -10")
     LiveData<Float> getPluspoints();
 

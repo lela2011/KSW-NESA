@@ -1,9 +1,11 @@
 package ch.kanti.nesa;
 
+import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -45,8 +47,6 @@ public class SyncWorker extends Worker {
         subjectsRepository.insert(subjectsAndGrades.subjectsList);
         bankRepository.insert(bankStatements);
         absenceRepository.insert(absences);
-
-        Log.d("Work", "Work executed");
 
         return Result.success();
     }
