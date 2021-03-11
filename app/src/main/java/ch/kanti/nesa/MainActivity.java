@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     public static final int SHORTCUT_BANK = 1;
     public static final int SHORTCUT_GRADES = 2;
+    public static final int SHORTCUT_ABSENCE = 3;
     public static final int GRADES_FRAGMENT = 1;
     public static final int HOME_FRAGMENT = 0;
     public static final int ABSENCES_FRAGMENT = 2;
@@ -208,6 +209,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 selectedFragment = new SubjectsFragment();
                 selectedIcon = R.id.nav_grades;
                 currentFragment = GRADES_FRAGMENT;
+                break;
+            case SHORTCUT_ABSENCE:
+                selectedFragment = new AbsencesFragment();
+                selectedIcon = R.id.nav_absences;
+                currentFragment = ABSENCES_FRAGMENT;
                 break;
             default:
                 selectedFragment = new HomeFragment();

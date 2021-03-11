@@ -28,4 +28,7 @@ public interface AbsenceDAO {
 
     @Query("UPDATE absences_table SET excused = :excused WHERE date = :date AND time = :time AND course = :course AND type = :type")
     void updateAbsence(String date, String time, String course, int type, int excused);
+
+    @Query("SELECT COUNT(*) FROM absences_table WHERE excused=0")
+    LiveData<Integer> getAbsenceSize();
 }

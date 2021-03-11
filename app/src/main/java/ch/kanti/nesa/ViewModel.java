@@ -113,5 +113,9 @@ public class ViewModel extends AndroidViewModel {
         return absenceRepository.getAbsences();
     }
 
+    public LiveData<Integer> getAbsenceSize() {
+        return absenceRepository.getAbsenceSize();
+    }
+
 
 }

@@ -156,4 +156,8 @@ public class AbsenceRepository {
     public LiveData<List<Absence>> getAbsences() {
         return absenceDAO.getAbsences();
     }
+
+    public LiveData<Integer> getAbsenceSize() {
+        return absenceDAO.getAbsenceSize();
+    }
 }

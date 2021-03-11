@@ -23,6 +23,7 @@ import ch.kanti.nesa.databinding.FragmentHomeBinding;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static ch.kanti.nesa.MainActivity.SHORTCUT_ABSENCE;
 import static ch.kanti.nesa.MainActivity.SHORTCUT_BANK;
 import static ch.kanti.nesa.MainActivity.SHORTCUT_GRADES;
 
@@ -111,6 +112,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        viewModel.getAbsenceSize().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == 0) {
+                    binding.openAbsencesHome.setText("-");
+                } else {
+                    binding.openAbsencesHome.setText(String.valueOf(integer));
+                }
+            }
+        });
+
         binding.bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +134,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 shortcut.onShortcutClicked(SHORTCUT_GRADES);
+            }
+        });
+
+        binding.openAbsencesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shortcut.onShortcutClicked(SHORTCUT_ABSENCE);
             }
         });
     }

@@ -71,4 +71,5 @@
     <string name="addedAbsence2">" was added</string>
     <string name="courseNot">Course: </string>
     <string name="dateNot">Time: </string>
+    <string name="open">Open</string>
 </resources>
