@@ -48,7 +48,7 @@ public class BankFragment extends Fragment {
 
         viewModel.getBankStatements().observe(getViewLifecycleOwner(), statements -> {
             adapter.setStatements(statements);
-            float balanceFloat = statements.get(statements.size()-1).balance;
+            float balanceFloat = statements.get(statements.size()-1).getBalance();
             @SuppressLint("DefaultLocale") String balance = String.format("%.2f",balanceFloat);
             binding.balance.setText(balance);
             if(balanceFloat >= 100){
@@ -62,10 +62,10 @@ public class BankFragment extends Fragment {
 
         adapter.setOnItemClickListener(statement -> {
             Intent intent = new Intent(getActivity(), DetailedBankStatement.class);
-            intent.putExtra("Date", statement.date);
-            intent.putExtra("Description", statement.title);
-            intent.putExtra("Amount", statement.amount);
-            intent.putExtra("Balance", statement.balance);
+            intent.putExtra("Date", statement.getDate());
+            intent.putExtra("Description", statement.getTitle());
+            intent.putExtra("Amount", statement.getAmount());
+            intent.putExtra("Balance", statement.getBalance());
             startActivity(intent);
         });
     }

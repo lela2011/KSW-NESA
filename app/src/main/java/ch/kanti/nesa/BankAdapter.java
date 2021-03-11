@@ -31,10 +31,10 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
     @Override
     public void onBindViewHolder(@NonNull BankStatementHolder holder, int position) {
         BankStatement currentStatement = statements.get(position);
-        holder.dateView.setText(currentStatement.date);
-        holder.titleView.setText(currentStatement.title);
-        holder.amountView.setText(String.format("%.2f", currentStatement.amount));
-        if(currentStatement.amount > 0){
+        holder.dateView.setText(currentStatement.getDate());
+        holder.titleView.setText(currentStatement.getTitle());
+        holder.amountView.setText(String.format("%.2f", currentStatement.getAmount()));
+        if(currentStatement.getAmount() > 0){
             holder.amountView.setTextColor(ContextCompat.getColor(holder.amountView.getContext(), R.color.green));
         }
     }

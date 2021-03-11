@@ -266,6 +266,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 AbsencesFragment absencesFragment = new AbsencesFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, absencesFragment).commit();
                 binding.bottomNavigation.setSelectedItemId(R.id.nav_absences);
+            } else if (intent.getIntExtra("type", -1) == 2) {
+                BankFragment bankFragment = new BankFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, bankFragment).commit();
+                binding.bottomNavigation.setSelectedItemId(R.id.nav_account);
             }
         }
     }

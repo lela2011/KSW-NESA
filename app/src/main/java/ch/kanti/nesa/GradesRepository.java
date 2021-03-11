@@ -56,7 +56,8 @@ public class GradesRepository {
                             oldGrades.remove(i);
                             i--;
                             break;
-                        } else if (oldGrades.get(i+1).compare(newGrades.get(k))) {
+                        } else if (i+1 < oldGrades.size()) {
+                            if (oldGrades.get(i+1).compare(newGrades.get(k)))
                             newGrades.remove(k);
                             oldGrades.remove(i+1);
                             break;

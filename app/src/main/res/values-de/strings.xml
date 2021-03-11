@@ -52,21 +52,29 @@
     <string name="absenceType">Absenz</string>
     <string name="delayType">Verspätung</string>
     <string name="department">Ausbildung</string>
-    <string name="deletedGrades1">Die Note "</string>
-    <string name="deletedGrades2">" wurde gelöscht</string>
-    <string name="subject">Fach: </string>
-    <string name="exam">Prüfung: </string>
-    <string name="gradeNot">Note: </string>
-    <string name="modifiedGrades1">Die Note "</string>
-    <string name="modifiedGrades2">" wurde geändert</string>
-    <string name="addedGrades1">Die Note "</string>
-    <string name="addedGrades2">" wurde hinzugefügt</string>
+    <string name="deletedGrades1">Die Note &quot;</string>
+    <string name="deletedGrades2">&quot; wurde gelöscht</string>
+    <string name="subject">Fach:\u0020</string>
+    <string name="exam">Prüfung:\u0020</string>
+    <string name="gradeNot">Note:\u0020</string>
+    <string name="modifiedGrades1">Die Note &quot;</string>
+    <string name="modifiedGrades2">&quot; wurde geändert</string>
+    <string name="addedGrades1">Die Note &quot;</string>
+    <string name="addedGrades2">&quot; wurde hinzugefügt</string>
 
-    <string name="absence1">Die Absenz "</string>
-    <string name="deletedAbsence2">" wurde gelöscht</string>
-    <string name="modifiedAbsence2">" wurde bearbeitet</string>
-    <string name="addedAbsence2">" wurde hinzugefügt</string>
-    <string name="courseNot">Fach: </string>
-    <string name="dateNot">Datum: </string>
+    <string name="absence1">Die Absenz &quot;</string>
+    <string name="deletedAbsence2">&quot; wurde gelöscht</string>
+    <string name="modifiedAbsence2">&quot; wurde geändert</string>
+    <string name="addedAbsence2">&quot; wurde hinzugefügt</string>
+    <string name="courseNot">Fach:\u0020</string>
+    <string name="dateNot">Datum:\u0020</string>
     <string name="open">Offen</string>
+
+    <string name="bank1">Die Abbuchung &quot;</string>
+    <string name="deletedBank2">&quot; wurde gelöscht</string>
+    <string name="modifiedBank2">&quot; wurde geändert</string>
+    <string name="addedBank2">&quot; wurde hinzugefügt</string>
+    <string name="balanceBank">Saldo:\u0020</string>
+    <string name="amountBank">Kosten:\u0020</string>
+    <string name="bankName">Zweck:\u0020</string>
 </resources>

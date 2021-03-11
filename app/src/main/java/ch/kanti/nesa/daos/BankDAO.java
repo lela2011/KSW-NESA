@@ -26,6 +26,16 @@ public interface BankDAO {
     @Query("SELECT * FROM bank_table ORDER BY `order` ASC")
     LiveData<List<BankStatement>> getBankStatement();
 
+    @Query("SELECT * FROM bank_table ORDER BY `order` ASC")
+    List<BankStatement> getBankStatementSync();
+
     @Query("SELECT balance FROM bank_table ORDER BY `order` DESC LIMIT 1")
     LiveData<Float> getBalance();
+
+    @Query("DELETE FROM bank_table WHERE pk = :pk")
+    void deleteByStatement(String pk);
+
+    @Query("UPDATE bank_table SET date = :date, title = :title, amount = :amount, balance = :balance WHERE date = :date")
+    void updateByStatement(String date, String title, float amount, float balance);
+
 }

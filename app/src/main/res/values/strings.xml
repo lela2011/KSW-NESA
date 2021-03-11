@@ -55,21 +55,29 @@
         <item>Gymnasium</item>
         <item>FMS</item>
     </string-array>
-    <string name="deletedGrades1">The grade "</string>
-    <string name="deletedGrades2">" was deleted</string>
-    <string name="subject">Subject: </string>
-    <string name="exam">Exam: </string>
-    <string name="gradeNot">Grade: </string>
-    <string name="modifiedGrades1">The grade "</string>
-    <string name="modifiedGrades2">" was modified</string>
-    <string name="addedGrades1">The grade "</string>
-    <string name="addedGrades2">" was added</string>
+    <string name="deletedGrades1">The grade &quot;</string>
+    <string name="deletedGrades2">&quot; was deleted</string>
+    <string name="subject">Subject:\u0020</string>
+    <string name="exam">Exam:\u0020</string>
+    <string name="gradeNot">Grade:\u0020</string>
+    <string name="modifiedGrades1">The grade &quot;</string>
+    <string name="modifiedGrades2">&quot; was modified</string>
+    <string name="addedGrades1">The grade &quot;</string>
+    <string name="addedGrades2">&quot; was added</string>
 
-    <string name="absence1">The absence "</string>
-    <string name="deletedAbsence2">" was deleted</string>
-    <string name="modifiedAbsence2">" was modified</string>
-    <string name="addedAbsence2">" was added</string>
-    <string name="courseNot">Course: </string>
-    <string name="dateNot">Time: </string>
+    <string name="absence1">The absence &quot;</string>
+    <string name="deletedAbsence2">&quot; was deleted</string>
+    <string name="modifiedAbsence2">&quot; was modified</string>
+    <string name="addedAbsence2">&quot; was added</string>
+    <string name="courseNot">Course:\u0020</string>
+    <string name="dateNot">Time:\u0020</string>
     <string name="open">Open</string>
+
+    <string name="bank1">The deduction &quot;</string>
+    <string name="deletedBank2">&quot; was deleted</string>
+    <string name="modifiedBank2">&quot; was modified</string>
+    <string name="addedBank2">&quot; was added</string>
+    <string name="balanceBank">Balance:\u0020</string>
+    <string name="amountBank">Amount:\u0020</string>
+    <string name="bankName">Reason:\u0020</string>
 </resources>
