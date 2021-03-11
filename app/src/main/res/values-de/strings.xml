@@ -66,4 +66,6 @@
     <string name="deletedAbsence2">" wurde gelöscht</string>
     <string name="modifiedAbsence2">" wurde bearbeitet</string>
     <string name="addedAbsence2">" wurde hinzugefügt</string>
+    <string name="courseNot">Fach: </string>
+    <string name="dateNot">Datum: </string>
 </resources>
