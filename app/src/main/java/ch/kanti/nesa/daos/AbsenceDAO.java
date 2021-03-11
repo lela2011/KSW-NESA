@@ -22,4 +22,10 @@ public interface AbsenceDAO {
 
     @Query("SELECT * FROM absences_table")
     List<Absence> getAbsencesSync();
+
+    @Query("DELETE FROM absences_table WHERE date = :date AND time = :time AND course = :course AND type = :type")
+    void deleteByAbsence(String date, String time, String course, int type);
+
+    @Query("UPDATE absences_table SET excused = :excused WHERE date = :date AND time = :time AND course = :course AND type = :type")
+    void updateAbsence(String date, String time, String course, int type, int excused);
 }

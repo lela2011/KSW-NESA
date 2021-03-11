@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     private void lauchSubject(Intent intent) {
         if(intent != null) {
-            if(intent.getBooleanExtra("notification", false)) {
+            if(intent.getIntExtra("type", -1) == 0 ) {
                 String subjectId = intent.getStringExtra("subjectID");
                 float average = intent.getFloatExtra("average", -1.0f);
                 float pluspoints = intent.getFloatExtra("pluspoints", -10.0f);
@@ -256,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 GradesFragment newSubject = new GradesFragment();
                 newSubject.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
+            } else if (intent.getIntExtra("type", -1) == 1) {
+                AbsencesFragment absencesFragment = new AbsencesFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, absencesFragment).commit();
+                binding.bottomNavigation.setSelectedItemId(R.id.nav_absences);
             }
         }
     }

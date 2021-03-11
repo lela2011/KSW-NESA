@@ -27,27 +27,31 @@ public class SyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Document gradesPage, absencesPage, bankPage;
-        gradesPage = DocumentScraper.getMarkPage();
-        absencesPage = DocumentScraper.getAbsencesPage();
-        bankPage = DocumentScraper.getBankPage();
+        if(SplashActivity.isDeviceOnline()) {
+            Document gradesPage, absencesPage, bankPage;
+            gradesPage = DocumentScraper.getMarkPage();
+            absencesPage = DocumentScraper.getAbsencesPage();
+            bankPage = DocumentScraper.getBankPage();
 
-        ArrayList<Absence> absences = ContentScrapers.scrapeAbsences(absencesPage);
-        SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);
-        ArrayList<BankStatement> bankStatements = ContentScrapers.scrapeBank(bankPage);
+            ArrayList<Absence> absences = ContentScrapers.scrapeAbsences(absencesPage);
+            SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);
+            ArrayList<BankStatement> bankStatements = ContentScrapers.scrapeBank(bankPage);
 
-        Context context = getApplicationContext();
+            Context context = getApplicationContext();
 
-        GradesRepository gradesRepository = new GradesRepository(context);
-        SubjectsRepository subjectsRepository = new SubjectsRepository(context);
-        BankRepository bankRepository = new BankRepository(context);
-        AbsenceRepository absenceRepository = new AbsenceRepository(context);
+            GradesRepository gradesRepository = new GradesRepository(context);
+            SubjectsRepository subjectsRepository = new SubjectsRepository(context);
+            BankRepository bankRepository = new BankRepository(context);
+            AbsenceRepository absenceRepository = new AbsenceRepository(context);
 
-        gradesRepository.insert(subjectsAndGrades.gradesList);
-        subjectsRepository.insert(subjectsAndGrades.subjectsList);
-        bankRepository.insert(bankStatements);
-        absenceRepository.insert(absences);
+            gradesRepository.insert(subjectsAndGrades.gradesList);
+            subjectsRepository.insert(subjectsAndGrades.subjectsList);
+            bankRepository.insert(bankStatements);
+            absenceRepository.insert(absences);
 
-        return Result.success();
+            return Result.success();
+        } else {
+            return Result.retry();
+        }
     }
 }

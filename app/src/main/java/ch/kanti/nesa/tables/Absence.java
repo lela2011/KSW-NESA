@@ -68,4 +68,19 @@ public class Absence {
     public void setExcused(int excused) {
         this.excused = excused;
     }
+    
+    public boolean compare(Absence toCompare) {
+        return this.getDate().equals(toCompare.getDate()) &&
+                this.getType() == toCompare.getType() &&
+                this.getCourse().equals(toCompare.getCourse()) &&
+                this.getTime().equals(toCompare.getTime()) &&
+                this.getExcused() == toCompare.getExcused();
+    }
+
+    public boolean modified(Absence toCompare) {
+        return this.getDate().equals(toCompare.getDate()) &&
+                this.getType() == toCompare.getType() &&
+                this.getCourse().equals(toCompare.getCourse()) &&
+                this.getTime().equals(toCompare.getTime());
+    }
 }

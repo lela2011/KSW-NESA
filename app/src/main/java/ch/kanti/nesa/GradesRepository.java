@@ -89,7 +89,7 @@ public class GradesRepository {
                     float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
 
                     Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("notification", true);
+                    intent.putExtra("type", 0);
                     intent.putExtra("subjectID", grade.getSubjectId());
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);
@@ -111,7 +111,6 @@ public class GradesRepository {
                     notificationList.add(notificationDel);
                 }
 
-
                 gradesDAO.insert(newGrades);
                 for (Grades grade : newGrades) {
                     String addedText = context.getString(R.string.addedGrades1) + grade.getExam() + context.getString(R.string.addedGrades2);
@@ -120,7 +119,7 @@ public class GradesRepository {
                     float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
 
                     Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("notification", true);
+                    intent.putExtra("type", 0);
                     intent.putExtra("subjectID", grade.getSubjectId());
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);
@@ -151,7 +150,7 @@ public class GradesRepository {
                     float subjectPluspoints = subjectsDao.getSubjectPluspoints(grade.getSubjectId());
 
                     Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("notification", true);
+                    intent.putExtra("type", 0);
                     intent.putExtra("subjectID", grade.getSubjectId());
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);

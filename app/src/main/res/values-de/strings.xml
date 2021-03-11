@@ -61,4 +61,9 @@
     <string name="modifiedGrades2">" wurde geändert</string>
     <string name="addedGrades1">Die Note "</string>
     <string name="addedGrades2">" wurde hinzugefügt</string>
+
+    <string name="absence1">Die Absenz "</string>
+    <string name="deletedAbsence2">" wurde gelöscht</string>
+    <string name="modifiedAbsence2">" wurde bearbeitet</string>
+    <string name="addedAbsence2">" wurde hinzugefügt</string>
 </resources>
