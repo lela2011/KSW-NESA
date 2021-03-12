@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.RecviewGradeBinding;
 
 import ch.kanti.nesa.tables.Grades;
@@ -38,7 +39,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
         Grades currentItem = dataList.get(position);
         Context context = holder.grade.getContext();
         String gradeString = "";
-        Float grade = currentItem.getGrade();
+        float grade = currentItem.getGrade();
         if (currentItem.getGrade() == -1.0f) {
             gradeString = "-";
         } else {

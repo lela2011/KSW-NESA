@@ -1,7 +1,8 @@
 package ch.kanti.nesa.scrapers;
 
-import ch.kanti.nesa.SplashActivity;
-import ch.kanti.nesa.SubjectsAndGrades;
+import ch.kanti.nesa.objects.PromotionRule;
+import ch.kanti.nesa.activities.SplashActivity;
+import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
@@ -15,6 +16,7 @@ import org.jsoup.select.Elements;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +41,7 @@ public class ContentScrapers {
 
         ArrayList<String> fms12Prom = new ArrayList<>(Arrays.asList("D", "F", "(?!EW)E", "(?!MU)M", "B", "C", "P", "^(?!GE)G$", "^G{2}$", "GE", "s.+", "REL", "MU", "ÖK", "W", "SPO", "WLR", "ICT-A", "IB", "(?!PY)PE", "(?!PE)PY", "RH", ".+[(]SP[)]"));
 
-        ArrayList<String> fms3Prom = new ArrayList<>(Arrays.asList("D", "F", "(?!EW)E", "M", "B", "C", "P", "(?!GG)G", "GG", "GE", "s.+", "REL", "ÖK", "W", "WLR", "PE", "PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
+        ArrayList<String> fms3Prom = new ArrayList<>(Arrays.asList("D", "F", "(?!EW)E", "M", "B", "C", "P", "^(?!GE)G$", "^G{2}$", "GE", "s.+", "REL", "ÖK", "W", "WLR", "(?!PY)PE", "(?!PE)PY", ".+[(]SP[)]", "SPO", "RH", "MU", "IB", "ICT-A"));
 
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
@@ -51,7 +53,7 @@ public class ContentScrapers {
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
         ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
         int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
-
+        SplashActivity.editor.putInt("year", yearFinal).apply();
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
         int i = 0;
@@ -232,6 +234,89 @@ public class ContentScrapers {
             return -6f;
         } else {
             return -10f;
+        }
+    }
+
+    public static void calculatePromotionPoints(List<Subjects> subjects) {
+        ArrayList<PromotionRule> gymRules = new ArrayList<>();
+        gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", 2f/3f, 1f/3f, false));
+        gymRules.add(new PromotionRule(2,"sFB","sBW", 0.5f, 0.5f, false));
+        gymRules.add(new PromotionRule(2,"sP","sM", 0.5f, 0.5f, true));
+        gymRules.add(new PromotionRule(2,"sB","sC", 0.5f, 0.5f, true));
+        gymRules.add(new PromotionRule(2,"MU","BG", 0.5f, 0.5f, true));
+
+        ArrayList<PromotionRule> fms12Rules = new ArrayList<>();
+        fms12Rules.add(new PromotionRule(2, "sM", "M", 0.5f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "sPY", "PY", 0.5f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "MU", ".+[(]SP[)]", 2f/3f, 1f/3f, false));
+        fms12Rules.add(new PromotionRule(2, "sPBF", "sBFU", 0.5f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "sZWT", "sDKF", 0.25f, 0.75f, true));
+        fms12Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "sKoiK", "E", 1f/3f, 2f/3f, true));
+
+        ArrayList<PromotionRule> fms3Rules = new ArrayList<>();
+        fms3Rules.add(new PromotionRule(2, "sM", "M", 0.5f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "sPY", "PY", 0.5f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "SPO", "RH", 2f/3f, 1f/3f, false));
+        fms3Rules.add(new PromotionRule(2, "sMU", ".+[(]SP[)]", 2f/3f, 1f/3f, false));
+        fms3Rules.add(new PromotionRule(2, "sPBF", "sBFU", 0.5f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "sZWT", "sDKF", 0.25f, 0.75f, true));
+        fms3Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "sKoiK", "E", 1f/3f, 2f/3f, true));
+
+        ArrayList<Float> pluspoints = new ArrayList<>();
+        ArrayList<Float> modifiedGrades = new ArrayList<>();
+
+        int finalYear = SplashActivity.sharedPreferences.getInt("year", -1);
+        String department = SplashActivity.sharedPreferences.getString("department", "Gymnasium");
+
+        subjects.add(new Subjects("Physik", "100", 6.0f, 2.0f, "sP-2P-HB", 16, 1, 1));
+
+        if(department.equals("Gymnasium")) {
+            for(int i = 0; i < gymRules.size(); i++) {
+                PromotionRule rule = gymRules.get(i);
+                Pattern pat1 = Pattern.compile(rule.getId1());
+                Pattern pat2 = Pattern.compile(rule.getId2());
+                Pattern pat3 = null;
+                if(rule.getId3() != null) {
+                    pat3 = Pattern.compile(rule.getId3());
+                }
+
+                ArrayList<Float> grades = new ArrayList<>();
+                ArrayList<Float> weight = new ArrayList<>();
+
+                for(int k = 0; k < subjects.size(); k++) {
+                    Subjects subject = subjects.get(k);
+                    String id = subject.getId();
+                    if(pat1.matcher(id).find()) {
+                        grades.add(subject.getGradeAverage());
+                        weight.add(rule.getWeight1());
+                    } else if (pat2.matcher(id).find()) {
+                        grades.add(subject.getGradeAverage());
+                        weight.add(rule.getWeight2());
+                    } else if (pat3 != null) {
+                        if (pat3.matcher(id).find())
+                        grades.add(subject.getGradeAverage());
+                        weight.add(rule.getWeight3());
+                    }
+                }
+                if(grades.size() == rule.getSubjectsCount()) {
+                    float average = 0;
+                    if(rule.isRound()) {
+                        for (int l = 0; l < grades.size(); i++) {
+                            grades.set(l, Math.round(grades.get(l)*2)/2.0f);
+                        }
+                    }
+                    for (int l = 0; l < grades.size(); i++) {
+                        average = average + grades.get(l) * weight.get(l);
+                    }
+                    pluspoints.add(calculatePluspoints(average));
+                }
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ import ch.kanti.nesa.databinding.FragmentGradesBinding;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import ch.kanti.nesa.GradeAdapter;
+import ch.kanti.nesa.adapters.GradeAdapter;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.tables.Grades;
 

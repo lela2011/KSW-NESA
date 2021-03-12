@@ -3,7 +3,6 @@ package ch.kanti.nesa;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.util.Log;
 
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -13,11 +12,16 @@ import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
 
+import ch.kanti.nesa.background.SyncWorker;
+
 public class App extends Application {
 
     public static final String CHANNEL_GRADES = "channel_grades";
     public static final String CHANNEL_ABSENCES = "channel_absences";
     public static final String CHANNEL_BANK = "channel_bank";
+
+    public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
+    public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
 
     @Override
     public void onCreate() {

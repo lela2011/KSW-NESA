@@ -19,20 +19,20 @@
         <activity android:name=".SubjectSettings" />
         <activity
             android:name=".DetailedBankStatement"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".GradeDetailActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity"
             android:launchMode="singleTop"/>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

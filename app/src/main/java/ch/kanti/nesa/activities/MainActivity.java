@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
@@ -18,6 +20,7 @@ import ch.kanti.nesa.fragments.GradesFragment;
 import ch.kanti.nesa.fragments.SubjectsFragment;
 import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
+import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.Absence;

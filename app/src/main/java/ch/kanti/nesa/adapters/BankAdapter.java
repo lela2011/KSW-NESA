@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.BankRecyclerItemBinding;
 import ch.kanti.nesa.tables.BankStatement;
 

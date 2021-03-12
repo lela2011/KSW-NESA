@@ -23,7 +23,7 @@ import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import ch.kanti.nesa.SubjectAdapter;
+import ch.kanti.nesa.adapters.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.tables.Subjects;
 
@@ -70,6 +70,7 @@ public class SubjectsFragment extends Fragment {
             public void onChanged(List<Subjects> subjects) {
                 subjectAdapter.setStatements(subjects);
                 recyclerView.scrollToPosition(position);
+                //ContentScrapers.calculatePromotionPoints(subjects);
             }
         });
 

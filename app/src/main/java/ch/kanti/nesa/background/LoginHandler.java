@@ -1,11 +1,11 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.background;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import ch.kanti.nesa.futures.LoginCredentialChecker;
+import ch.kanti.nesa.activities.LoginActivity;
 
 public class LoginHandler {
     //run credential checking on background thread

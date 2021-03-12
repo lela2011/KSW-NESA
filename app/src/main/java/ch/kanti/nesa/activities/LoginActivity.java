@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import ch.kanti.nesa.App;
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.LoginActivityBinding;
+import ch.kanti.nesa.background.LoginHandler;
 import ch.kanti.nesa.tables.User;
 
 import java.util.concurrent.ExecutorService;
@@ -82,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
         //close keyboard on screen
         closeKeyboard();
         //encrypt username and password
-        String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), SplashActivity.usernameKey);
-        String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), SplashActivity.passwordKey);
+        String encryptedUsername = User.encrypt(binding.usernameET.getText().toString(), App.usernameKey);
+        String encryptedPassword = User.encrypt(binding.passwordET.getText().toString(), App.passwordKey);
         department = binding.fmsorgymmispinner.getSelectedItem().toString();
         if (department.isEmpty()) {
             Toast.makeText(this, "Please select department", Toast.LENGTH_SHORT).show();

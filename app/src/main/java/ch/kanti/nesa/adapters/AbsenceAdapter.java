@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.RecviewAbsenceBinding;
 import ch.kanti.nesa.tables.Absence;
 

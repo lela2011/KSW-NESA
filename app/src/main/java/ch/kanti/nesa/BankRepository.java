@@ -10,9 +10,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
 
+import ch.kanti.nesa.activities.MainActivity;
 import ch.kanti.nesa.daos.BankDAO;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
 
 import java.util.ArrayList;
 import java.util.List;

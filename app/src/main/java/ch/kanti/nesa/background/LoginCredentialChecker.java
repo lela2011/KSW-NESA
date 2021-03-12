@@ -1,4 +1,4 @@
-package ch.kanti.nesa.futures;
+package ch.kanti.nesa.background;
 
 import android.util.Log;
 
@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-import ch.kanti.nesa.AES;
-import ch.kanti.nesa.LoginActivity;
-import ch.kanti.nesa.SplashActivity;
+import ch.kanti.nesa.App;
+import ch.kanti.nesa.activities.LoginActivity;
+import ch.kanti.nesa.activities.SplashActivity;
+import ch.kanti.nesa.tables.User;
 
 public class LoginCredentialChecker implements Callable<Integer> {
     //variable definition
@@ -41,8 +42,8 @@ public class LoginCredentialChecker implements Callable<Integer> {
                     .attr("value");
             //add username and password to request
             HashMap<String, String> formData = new HashMap<>();
-            formData.put("login", AES.decrypt(username, SplashActivity.usernameKey));
-            formData.put("passwort", AES.decrypt(password, SplashActivity.passwordKey));
+            formData.put("login", User.decrypt(username, App.usernameKey));
+            formData.put("passwort", User.decrypt(password, App.passwordKey));
             formData.put("loginhash", authToken);
             //connect to main page
             Connection.Response homePage = Jsoup.connect(SplashActivity.ACTION_URL)

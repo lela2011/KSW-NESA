@@ -13,9 +13,9 @@ import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.kanti.nesa.activities.MainActivity;
 import ch.kanti.nesa.daos.AbsenceDAO;
 import ch.kanti.nesa.tables.Absence;
-import ch.kanti.nesa.tables.Grades;
 
 public class AbsenceRepository {
     AbsenceDAO absenceDAO;

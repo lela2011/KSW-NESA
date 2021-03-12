@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.objects;
 
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;

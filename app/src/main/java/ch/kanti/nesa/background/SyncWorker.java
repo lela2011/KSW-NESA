@@ -1,11 +1,8 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.background;
 
-import android.app.Notification;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -13,6 +10,12 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
+import ch.kanti.nesa.AbsenceRepository;
+import ch.kanti.nesa.BankRepository;
+import ch.kanti.nesa.GradesRepository;
+import ch.kanti.nesa.activities.SplashActivity;
+import ch.kanti.nesa.SubjectsRepository;
+import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.Absence;

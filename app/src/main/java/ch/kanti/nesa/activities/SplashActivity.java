@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.ActivitySplashBinding;
 
-import ch.kanti.nesa.futures.isDeviceOnlineFuture;
+import ch.kanti.nesa.background.isDeviceOnlineFuture;
+import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.Absence;

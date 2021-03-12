@@ -1,7 +1,7 @@
 package ch.kanti.nesa.scrapers;
 
-import ch.kanti.nesa.CookieAndAuth;
-import ch.kanti.nesa.SplashActivity;
+import ch.kanti.nesa.objects.CookieAndAuth;
+import ch.kanti.nesa.activities.SplashActivity;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

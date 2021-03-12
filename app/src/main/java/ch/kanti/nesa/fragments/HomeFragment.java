@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import ch.kanti.nesa.MainActivity;
+import ch.kanti.nesa.activities.MainActivity;
 import ch.kanti.nesa.ViewModel;
 
 import ch.kanti.nesa.R;
@@ -23,9 +23,9 @@ import ch.kanti.nesa.databinding.FragmentHomeBinding;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static ch.kanti.nesa.MainActivity.SHORTCUT_ABSENCE;
-import static ch.kanti.nesa.MainActivity.SHORTCUT_BANK;
-import static ch.kanti.nesa.MainActivity.SHORTCUT_GRADES;
+import static ch.kanti.nesa.activities.MainActivity.SHORTCUT_ABSENCE;
+import static ch.kanti.nesa.activities.MainActivity.SHORTCUT_BANK;
+import static ch.kanti.nesa.activities.MainActivity.SHORTCUT_GRADES;
 
 public class HomeFragment extends Fragment {
 

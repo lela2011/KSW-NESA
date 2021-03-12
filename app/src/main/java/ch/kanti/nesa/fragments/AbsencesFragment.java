@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import ch.kanti.nesa.AbsenceAdapter;
+import ch.kanti.nesa.adapters.AbsenceAdapter;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.FragmentAbsencesBinding;
 import ch.kanti.nesa.tables.Absence;
