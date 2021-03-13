@@ -1,11 +1,9 @@
 package ch.kanti.nesa.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.R;
-import ch.kanti.nesa.SubjectSettings;
+import ch.kanti.nesa.SubjectNameDialog;
 import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 
 import java.text.DecimalFormat;
@@ -27,10 +25,7 @@ import ch.kanti.nesa.adapters.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.tables.Subjects;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
-
-public class SubjectsFragment extends Fragment {
+public class SubjectsFragment extends Fragment implements SubjectNameDialog.DialogListener {
 
     public FragmentSubjectsBinding binding;
     public static final DecimalFormat df = new DecimalFormat("#.###");
@@ -38,8 +33,6 @@ public class SubjectsFragment extends Fragment {
 
     public static RecyclerView recyclerView;
     public static SubjectAdapter subjectAdapter;
-
-    public static final int SETTINGS_REQUEST_CODE = 1;
 
     int position;
 
@@ -59,7 +52,7 @@ public class SubjectsFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
         recyclerView = binding.subjectRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         subjectAdapter = new SubjectAdapter();
@@ -117,30 +110,18 @@ public class SubjectsFragment extends Fragment {
         subjectAdapter.setOnItemLongClickListener(new SubjectAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Subjects subject) {
-                Intent intent = new Intent(getContext(), SubjectSettings.class);
-                intent.putExtra("subjectName", subject.getSubjectName());
-                intent.putExtra("pluspointsCount", subject.getCountsPluspoints());
-                intent.putExtra("averageCount", subject.getCountsAverage());
-                intent.putExtra("subjectId", subject.getId());
-                startActivityForResult(intent, SETTINGS_REQUEST_CODE);
+                SubjectNameDialog dialog = new SubjectNameDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString("name", subject.getSubjectName());
+                bundle.putString("id", subject.getId());
+                dialog.setArguments(bundle);
+                dialog.show(getChildFragmentManager(), "change subject name dialog");
             }
         });
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
-            String subjectNameNew = data.getStringExtra("subjectName");
-            int countsPluspointsNew = data.getIntExtra("pluspointsCount", 1);
-            int countsAverageNew = data.getIntExtra("averageCounts", 1);
-            String subjectId = data.getStringExtra("subjectId");
-
-            viewModel.updateNameCountsSubject(subjectNameNew, countsPluspointsNew, countsAverageNew, subjectId);
-        } else if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_CANCELED) {
-            Toast.makeText(getContext(), "Not saved", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), "Update Failed", Toast.LENGTH_SHORT).show();
-        }
+    public void applyText(String id, String name) {
+        viewModel.updateNameSubject(id, name);
     }
 }

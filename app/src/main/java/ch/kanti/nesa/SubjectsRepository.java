@@ -60,9 +60,9 @@ public class SubjectsRepository {
         return subjectsDAO.getPluspoints();
     }
 
-    public void updateNameCounts(String name, int countsPluspoints, int countsAverage, String id) {
+    public void updateName(String id, String name) {
         Database.databaseWriteExecutor.execute(()->{
-            subjectsDAO.updateNamesCount(name, countsPluspoints, countsAverage, id);
+            subjectsDAO.updateName(id, name);
         });
     }
 }

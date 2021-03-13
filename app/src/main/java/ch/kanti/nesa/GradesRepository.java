@@ -175,6 +175,8 @@ public class GradesRepository {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
+                notificationList.add(new NotificationCompat.Builder(context, App.CHANNEL_GRADES).setContentTitle("Worker triggered").setSmallIcon(R.drawable.ktstgallen).build());
+
                 if (notificationList.size() < 10) {
                     for (int i = 0; i < notificationList.size(); i++) {
                         notificationManager.notify(i, notificationList.get(i));

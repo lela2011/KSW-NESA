@@ -45,6 +45,6 @@ public interface SubjectsDAO {
     @Query("SELECT sum(pluspoints) FROM subjects_table WHERE countsPluspoints = 1 AND pluspoints != -10")
     LiveData<Float> getPluspoints();
 
-    @Query("UPDATE subjects_table SET subjectName = :name, countsPluspoints = :countsPluspoints, countsAverage = :countsAverage WHERE id = :id")
-    void updateNamesCount(String name, int countsPluspoints, int countsAverage, String id);
+    @Query("UPDATE subjects_table SET subjectName = :name WHERE id = :id")
+    void updateName(String id, String name);
 }
