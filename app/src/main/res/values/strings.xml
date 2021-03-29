@@ -81,4 +81,6 @@
     <string name="amountBank">Amount:\u0020</string>
     <string name="bankName">Reason:\u0020</string>
     <string name="subject_name">Subject name</string>
+
+    <string name="logout">Logout</string>
 </resources>
