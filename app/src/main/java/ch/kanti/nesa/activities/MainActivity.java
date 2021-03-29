@@ -96,13 +96,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             public void onRefresh() {
                 binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
                 executor.execute(() -> {
-                    syncData();
+                    // TODO: Activate syncData for release
+                    //syncData();
                 });
             }
         });
 
         if(!firstLogin){
-            executor.execute(this::syncData);
+            //executor.execute(this::syncData);
+            // TODO: Activate syncData for release
         }
 
         Intent intent = getIntent();

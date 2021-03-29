@@ -216,7 +216,7 @@ public class ContentScrapers {
             return 1.5f;
         } else if (grade >= 4.75f) {
             return 1f;
-        } else if (grade >= 4.24f) {
+        } else if (grade >= 4.25f) {
             return 0.5f;
         } else if (grade >= 3.75f) {
             return 0f;

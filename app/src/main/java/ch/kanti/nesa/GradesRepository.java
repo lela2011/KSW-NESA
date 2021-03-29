@@ -57,10 +57,11 @@ public class GradesRepository {
                             i--;
                             break;
                         } else if (i+1 < oldGrades.size()) {
-                            if (oldGrades.get(i+1).compare(newGrades.get(k)))
-                            newGrades.remove(k);
-                            oldGrades.remove(i+1);
-                            break;
+                            if (oldGrades.get(i+1).compare(newGrades.get(k))) {
+                                newGrades.remove(k);
+                                oldGrades.remove(i+1);
+                                break;
+                            }
                         }
                         newGradesSize++;
                     }
@@ -175,7 +176,7 @@ public class GradesRepository {
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-                notificationList.add(new NotificationCompat.Builder(context, App.CHANNEL_GRADES).setContentTitle("Worker triggered").setSmallIcon(R.drawable.ktstgallen).build());
+                //notificationList.add(new NotificationCompat.Builder(context, App.CHANNEL_GRADES).setContentTitle("Worker triggered").setSmallIcon(R.drawable.ktstgallen).build());
 
                 if (notificationList.size() < 10) {
                     for (int i = 0; i < notificationList.size(); i++) {
