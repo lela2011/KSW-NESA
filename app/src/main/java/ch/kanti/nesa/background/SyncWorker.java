@@ -10,7 +10,9 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
+import ch.kanti.nesa.AES;
 import ch.kanti.nesa.AbsenceRepository;
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.BankRepository;
 import ch.kanti.nesa.GradesRepository;
 import ch.kanti.nesa.activities.SplashActivity;
@@ -30,7 +32,9 @@ public class SyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        if(SplashActivity.isDeviceOnline()) {
+        /*String username = App.sharedPreferences.getString("username","");
+        String password = App.sharedPreferences.getString("password","");
+        if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             Document gradesPage, absencesPage, bankPage;
             gradesPage = DocumentScraper.getMarkPage();
             absencesPage = DocumentScraper.getAbsencesPage();
@@ -55,6 +59,7 @@ public class SyncWorker extends Worker {
             return Result.success();
         } else {
             return Result.retry();
-        }
+        }*/
+        return Result.success();
     }
 }

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
@@ -34,9 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     LoginActivityBinding binding;
     AlertDialog.Builder dialogBuilder;
     public static final int INTERNET_REQUEST = 1;
-    public static final int LOGIN_SUCCESSFUL = 1;
-    public static final int LOGIN_ERROR = 2;
-    public static final int LOGIN_FAILED = -1;
+
     String department;
     //Keys for encryption
 
@@ -86,13 +85,12 @@ public class LoginActivity extends AppCompatActivity {
         //close keyboard on screen
         closeKeyboard();
         //encrypt username and password
-        String encryptedUsername = User.encrypt(binding.usernameET.getText().toString(), App.usernameKey);
-        String encryptedPassword = User.encrypt(binding.passwordET.getText().toString(), App.passwordKey);
+        String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), App.usernameKey);
+        String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), App.passwordKey);
         department = binding.fmsorgymmispinner.getSelectedItem().toString();
         if (department.isEmpty()) {
             Toast.makeText(this, "Please select department", Toast.LENGTH_SHORT).show();
         } else {
-            SplashActivity.sharedPreferences.edit().putString("department", department).apply();
             //clear the input fields
             binding.usernameET.getText().clear();
             binding.passwordET.getText().clear();
@@ -103,23 +101,25 @@ public class LoginActivity extends AppCompatActivity {
                 int loginResultCode = LoginHandler.checkLoginCredentials(encryptedUsername, encryptedPassword);
                 //displaying results
                 runOnUiThread(()->{
-                    if(loginResultCode == LOGIN_FAILED){
+                    if(loginResultCode == App.LOGIN_FAILED){
                         binding.loginErrorMessage.setText(R.string.loginErrorCredentials);
                         binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                    } else if(loginResultCode == LOGIN_ERROR){
+                    } else if(loginResultCode == App.LOGIN_ERROR){
                         binding.loginErrorMessage.setText(R.string.loginErrorFailed);
                         binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                    } else if(loginResultCode == LOGIN_SUCCESSFUL){
+                    } else if(loginResultCode == App.LOGIN_SUCCESSFUL){
                         binding.loginErrorMessage.setText(R.string.loginSuccessful);
                         binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
                         //check if user already saved in database
-                        checkTableSize(encryptedUsername, encryptedPassword);
+                        //checkTableSize(encryptedUsername, encryptedPassword);
                         //Set login completed
-                        SplashActivity.editor.putBoolean(SplashActivity.LOGIN_COMPLETED, true);
-                        SplashActivity.editor.putBoolean(SplashActivity.FIRST_LOGIN, true);
-                        SplashActivity.editor.apply();
-                        //Start main Activity
-                        Intent splashActivity = new Intent(LoginActivity.this, SplashActivity.class);
+                        App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, true).commit();
+                        App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).commit();
+                        App.sharedPreferences.edit().putString("department", department).commit();
+                        App.sharedPreferences.edit().putString("username", encryptedUsername).commit();
+                        App.sharedPreferences.edit().putString("password", encryptedPassword).commit();
+                        //Start splash Activity
+                        Intent splashActivity = new Intent(this, SplashActivity.class);
                         startActivity(splashActivity);
                         finish();
                     }
@@ -128,8 +128,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-    //check if there already is a user added to database
-    public void checkTableSize(String username, String password){
+    /*//check if there already is a user added to database
+    *//*public void checkTableSize(String username, String password){
         viewModel.getTableSizeLogin().observe(this, integer -> {
             if(integer == 0){
                 //add new user
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                 updateCredentials(username, password);
             }
         });
-    }
+    }*//*
     //add user to database
     public void insertCredentials(String username, String password) {
         User user = new User(username, password, department);
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                 viewModel.updateLogin(user);
             }
         });
-    }
+    }*/
 
     //Closing keyboard when input is finished
     private void closeKeyboard(){

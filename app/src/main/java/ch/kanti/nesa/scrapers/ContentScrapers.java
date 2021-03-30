@@ -1,5 +1,6 @@
 package ch.kanti.nesa.scrapers;
 
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.PromotionRule;
 import ch.kanti.nesa.activities.SplashActivity;
 import ch.kanti.nesa.objects.SubjectsAndGrades;
@@ -53,7 +54,7 @@ public class ContentScrapers {
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
         ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
         int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
-        SplashActivity.editor.putInt("year", yearFinal).apply();
+        App.editor.putInt("year", yearFinal).commit();
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
         int i = 0;
@@ -74,7 +75,7 @@ public class ContentScrapers {
             int counts = 0;
             String subjectId = overview.get(g).select("td:nth-child(1) > b").get(0).text();
             String[] checkSubIds = subjectId.split("-");
-            String department = SplashActivity.sharedPreferences.getString("department", "Gymnasium");
+            String department = App.sharedPreferences.getString("department", "Gymnasium");
             if (department.equals("Gymnasium")) {
                 for (String expr : gymProm) {
                     Pattern p = Pattern.compile(expr);
@@ -271,8 +272,8 @@ public class ContentScrapers {
         ArrayList<Float> pluspoints = new ArrayList<>();
         ArrayList<Float> modifiedGrades = new ArrayList<>();
 
-        int finalYear = SplashActivity.sharedPreferences.getInt("year", -1);
-        String department = SplashActivity.sharedPreferences.getString("department", "Gymnasium");
+        int finalYear = App.sharedPreferences.getInt("year", -1);
+        String department = App.sharedPreferences.getString("department", "Gymnasium");
 
         subjects.add(new Subjects("Physik", "100", 6.0f, 2.0f, "sP-2P-HB", 16, 1, 1));
 

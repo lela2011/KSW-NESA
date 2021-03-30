@@ -10,7 +10,6 @@ import ch.kanti.nesa.daos.AccountInfoDAO;
 import ch.kanti.nesa.daos.BankDAO;
 import ch.kanti.nesa.daos.GradesDAO;
 import ch.kanti.nesa.daos.SubjectsDAO;
-import ch.kanti.nesa.daos.UserDAO;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
@@ -25,7 +24,6 @@ import java.util.concurrent.Executors;
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;
-    public abstract UserDAO userDAO();
     public abstract AccountInfoDAO accountInfoDAO();
     public abstract BankDAO bankStatementDAO();
     public abstract GradesDAO gradesDAO();

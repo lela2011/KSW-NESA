@@ -3,6 +3,7 @@ package ch.kanti.nesa;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
 
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -10,18 +11,38 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import ch.kanti.nesa.background.SyncWorker;
+import ch.kanti.nesa.background.isDeviceOnlineFuture;
 
 public class App extends Application {
+
+    public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";
+
+    public static final String LOGIN_COMPLETED = "IS_LOGIN_COMPLETE";
+    public static final String FIRST_LOGIN = "FIRST_LOGIN";
 
     public static final String CHANNEL_GRADES = "channel_grades";
     public static final String CHANNEL_ABSENCES = "channel_absences";
     public static final String CHANNEL_BANK = "channel_bank";
 
+    public static final int LOGIN_SUCCESSFUL = 1;
+    public static final int LOGIN_ERROR = 2;
+    public static final int LOGIN_FAILED = -1;
+
     public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
     public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
+
+    public static SharedPreferences sharedPreferences;
+    public static SharedPreferences.Editor editor;
+
+    public static boolean netWorkAvailable = false;
+
 
     @Override
     public void onCreate() {
@@ -38,6 +59,9 @@ public class App extends Application {
 
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueueUniquePeriodicWork("Sync Grades", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+
+        sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     private void createNotificationChannels() {
@@ -67,5 +91,19 @@ public class App extends Application {
         manager.createNotificationChannel(bankChannel);
         manager.createNotificationChannel(absencesChannel);
 
+    }
+
+    public static boolean isDeviceOnline() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<Boolean> onlineFuture = executor.submit(new isDeviceOnlineFuture());
+        try {
+            boolean deviceOnline = onlineFuture.get();
+            netWorkAvailable = deviceOnline;
+            return deviceOnline;
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            netWorkAvailable = false;
+            return false;
+        }
     }
 }

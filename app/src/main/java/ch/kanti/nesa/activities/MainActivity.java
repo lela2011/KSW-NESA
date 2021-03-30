@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import ch.kanti.nesa.AES;
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.background.LoginHandler;
 import ch.kanti.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-        firstLogin = SplashActivity.sharedPreferences.getBoolean(SplashActivity.FIRST_LOGIN, false);
+        firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, false);
 
         if(firstLogin) {
             mainPage = SplashActivity.mainPage;
@@ -88,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             emailPage = SplashActivity.emailPage;
             initializeScraping();
         }
-        username = SplashActivity.username;
-        password = SplashActivity.password;
+        username = App.sharedPreferences.getString("username", "");
+        password = App.sharedPreferences.getString("password", "");
 
         binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -97,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
                 executor.execute(() -> {
                     // TODO: Activate syncData for release
-                    //syncData();
+                    syncData();
                 });
             }
         });
 
         if(!firstLogin){
-            //executor.execute(this::syncData);
+            executor.execute(this::syncData);
             // TODO: Activate syncData for release
         }
 
@@ -182,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     private void syncData() {
-        if(SplashActivity.isDeviceOnline()) {
+        if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             //mainPage = DocumentScraper.getMainPage();
             markPage = DocumentScraper.getMarkPage();
             absencesPage = DocumentScraper.getAbsencesPage();
@@ -193,6 +196,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             runOnUiThread(()->{
                 Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show();
             });
+        } else if (LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_FAILED ||
+                LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_ERROR) {
+            App.sharedPreferences.edit().putString("username", "").commit();
+            App.sharedPreferences.edit().putString("password", "").commit();
+            App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).commit();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             binding.swipeRefresh.setRefreshing(false);
         }

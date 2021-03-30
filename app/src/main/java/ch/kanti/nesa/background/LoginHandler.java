@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.activities.LoginActivity;
 
 public class LoginHandler {
@@ -19,6 +20,6 @@ public class LoginHandler {
         } finally {
             executorService.shutdown();
         }
-        return LoginActivity.LOGIN_ERROR;
+        return App.LOGIN_ERROR;
     }
 }

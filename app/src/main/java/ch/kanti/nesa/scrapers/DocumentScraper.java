@@ -1,5 +1,6 @@
 package ch.kanti.nesa.scrapers;
 
+import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.CookieAndAuth;
 import ch.kanti.nesa.activities.SplashActivity;
@@ -18,70 +19,80 @@ public class DocumentScraper {
     static ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     public static Document getMainPage() {
+        String username = App.sharedPreferences.getString("username", "");
+        String password = App.sharedPreferences.getString("password", "");
         CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
         HashMap<String, String> cookies = cookieAndAuth.cookies;
         String authToken = cookieAndAuth.authToken;
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("login", User.decrypt(SplashActivity.username, App.usernameKey));
-        formData.put("passwort", User.decrypt(SplashActivity.password, App.passwordKey));
+        formData.put("login", AES.decrypt(username, App.usernameKey));
+        formData.put("passwort", AES.decrypt(password, App.passwordKey));
         formData.put("loginhash", authToken);
 
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=1", cookies, formData);
     }
 
     public static Document getMarkPage() {
+        String username = App.sharedPreferences.getString("username", "");
+        String password = App.sharedPreferences.getString("password", "");
         CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
         HashMap<String, String> cookies = cookieAndAuth.cookies;
         String authToken = cookieAndAuth.authToken;
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("login", User.decrypt(SplashActivity.username, App.usernameKey));
-        formData.put("passwort", User.decrypt(SplashActivity.password, App.passwordKey));
+        formData.put("login", AES.decrypt(username, App.usernameKey));
+        formData.put("passwort", AES.decrypt(password, App.passwordKey));
         formData.put("loginhash", authToken);
 
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21311", cookies, formData);
     }
 
     public static Document getAbsencesPage() {
+        String username = App.sharedPreferences.getString("username", "");
+        String password = App.sharedPreferences.getString("password", "");
         CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
         HashMap<String, String> cookies = cookieAndAuth.cookies;
         String authToken = cookieAndAuth.authToken;
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("login", User.decrypt(SplashActivity.username, App.usernameKey));
-        formData.put("passwort", User.decrypt(SplashActivity.password, App.passwordKey));
+        formData.put("login", AES.decrypt(username, App.usernameKey));
+        formData.put("passwort", AES.decrypt(password, App.passwordKey));
         formData.put("loginhash", authToken);
 
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21111", cookies, formData);
     }
 
     public static Document getBankPage() {
+        String username = App.sharedPreferences.getString("username", "");
+        String password = App.sharedPreferences.getString("password", "");
         CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
         HashMap<String, String> cookies = cookieAndAuth.cookies;
         String authToken = cookieAndAuth.authToken;
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("login", User.decrypt(SplashActivity.username, App.usernameKey));
-        formData.put("passwort", User.decrypt(SplashActivity.password, App.passwordKey));
+        formData.put("login", AES.decrypt(username, App.usernameKey));
+        formData.put("passwort", AES.decrypt(password, App.passwordKey));
         formData.put("loginhash", authToken);
 
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=21411", cookies, formData);
     }
 
     public static Document getEmailPage() {
+        String username = App.sharedPreferences.getString("username", "");
+        String password = App.sharedPreferences.getString("password", "");
         CookieAndAuth cookieAndAuth = cookiesAndAuth();
 
         HashMap<String, String> cookies = cookieAndAuth.cookies;
         String authToken = cookieAndAuth.authToken;
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("login", User.decrypt(SplashActivity.username, App.usernameKey));
-        formData.put("passwort", User.decrypt(SplashActivity.password, App.passwordKey));
+        formData.put("login", AES.decrypt(username, App.usernameKey));
+        formData.put("passwort", AES.decrypt(password, App.passwordKey));
         formData.put("loginhash", authToken);
 
         return scrapePage("https://ksw.nesa-sg.ch/index.php?pageid=22500", cookies, formData);
