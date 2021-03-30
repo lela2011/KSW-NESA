@@ -15,12 +15,11 @@ import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
-import ch.kanti.nesa.tables.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {User.class, AccountInfo.class, BankStatement.class, Grades.class, Subjects.class, Absence.class}, version = 21, exportSchema = false)
+@androidx.room.Database(entities = {AccountInfo.class, BankStatement.class, Grades.class, Subjects.class, Absence.class}, version = 21, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;

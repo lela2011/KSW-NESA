@@ -3,14 +3,12 @@ package ch.kanti.nesa.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.App;
@@ -18,7 +16,6 @@ import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.ActivitySplashBinding;
 
-import ch.kanti.nesa.background.isDeviceOnlineFuture;
 import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
@@ -27,15 +24,10 @@ import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
-import ch.kanti.nesa.tables.User;
 
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -3,8 +3,6 @@ package ch.kanti.nesa.scrapers;
 import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.CookieAndAuth;
-import ch.kanti.nesa.activities.SplashActivity;
-import ch.kanti.nesa.tables.User;
 
 import org.jsoup.nodes.Document;
 

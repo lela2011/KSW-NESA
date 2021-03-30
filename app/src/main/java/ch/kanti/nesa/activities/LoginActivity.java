@@ -23,7 +23,6 @@ import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.databinding.LoginActivityBinding;
 import ch.kanti.nesa.background.LoginHandler;
-import ch.kanti.nesa.tables.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

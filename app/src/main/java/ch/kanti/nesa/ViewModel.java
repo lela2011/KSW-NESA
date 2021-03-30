@@ -11,7 +11,6 @@ import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
-import ch.kanti.nesa.tables.User;
 
 import java.util.List;
 

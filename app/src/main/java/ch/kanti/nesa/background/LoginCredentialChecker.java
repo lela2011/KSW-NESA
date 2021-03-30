@@ -12,9 +12,7 @@ import java.util.concurrent.Callable;
 
 import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
-import ch.kanti.nesa.activities.LoginActivity;
 import ch.kanti.nesa.activities.SplashActivity;
-import ch.kanti.nesa.tables.User;
 
 public class LoginCredentialChecker implements Callable<Integer> {
     //variable definition
