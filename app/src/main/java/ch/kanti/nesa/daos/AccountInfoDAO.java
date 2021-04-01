@@ -22,4 +22,7 @@ public interface AccountInfoDAO {
 
     @Query("SELECT * FROM account_table ORDER BY `order` ASC")
     List<AccountInfo> getAccountInfo();
+
+    @Query("DELETE FROM account_table")
+    void deleteAll();
 }

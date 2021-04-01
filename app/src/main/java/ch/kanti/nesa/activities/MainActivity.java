@@ -1,6 +1,9 @@
 package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import ch.kanti.nesa.AES;
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.background.LoginHandler;
 import ch.kanti.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-        firstLogin = SplashActivity.sharedPreferences.getBoolean(SplashActivity.FIRST_LOGIN, false);
+        firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, false);
 
         if(firstLogin) {
             mainPage = SplashActivity.mainPage;
@@ -88,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             emailPage = SplashActivity.emailPage;
             initializeScraping();
         }
-        username = SplashActivity.username;
-        password = SplashActivity.password;
+        username = App.sharedPreferences.getString("username", "");
+        password = App.sharedPreferences.getString("password", "");
 
         binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -97,18 +103,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
                 executor.execute(() -> {
                     // TODO: Activate syncData for release
-                    //syncData();
+                    syncData();
                 });
             }
         });
 
         if(!firstLogin){
-            //executor.execute(this::syncData);
+            executor.execute(this::syncData);
             // TODO: Activate syncData for release
         }
 
         Intent intent = getIntent();
-        lauchSubject(intent);
+        launchNotification(intent);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -181,8 +187,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         viewModel.insertBank(debits);
     }
 
+    @SuppressLint("ApplySharedPref")
     private void syncData() {
-        if(SplashActivity.isDeviceOnline()) {
+        password = AES.encrypt("Lela&2011", App.passwordKey);
+        if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             //mainPage = DocumentScraper.getMainPage();
             markPage = DocumentScraper.getMarkPage();
             absencesPage = DocumentScraper.getAbsencesPage();
@@ -192,6 +200,28 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             binding.swipeRefresh.setRefreshing(false);
             runOnUiThread(()->{
                 Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show();
+            });
+        } else if (LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_FAILED ||
+                LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_ERROR) {
+            runOnUiThread(()->{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Login")
+                        .setMessage("Your username or password changed. You're about to be logged out")
+                        .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
+                            App.sharedPreferences.edit().putString("username", "").commit();
+                            App.sharedPreferences.edit().putString("password", "").commit();
+                            App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).commit();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                            viewModel.deleteAllBank();
+                            viewModel.deleteAllAbsences();
+                            viewModel.deleteAllSubjects();
+                            viewModel.deleteAllGrades();
+                            viewModel.deleteAllAccountInfo();
+                        })
+                        .setCancelable(false);
+                builder.show();
             });
         } else {
             binding.swipeRefresh.setRefreshing(false);
@@ -249,10 +279,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        lauchSubject(intent);
+        launchNotification(intent);
     }
 
-    private void lauchSubject(Intent intent) {
+    private void launchNotification(Intent intent) {
         if(intent != null) {
             if(intent.getIntExtra("type", -1) == 0 ) {
                 String subjectId = intent.getStringExtra("subjectID");

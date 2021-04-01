@@ -11,12 +11,10 @@ import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grades;
 import ch.kanti.nesa.tables.Subjects;
-import ch.kanti.nesa.tables.User;
 
 import java.util.List;
 
 public class ViewModel extends AndroidViewModel {
-    private final LoginRepository loginRepository;
     private final InfoRepository infoRepository;
     private final BankRepository bankRepository;
     private final GradesRepository gradesRepository;
@@ -25,32 +23,11 @@ public class ViewModel extends AndroidViewModel {
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
-        loginRepository = new LoginRepository(application);
         infoRepository = new InfoRepository(application);
         bankRepository = new BankRepository(application);
         gradesRepository = new GradesRepository(application);
         subjectsRepository = new SubjectsRepository(application);
         absenceRepository = new AbsenceRepository(application);
-    }
-    //update entry
-    public void updateLogin(User user) {
-        loginRepository.update(user);
-    }
-    //insert entry
-    public void insertLogin(User user) {
-        loginRepository.insert(user);
-    }
-    //delete entry
-    public void deleteLogin(User user) {
-        loginRepository.delete(user);
-    }
-    //get credentials
-    public LiveData<User> getCredentials() {
-        return loginRepository.getCredentials();
-    }
-    //get table size
-    public LiveData<Integer> getTableSizeLogin() {
-        return loginRepository.getTableSize();
     }
 
     public void insertInfo(List<AccountInfo> info) {
@@ -59,6 +36,10 @@ public class ViewModel extends AndroidViewModel {
 
     public LiveData<List<AccountInfo>> getAccountInfo() {
         return infoRepository.getAccountInfo();
+    }
+
+    public void deleteAllAccountInfo() {
+        infoRepository.deleteAll();
     }
 
     public void insertBank(List<BankStatement> statements) {
@@ -85,6 +66,10 @@ public class ViewModel extends AndroidViewModel {
         return gradesRepository.getBySubject(passedSubject);
     }
 
+    public void deleteAllGrades() {
+        gradesRepository.deleteAll();
+    }
+
     public void insertSubjects(List<Subjects> subjects) {
         subjectsRepository.insert(subjects);
     }
@@ -105,6 +90,10 @@ public class ViewModel extends AndroidViewModel {
         subjectsRepository.updateName(id, name);
     }
 
+    public void deleteAllSubjects() {
+        subjectsRepository.deleteAll();
+    }
+
     public void insertAbsences(List<Absence> absences) {
         absenceRepository.insert(absences);
     }
@@ -117,5 +106,7 @@ public class ViewModel extends AndroidViewModel {
         return absenceRepository.getAbsenceSize();
     }
 
-
+    public void deleteAllAbsences() {
+        absenceRepository.deleteAll();
+    }
 }
