@@ -18,9 +18,6 @@ public interface SubjectsDAO {
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Subjects> subjects);
 
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
-    void insertSingle(Subjects subjects);
-
     @Query("UPDATE subjects_table SET gradeAverage = :average, pluspoints = :pluspoints WHERE id = :id")
     void updateAverage(Float average, Float pluspoints, String id);
 

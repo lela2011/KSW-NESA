@@ -19,7 +19,7 @@ import ch.kanti.nesa.tables.Subjects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {AccountInfo.class, BankStatement.class, Grades.class, Subjects.class, Absence.class}, version = 21, exportSchema = false)
+@androidx.room.Database(entities = {AccountInfo.class, BankStatement.class, Grades.class, Subjects.class, Absence.class}, version = 22, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;

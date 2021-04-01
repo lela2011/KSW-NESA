@@ -1,6 +1,9 @@
 package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
 
         Intent intent = getIntent();
-        lauchSubject(intent);
+        launchNotification(intent);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -184,7 +187,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         viewModel.insertBank(debits);
     }
 
+    @SuppressLint("ApplySharedPref")
     private void syncData() {
+        password = AES.encrypt("Lela&2011", App.passwordKey);
         if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             //mainPage = DocumentScraper.getMainPage();
             markPage = DocumentScraper.getMarkPage();
@@ -198,12 +203,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             });
         } else if (LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_FAILED ||
                 LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_ERROR) {
-            App.sharedPreferences.edit().putString("username", "").commit();
-            App.sharedPreferences.edit().putString("password", "").commit();
-            App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).commit();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            runOnUiThread(()->{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Login")
+                        .setMessage("Your username or password changed. You're about to be logged out")
+                        .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
+                            App.sharedPreferences.edit().putString("username", "").commit();
+                            App.sharedPreferences.edit().putString("password", "").commit();
+                            App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).commit();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                            viewModel.deleteAllBank();
+                            viewModel.deleteAllAbsences();
+                            viewModel.deleteAllSubjects();
+                            viewModel.deleteAllGrades();
+                            viewModel.deleteAllAccountInfo();
+                        })
+                        .setCancelable(false);
+                builder.show();
+            });
         } else {
             binding.swipeRefresh.setRefreshing(false);
         }
@@ -260,10 +279,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        lauchSubject(intent);
+        launchNotification(intent);
     }
 
-    private void lauchSubject(Intent intent) {
+    private void launchNotification(Intent intent) {
         if(intent != null) {
             if(intent.getIntExtra("type", -1) == 0 ) {
                 String subjectId = intent.getStringExtra("subjectID");

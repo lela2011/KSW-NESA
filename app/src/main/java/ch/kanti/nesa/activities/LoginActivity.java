@@ -1,5 +1,6 @@
 package ch.kanti.nesa.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //Variable definition
     LoginActivityBinding binding;
-    AlertDialog.Builder dialogBuilder;
-    public static final int INTERNET_REQUEST = 1;
 
     String department;
     //Keys for encryption
@@ -80,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Reading out credentials, encrypting, checking for validity, writing into database
+    @SuppressLint("ApplySharedPref")
     private void getLoginCredentials() {
         //close keyboard on screen
         closeKeyboard();
@@ -87,76 +87,42 @@ public class LoginActivity extends AppCompatActivity {
         String encryptedUsername = AES.encrypt(binding.usernameET.getText().toString(), App.usernameKey);
         String encryptedPassword = AES.encrypt(binding.passwordET.getText().toString(), App.passwordKey);
         department = binding.fmsorgymmispinner.getSelectedItem().toString();
-        if (department.isEmpty()) {
-            Toast.makeText(this, "Please select department", Toast.LENGTH_SHORT).show();
-        } else {
-            //clear the input fields
-            binding.usernameET.getText().clear();
-            binding.passwordET.getText().clear();
-            //check if credentials are correct
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(()->{
-                //get return value from checking credentials
-                int loginResultCode = LoginHandler.checkLoginCredentials(encryptedUsername, encryptedPassword);
-                //displaying results
-                runOnUiThread(()->{
-                    if(loginResultCode == App.LOGIN_FAILED){
-                        binding.loginErrorMessage.setText(R.string.loginErrorCredentials);
-                        binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                    } else if(loginResultCode == App.LOGIN_ERROR){
-                        binding.loginErrorMessage.setText(R.string.loginErrorFailed);
-                        binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
-                    } else if(loginResultCode == App.LOGIN_SUCCESSFUL){
-                        binding.loginErrorMessage.setText(R.string.loginSuccessful);
-                        binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
-                        //check if user already saved in database
-                        //checkTableSize(encryptedUsername, encryptedPassword);
-                        //Set login completed
-                        App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, true).commit();
-                        App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).commit();
-                        App.sharedPreferences.edit().putString("department", department).commit();
-                        App.sharedPreferences.edit().putString("username", encryptedUsername).commit();
-                        App.sharedPreferences.edit().putString("password", encryptedPassword).commit();
-                        //Start splash Activity
-                        Intent splashActivity = new Intent(this, SplashActivity.class);
-                        startActivity(splashActivity);
-                        finish();
-                    }
-                });
+        //clear the input fields
+        binding.usernameET.getText().clear();
+        binding.passwordET.getText().clear();
+        //check if credentials are correct
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(()->{
+            //get return value from checking credentials
+            int loginResultCode = LoginHandler.checkLoginCredentials(encryptedUsername, encryptedPassword);
+            //displaying results
+            runOnUiThread(()->{
+                if(loginResultCode == App.LOGIN_FAILED){
+                    binding.loginErrorMessage.setText(R.string.loginErrorCredentials);
+                    binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
+                } else if(loginResultCode == App.LOGIN_ERROR){
+                    binding.loginErrorMessage.setText(R.string.loginErrorFailed);
+                    binding.loginErrorMessage.setTextColor(getColor(R.color.errorRed));
+                } else if(loginResultCode == App.LOGIN_SUCCESSFUL){
+                    binding.loginErrorMessage.setText(R.string.loginSuccessful);
+                    binding.loginErrorMessage.setTextColor(getColor(R.color.secondaryColorVariant));
+                    //Set login completed
+                }
             });
-        }
+            if (loginResultCode == App.LOGIN_SUCCESSFUL) {
+                App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, true).commit();
+                App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).commit();
+                App.sharedPreferences.edit().putString("department", department).commit();
+                App.sharedPreferences.edit().putString("username", encryptedUsername).commit();
+                App.sharedPreferences.edit().putString("password", encryptedPassword).commit();
+                //Start splash Activity
+                Intent splashActivity = new Intent(this, SplashActivity.class);
+                startActivity(splashActivity);
+                finish();
+            }
+        });
 
     }
-    /*//check if there already is a user added to database
-    *//*public void checkTableSize(String username, String password){
-        viewModel.getTableSizeLogin().observe(this, integer -> {
-            if(integer == 0){
-                //add new user
-                insertCredentials(username, password);
-            } else {
-                //update credentials
-                updateCredentials(username, password);
-            }
-        });
-    }*//*
-    //add user to database
-    public void insertCredentials(String username, String password) {
-        User user = new User(username, password, department);
-        viewModel.insertLogin(user);
-    }
-    //update credentials
-    public void updateCredentials(String username, String password){
-        //get saved credentials out of database
-        viewModel.getCredentials().observe(this, users -> {
-            //check if credentials changed
-            if(!(users.getUsername().equals(username) && users.getPassword().equals(password))){
-                User user = new User(username, password, department);
-                user.setId(users.getId());
-                //update credentials
-                viewModel.updateLogin(user);
-            }
-        });
-    }*/
 
     //Closing keyboard when input is finished
     private void closeKeyboard(){

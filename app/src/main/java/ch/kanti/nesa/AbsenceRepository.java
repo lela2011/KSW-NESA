@@ -160,4 +160,8 @@ public class AbsenceRepository {
     public LiveData<Integer> getAbsenceSize() {
         return absenceDAO.getAbsenceSize();
     }
+
+    public void deleteAll() {
+        absenceDAO.deleteAll();
+    }
 }

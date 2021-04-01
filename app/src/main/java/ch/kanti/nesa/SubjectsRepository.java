@@ -65,4 +65,8 @@ public class SubjectsRepository {
             subjectsDAO.updateName(id, name);
         });
     }
+
+    public void deleteAll() {
+        subjectsDAO.deleteAll();
+    }
 }

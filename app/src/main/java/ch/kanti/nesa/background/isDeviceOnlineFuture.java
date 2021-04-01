@@ -1,5 +1,6 @@
 package ch.kanti.nesa.background;
 
+import android.telecom.ConnectionRequest;
 import android.util.Log;
 
 import java.io.IOException;
@@ -11,12 +12,14 @@ public class isDeviceOnlineFuture implements Callable<Boolean> {
     @Override
     public Boolean call() {
         try {
-            HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com/").openConnection());
-            urlc.setRequestProperty("User-Agent", "Test");
+            URL url = new URL("http://www.google.com/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            /*urlc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0");
             urlc.setRequestProperty("Connection", "close");
             urlc.setConnectTimeout(1500);
-            urlc.connect();
-            return (urlc.getResponseCode() == 200);
+            urlc.connect();*/
+            return (connection.getResponseCode() == 200);
         } catch (IOException e) {
             Log.e("ConnectionError", "Error: ", e);
             return false;

@@ -38,6 +38,10 @@ public class ViewModel extends AndroidViewModel {
         return infoRepository.getAccountInfo();
     }
 
+    public void deleteAllAccountInfo() {
+        infoRepository.deleteAll();
+    }
+
     public void insertBank(List<BankStatement> statements) {
         bankRepository.insert(statements);
     }
@@ -62,6 +66,10 @@ public class ViewModel extends AndroidViewModel {
         return gradesRepository.getBySubject(passedSubject);
     }
 
+    public void deleteAllGrades() {
+        gradesRepository.deleteAll();
+    }
+
     public void insertSubjects(List<Subjects> subjects) {
         subjectsRepository.insert(subjects);
     }
@@ -82,6 +90,10 @@ public class ViewModel extends AndroidViewModel {
         subjectsRepository.updateName(id, name);
     }
 
+    public void deleteAllSubjects() {
+        subjectsRepository.deleteAll();
+    }
+
     public void insertAbsences(List<Absence> absences) {
         absenceRepository.insert(absences);
     }
@@ -94,5 +106,7 @@ public class ViewModel extends AndroidViewModel {
         return absenceRepository.getAbsenceSize();
     }
 
-
+    public void deleteAllAbsences() {
+        absenceRepository.deleteAll();
+    }
 }

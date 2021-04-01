@@ -19,6 +19,7 @@ public class InfoRepository {
         accountInfoDAO = database.accountInfoDAO();
     }
 
+    //TODO: Work on Info Repository
     public void insert(List<AccountInfo> info){
         Database.databaseWriteExecutor.execute(() -> {
             List<AccountInfo> oldData = accountInfoDAO.getAccountInfo();
@@ -40,5 +41,9 @@ public class InfoRepository {
 
     public LiveData<List<AccountInfo>> getAccountInfo() {
         return accountInfoDAO.getAccountInfoLive();
+    }
+
+    public void deleteAll() {
+        accountInfoDAO.deleteAll();
     }
 }

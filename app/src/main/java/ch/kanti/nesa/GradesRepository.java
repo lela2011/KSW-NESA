@@ -193,4 +193,8 @@ public class GradesRepository {
     LiveData<List<Grades>> getBySubject(String passedSubject) {
         return gradesDAO.getBySubject(passedSubject);
     }
+
+    public void deleteAll() {
+        gradesDAO.deleteAll();
+    }
 }

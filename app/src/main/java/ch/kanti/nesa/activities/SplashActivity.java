@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 
     ViewModel viewModel;
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,18 +67,21 @@ public class SplashActivity extends AppCompatActivity {
                 username = App.sharedPreferences.getString("username", "");
                 password = App.sharedPreferences.getString("password","");
                 if (firstLogin) {
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                    binding.hintText.setVisibility(View.VISIBLE);
+                    runOnUiThread(()->{
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        binding.hintText.setVisibility(View.VISIBLE);
+                    });
                     getPages();
                     initializeScraping();
-                    App.editor.putBoolean(App.FIRST_LOGIN, false);
-                    App.editor.commit();
+                    App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, false).commit();
                 }
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     Intent mainActivity = new Intent(this, MainActivity.class);
                     startActivity(mainActivity);
                     finish();
                 }, SPLASH_TIME_OUT);
+            } else {
+                Toast.makeText(this, "Connect to the internet and retry", Toast.LENGTH_SHORT).show();
             }
         }
     }
