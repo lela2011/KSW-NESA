@@ -62,12 +62,15 @@ public class ColorPickerDialog extends AppCompatDialogFragment {
         sliderGreen.setOnSeekBarChangeListener(changeListener);
         sliderBlue.setOnSeekBarChangeListener(changeListener);
 
+        Bundle bundle = getArguments();
+        int range = bundle.getInt("range");
+
         builder.setView(view)
                 .setTitle("Pick color")
                 .setPositiveButton(getString(R.string.dialogButtonOk), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.returnColor(color);
+                        listener.returnColor(range, color);
                     }
                 })
                 .setNegativeButton(getString(R.string.dialogButtonCancel), new DialogInterface.OnClickListener() {
@@ -177,7 +180,7 @@ public class ColorPickerDialog extends AppCompatDialogFragment {
     }
 
     public interface ReturnColor {
-        void returnColor(int color);
+        void returnColor(int range, int color);
     }
 
 }

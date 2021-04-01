@@ -1,6 +1,7 @@
 package ch.kanti.nesa.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ public class SettingsFragment extends Fragment {
 
     public FragmentSettingsBinding binding;
     public ViewModel viewModel;
+    public Float grade1;
+    public Float grade2;
+    public Float grade3;
 
     @Nullable
     @Override
@@ -30,7 +34,39 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
+        grade1 = Float.parseFloat(binding.editGradRange1.getText().toString());
+        grade2 = Float.parseFloat(binding.editGradRange2.getText().toString());
+        grade3 = Float.parseFloat(binding.editGradRange3.getText().toString());
+
         binding.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // logout code
+            }
+        });
+
+        binding.colorPickerBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        binding.colorPickerBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        binding.colorPickerBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        binding.colorPickerBtn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
