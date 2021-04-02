@@ -67,6 +67,12 @@ public class SplashActivity extends AppCompatActivity {
                 username = App.sharedPreferences.getString("username", "");
                 password = App.sharedPreferences.getString("password","");
                 if (firstLogin) {
+                    App.sharedPreferences.edit().putInt("colCol1", getColor(R.color.gold)).commit();
+                    App.sharedPreferences.edit().putInt("colCol2", getColor(R.color.green)).commit();
+                    App.sharedPreferences.edit().putInt("colCol3", getColor(R.color.orange)).commit();
+                    App.sharedPreferences.edit().putInt("colCol4", getColor(R.color.red)).commit();
+                    App.sharedPreferences.edit().putFloat("colRange1", 5.0f).commit();
+                    App.sharedPreferences.edit().putFloat("colRange2", 4.0f).commit();
                     runOnUiThread(()->{
                         binding.progressBar.setVisibility(View.VISIBLE);
                         binding.hintText.setVisibility(View.VISIBLE);

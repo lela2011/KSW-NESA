@@ -54,12 +54,11 @@
             android:textSize="16sp"
             android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/edit_grad_range_1"
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="6"
-            android:inputType="numberDecimal"
+            android:textSize="16sp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:gravity="center"/>
@@ -138,6 +137,13 @@
             android:layout_weight="1"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/colorSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="Save"/>
 
     <TextView
         android:id="@+id/logout"

@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     @SuppressLint("ApplySharedPref")
     private void syncData() {
-        password = AES.encrypt("Lela&2011", App.passwordKey);
+        //password = AES.encrypt("Lela&2011", App.passwordKey);
         if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             //mainPage = DocumentScraper.getMainPage();
             markPage = DocumentScraper.getMarkPage();

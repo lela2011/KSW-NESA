@@ -64,6 +64,15 @@ public class ColorPickerDialog extends AppCompatDialogFragment {
 
         Bundle bundle = getArguments();
         int range = bundle.getInt("range");
+        String oldColor = String.format("#%06X",(0xFFFFFF & bundle.getInt("oldColor"))).replace("#","");
+        int oldR = Math.round(Integer.parseInt(oldColor.substring(0,2),16)/2.55f);
+        int oldG = Math.round(Integer.parseInt(oldColor.substring(2,4),16)/2.55f);
+        int oldB = Math.round(Integer.parseInt(oldColor.substring(4,6),16)/2.55f);
+
+        sliderRed.setProgress(oldR);
+        sliderGreen.setProgress(oldG);
+        sliderBlue.setProgress(oldB);
+        colorField.setBackgroundColor(bundle.getInt("oldColor"));
 
         builder.setView(view)
                 .setTitle("Pick color")

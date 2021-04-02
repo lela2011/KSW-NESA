@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.RecviewGradeBinding;
 
@@ -26,11 +27,27 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
     private List<Grades> dataList = new ArrayList<>();
     private static final DecimalFormat df = new DecimalFormat("#.###");
     private OnItemClickListener listener;
+    Context colorContext;
+    int col1;
+    int col2;
+    int col3;
+    int col4;
+
+    float range3;
+    float range4;
 
     @NonNull
     @Override
     public GradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecviewGradeBinding binding = RecviewGradeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        colorContext = parent.getContext();
+        col1 = App.sharedPreferences.getInt("colCol1",  colorContext.getColor(R.color.gold));
+        col2 = App.sharedPreferences.getInt("colCol2",  colorContext.getColor(R.color.green));
+        col3 = App.sharedPreferences.getInt("colCol3",  colorContext.getColor(R.color.orange));
+        col4 = App.sharedPreferences.getInt("colCol4",  colorContext.getColor(R.color.red));
+        range3 = App.sharedPreferences.getFloat("colRange1", 5f);
+        range4 = App.sharedPreferences.getFloat("colRange2", 4f);
+
         return new GradeViewHolder(binding);
     }
 
@@ -47,14 +64,20 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
         }
         holder.grade.setText(gradeString);
         holder.gradeName.setText(currentItem.getExam());
-        if (grade >= 6.0f) {
-            holder.grade.setTextColor(ContextCompat.getColor(context, R.color.gold));
-        } else if (grade >= 4.5f) {
-            holder.grade.setTextColor(ContextCompat.getColor(context, R.color.green));
-        } else if (grade >= 3.75f) {
-            holder.grade.setTextColor(ContextCompat.getColor(context, R.color.orange));
-        } else if (grade >= 1.0f) {
-            holder.grade.setTextColor(ContextCompat.getColor(context, R.color.red));
+        if (grade == 6.0f) {
+            holder.grade.setTextColor(col1);
+        } else if (range3 > range4 && grade >= range3) {
+            holder.grade.setTextColor(col2);
+        } else if (range4 > range3 && grade >= range4) {
+            holder.grade.setTextColor(col2);
+        } else if (range3 > range4 && grade >= range4) {
+            holder.grade.setTextColor(col3);
+        } else if (range4 > range3 && grade >= range3) {
+            holder.grade.setTextColor(col4);
+        } else if (range3 > range4 && grade < range4 && grade != -1) {
+            holder.grade.setTextColor(col4);
+        } else if (range4 > range3 && grade < range3 && grade != -1) {
+            holder.grade.setTextColor(col3);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = context.getTheme();

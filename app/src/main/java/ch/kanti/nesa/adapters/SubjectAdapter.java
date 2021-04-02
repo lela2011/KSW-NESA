@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.RecviewSubjectBinding;
 
@@ -27,11 +28,26 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private static final DecimalFormat df = new DecimalFormat("#.###");
+    Context colorContext;
+    int col1;
+    int col2;
+    int col3;
+    int col4;
+
+    float range3;
+    float range4;
 
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecviewSubjectBinding binding = RecviewSubjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        colorContext = parent.getContext();
+        col1 = App.sharedPreferences.getInt("colCol1",  colorContext.getColor(R.color.gold));
+        col2 = App.sharedPreferences.getInt("colCol2",  colorContext.getColor(R.color.green));
+        col3 = App.sharedPreferences.getInt("colCol3",  colorContext.getColor(R.color.orange));
+        col4 = App.sharedPreferences.getInt("colCol4",  colorContext.getColor(R.color.red));
+        range3 = App.sharedPreferences.getFloat("colRange1", 5f);
+        range4 = App.sharedPreferences.getFloat("colRange2", 4f);
         return new SubjectViewHolder(binding);
     }
 
@@ -49,14 +65,20 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.subjectId.setText(currentItem.getId());
         holder.subjectAverage.setText(gradeAverage);
-        if (gradeAverageFloat >= 6.0f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.gold));
-        } else if (gradeAverageFloat >= 4.5f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.green));
-        } else if (gradeAverageFloat >= 3.75f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.orange));
-        } else if (gradeAverageFloat >= 1.0f) {
-            holder.subjectAverage.setTextColor(ContextCompat.getColor(context, R.color.red));
+        if (gradeAverageFloat == 6.0f) {
+            holder.subjectAverage.setTextColor(col1);
+        } else if (range3 > range4 && gradeAverageFloat >= range3) {
+            holder.subjectAverage.setTextColor(col2);
+        } else if (range4 > range3 && gradeAverageFloat >= range4) {
+            holder.subjectAverage.setTextColor(col2);
+        } else if (range3 > range4 && gradeAverageFloat >= range4) {
+            holder.subjectAverage.setTextColor(col3);
+        } else if (range4 > range3 && gradeAverageFloat >= range3) {
+            holder.subjectAverage.setTextColor(col4);
+        } else if (range3 > range4 && gradeAverageFloat < range4 && gradeAverageFloat != -1) {
+            holder.subjectAverage.setTextColor(col4);
+        } else if (range4 > range3 && gradeAverageFloat < range3 && gradeAverageFloat != -1) {
+            holder.subjectAverage.setTextColor(col3);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = context.getTheme();
