@@ -10,12 +10,10 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
-import ch.kanti.nesa.AES;
 import ch.kanti.nesa.AbsenceRepository;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.BankRepository;
 import ch.kanti.nesa.GradesRepository;
-import ch.kanti.nesa.activities.SplashActivity;
 import ch.kanti.nesa.SubjectsRepository;
 import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
@@ -32,7 +30,7 @@ public class SyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        /*String username = App.sharedPreferences.getString("username","");
+        String username = App.sharedPreferences.getString("username","");
         String password = App.sharedPreferences.getString("password","");
         if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
             Document gradesPage, absencesPage, bankPage;
@@ -51,15 +49,14 @@ public class SyncWorker extends Worker {
             BankRepository bankRepository = new BankRepository(context);
             AbsenceRepository absenceRepository = new AbsenceRepository(context);
 
-            gradesRepository.insert(subjectsAndGrades.gradesList);
-            subjectsRepository.insert(subjectsAndGrades.subjectsList);
+            gradesRepository.insert(subjectsAndGrades.gradeList);
+            subjectsRepository.insert(subjectsAndGrades.subjectList);
             bankRepository.insert(bankStatements);
             absenceRepository.insert(absences);
 
             return Result.success();
         } else {
             return Result.retry();
-        }*/
-        return Result.success();
+        }
     }
 }

@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.activities.MainActivity;
@@ -82,67 +81,43 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), new Observer<Float>() {
-            @Override
-            public void onChanged(Float aFloat) {
-                binding.gradeAverage.setText(String.valueOf(df.format(aFloat)));
-                if(aFloat != null) {
-                    if (aFloat >= 5.0f) {
-                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                    } else if (aFloat >= 4.0f) {
-                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
-                    } else {
-                        binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                    }
-                }
-            }
-        });
-
-        viewModel.getPluspoints().observe(getViewLifecycleOwner(), new Observer<Float>() {
-            @Override
-            public void onChanged(Float aFloat) {
-                binding.pluspoints.setText(String.valueOf(df.format(aFloat)));
-                if (aFloat != null) {
-                    if (aFloat > 0) {
-                        binding.pluspoints.setTextColor(ContextCompat.getColor(getContext() , R.color.green));
-                    } else {
-                        binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                    }
-                }
-            }
-        });
-
-        viewModel.getAbsenceSize().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer == 0) {
-                    binding.openAbsencesHome.setText("-");
+        viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), aFloat -> {
+            binding.gradeAverage.setText(String.valueOf(df.format(aFloat)));
+            if(aFloat != null) {
+                if (aFloat >= 5.0f) {
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                } else if (aFloat >= 4.0f) {
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
                 } else {
-                    binding.openAbsencesHome.setText(String.valueOf(integer));
+                    binding.gradeAverage.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
             }
         });
 
-        binding.bank.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shortcut.onShortcutClicked(SHORTCUT_BANK);
+        viewModel.getPluspoints().observe(getViewLifecycleOwner(), aFloat -> {
+            binding.pluspoints.setText(String.valueOf(df.format(aFloat)));
+            if (aFloat != null) {
+                if (aFloat > 0) {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext() , R.color.green));
+                } else {
+                    binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
             }
         });
 
-        binding.marks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shortcut.onShortcutClicked(SHORTCUT_GRADES);
+        viewModel.getAbsenceSize().observe(getViewLifecycleOwner(), integer -> {
+            if (integer == 0) {
+                binding.openAbsencesHome.setText("-");
+            } else {
+                binding.openAbsencesHome.setText(String.valueOf(integer));
             }
         });
 
-        binding.openAbsencesCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shortcut.onShortcutClicked(SHORTCUT_ABSENCE);
-            }
-        });
+        binding.bank.setOnClickListener(v -> shortcut.onShortcutClicked(SHORTCUT_BANK));
+
+        binding.marks.setOnClickListener(v -> shortcut.onShortcutClicked(SHORTCUT_GRADES));
+
+        binding.openAbsencesCard.setOnClickListener(view1 -> shortcut.onShortcutClicked(SHORTCUT_ABSENCE));
     }
 
     @Override

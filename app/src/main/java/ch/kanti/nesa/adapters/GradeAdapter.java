@@ -4,19 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.RecviewGradeBinding;
 
-import ch.kanti.nesa.tables.Grades;
+import ch.kanti.nesa.tables.Grade;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ import java.util.List;
 
 public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHolder> {
 
-    private List<Grades> dataList = new ArrayList<>();
+    private List<Grade> dataList = new ArrayList<>();
     private static final DecimalFormat df = new DecimalFormat("#.###");
     private OnItemClickListener listener;
     Context colorContext;
@@ -53,14 +51,14 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
 
     @Override
     public void onBindViewHolder(@NonNull GradeViewHolder holder, int position) {
-        Grades currentItem = dataList.get(position);
+        Grade currentItem = dataList.get(position);
         Context context = holder.grade.getContext();
-        String gradeString = "";
+        String gradeString;
         float grade = currentItem.getGrade();
         if (currentItem.getGrade() == -1.0f) {
             gradeString = "-";
         } else {
-            gradeString = String.valueOf(df.format(grade));
+            gradeString = df.format(grade);
         }
         holder.grade.setText(gradeString);
         holder.gradeName.setText(currentItem.getExam());
@@ -91,7 +89,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
         return dataList.size();
     }
 
-    public void setStatements(List<Grades> dataList) {
+    public void setStatements(List<Grade> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
@@ -104,20 +102,17 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
             gradeName = binding.gradeName;
             grade = binding.grade;
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(dataList.get(position));
-                    }
+            binding.getRoot().setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(dataList.get(position));
                 }
             });
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Grades grade);
+        void onItemClick(Grade grade);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

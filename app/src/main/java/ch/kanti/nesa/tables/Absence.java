@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey;
 public class Absence {
     @PrimaryKey(autoGenerate = true)
     private int pk;
-    private String date;
-    private String time;
-    private String course;
-    private int type;
-    private int excused;
+    private final String date;
+    private final String time;
+    private final String course;
+    private final int type;
+    private final int excused;
 
     public Absence(String date, String time, String course, int type, int excused) {
         this.date = date;
@@ -25,24 +25,12 @@ public class Absence {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getCourse() {
         return course;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
     }
 
     public int getPk() {
@@ -57,18 +45,10 @@ public class Absence {
         return type;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public int getExcused() {
         return excused;
     }
 
-    public void setExcused(int excused) {
-        this.excused = excused;
-    }
-    
     public boolean compare(Absence toCompare) {
         return this.getDate().equals(toCompare.getDate()) &&
                 this.getType() == toCompare.getType() &&

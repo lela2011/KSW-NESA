@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -7,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Notenfarben"
+        android:text="@string/colour_customisation"
         android:textSize="32sp"/>
 
     <LinearLayout
@@ -19,7 +20,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Note"
+            android:text="@string/grade"
             android:textSize="16sp"
             android:layout_weight="1"/>
 
@@ -30,7 +31,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="16sp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/color_picker_btn_1"
@@ -50,7 +52,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bis"
+            android:text="@string/upto"
             android:textSize="16sp"
             android:layout_weight="1"/>
 
@@ -61,7 +63,8 @@
             android:textSize="16sp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/color_picker_btn_2"
@@ -82,7 +85,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bis"
+            android:text="@string/upto"
             android:textSize="16sp"
             android:layout_weight="1"/>
 
@@ -94,7 +97,9 @@
             android:inputType="numberDecimal"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            tools:ignore="HardcodedText,LabelFor"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/color_picker_btn_3"
@@ -115,7 +120,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bis"
+            android:text="@string/upto"
             android:textSize="16sp"
             android:layout_weight="1"/>
 
@@ -127,7 +132,9 @@
             android:inputType="numberDecimal"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            tools:ignore="HardcodedText,LabelFor"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/color_picker_btn_4"
@@ -143,13 +150,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="Save"/>
+        android:textSize="16sp"
+        android:text="@string/save"/>
 
-    <TextView
+    <Button
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="16dp"
         android:textSize="16sp"
         android:text="@string/logout"
         android:clickable="true"/>

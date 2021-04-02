@@ -6,15 +6,15 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import ch.kanti.nesa.daos.SubjectsDAO;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Subject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SubjectsRepository {
-    SubjectsDAO subjectsDAO;
-    Context context;
+    final SubjectsDAO subjectsDAO;
+    final Context context;
 
     public SubjectsRepository(Application application) {
         Database database = Database.getInstance(application);
@@ -28,17 +28,17 @@ public class SubjectsRepository {
         this.context = context;
     }
 
-    public void insert(List<Subjects> subjects) {
+    public void insert(List<Subject> subjects) {
         Database.databaseWriteExecutor.execute(() -> {
             List<String> oldSubjectIds = subjectsDAO.getSubjectIds();
             List<String> newSubjectIds = new ArrayList<>();
-            for (Subjects subject : subjects) {
+            for (Subject subject : subjects) {
                 newSubjectIds.add(subject.getId());
             }
             Collections.sort(oldSubjectIds);
             Collections.sort(newSubjectIds);
             if(oldSubjectIds.equals(newSubjectIds)) {
-                for(Subjects subject : subjects) {
+                for(Subject subject : subjects) {
                     subjectsDAO.updateAverage(subject.getGradeAverage(), subject.getPluspoints(), subject.getId());
                 }
             } else {
@@ -48,7 +48,7 @@ public class SubjectsRepository {
         });
     }
 
-    public LiveData<List<Subjects>> getSubjects() {
+    public LiveData<List<Subject>> getSubjects() {
         return subjectsDAO.getSubjects();
     }
 
@@ -61,9 +61,7 @@ public class SubjectsRepository {
     }
 
     public void updateName(String id, String name) {
-        Database.databaseWriteExecutor.execute(()->{
-            subjectsDAO.updateName(id, name);
-        });
+        Database.databaseWriteExecutor.execute(()-> subjectsDAO.updateName(id, name));
     }
 
     public void deleteAll() {

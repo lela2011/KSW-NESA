@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -13,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Red"
+        android:text="@string/red"
         android:layout_marginHorizontal="16dp"/>
 
     <SeekBar
@@ -29,7 +30,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Green"
+        android:text="@string/green"
         android:layout_marginHorizontal="16dp"/>
 
     <SeekBar
@@ -45,7 +46,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Blue"
+        android:text="@string/blue"
         android:layout_marginHorizontal="16dp"/>
 
     <SeekBar
@@ -64,6 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:hint="#000000"
-        android:layout_marginTop="16dp"/>
+        android:inputType="text"
+        android:layout_marginTop="16dp"
+        tools:ignore="HardcodedText"
+        android:importantForAutofill="no" />
 
 </LinearLayout>

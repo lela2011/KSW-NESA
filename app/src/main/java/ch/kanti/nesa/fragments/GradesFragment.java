@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +21,9 @@ import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.FragmentGradesBinding;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import ch.kanti.nesa.adapters.GradeAdapter;
 import ch.kanti.nesa.ViewModel;
-import ch.kanti.nesa.tables.Grades;
 
 public class GradesFragment extends Fragment {
 
@@ -65,15 +62,12 @@ public class GradesFragment extends Fragment {
         gradeAdapter = new GradeAdapter();
         recyclerView.setAdapter(gradeAdapter);
 
-        viewModel.getGradeBySubject(subjectId).observe(getViewLifecycleOwner(), new Observer<List<Grades>>() {
-            @Override
-            public void onChanged(List<Grades> grades) {
-                gradeAdapter.setStatements(grades);
-                if (grades.size() == 0) {
-                    binding.empty.setVisibility(View.VISIBLE);
-                } else {
-                    binding.empty.setVisibility(View.INVISIBLE);
-                }
+        viewModel.getGradeBySubject(subjectId).observe(getViewLifecycleOwner(), grades -> {
+            gradeAdapter.setStatements(grades);
+            if (grades.size() == 0) {
+                binding.empty.setVisibility(View.VISIBLE);
+            } else {
+                binding.empty.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -106,17 +100,14 @@ public class GradesFragment extends Fragment {
             binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
         }
 
-        gradeAdapter.setOnItemClickListener(new GradeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Grades grade) {
-                Intent intent = new Intent(getContext(), GradeDetailActivity.class);
-                intent.putExtra("date", grade.getDate());
-                intent.putExtra("name", grade.getExam());
-                intent.putExtra("weight", grade.getWeight());
-                intent.putExtra("grade", grade.getGrade());
+        gradeAdapter.setOnItemClickListener(grade -> {
+            Intent intent = new Intent(getContext(), GradeDetailActivity.class);
+            intent.putExtra("date", grade.getDate());
+            intent.putExtra("name", grade.getExam());
+            intent.putExtra("weight", grade.getWeight());
+            intent.putExtra("grade", grade.getGrade());
 
-                startActivity(intent);
-            }
+            startActivity(intent);
         });
     }
 

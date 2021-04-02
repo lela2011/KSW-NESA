@@ -2,32 +2,28 @@ package ch.kanti.nesa.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import ch.kanti.nesa.tables.Grades;
+import ch.kanti.nesa.tables.Grade;
 
 import java.util.List;
 
 @Dao
 public interface GradesDAO {
-    @Update
-    void update(Grades grades);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<Grades> grades);
+    void insert(List<Grade> grades);
 
     @Query("DELETE FROM grades_table")
     void deleteAll();
 
     @Query("SELECT * FROM grades_table WHERE subjectId = :passedSubject")
-    LiveData<List<Grades>> getBySubject(String passedSubject);
+    LiveData<List<Grade>> getBySubject(String passedSubject);
 
     @Query("SELECT * FROM grades_table ORDER BY subjectNumber ASC, `order` ASC")
-    List<Grades> getAllGradesOrdered();
+    List<Grade> getAllGradesOrdered();
 
     @Query("SELECT COUNT(*) FROM grades_table")
     int size();

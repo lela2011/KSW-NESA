@@ -16,7 +16,8 @@ import ch.kanti.nesa.activities.SplashActivity;
 
 public class LoginCredentialChecker implements Callable<Integer> {
     //variable definition
-    String username, password;
+    final String username;
+    final String password;
     //initialize credential checker
     public LoginCredentialChecker(String username, String password){
         this.username = username;

@@ -39,7 +39,6 @@ public class App extends Application {
     public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
 
     public static SharedPreferences sharedPreferences;
-    public static SharedPreferences.Editor editor;
 
     public static boolean netWorkAvailable = false;
 
@@ -58,10 +57,9 @@ public class App extends Application {
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueueUniquePeriodicWork("Sync Grades", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+        workManager.enqueueUniquePeriodicWork("Sync Grade", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
 
         sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
     }
 
     private void createNotificationChannels() {

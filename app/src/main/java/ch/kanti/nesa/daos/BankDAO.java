@@ -19,9 +19,6 @@ public interface BankDAO {
     @Query("DELETE FROM bank_table")
     void deleteAll();
 
-    @Query("SELECT COUNT(*) FROM bank_table")
-    int size();
-
     //get all of the rows in ascending order (oldest to newest)
     @Query("SELECT * FROM bank_table ORDER BY `order` ASC")
     LiveData<List<BankStatement>> getBankStatement();

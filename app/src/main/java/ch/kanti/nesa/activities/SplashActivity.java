@@ -23,8 +23,8 @@ import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Subject;
 
 import org.jsoup.nodes.Document;
 
@@ -34,8 +34,8 @@ public class SplashActivity extends AppCompatActivity {
 
     ActivitySplashBinding binding;
     public static int SPLASH_TIME_OUT = 1500;
-    public static String LOGIN_FORM_URL = "https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=";
-    public static String ACTION_URL = "https://ksw.nesa-sg.ch/index.php?pageid=";
+    public static final String LOGIN_FORM_URL = "https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=";
+    public static final String ACTION_URL = "https://ksw.nesa-sg.ch/index.php?pageid=";
     public static String username, password;
     public static Document mainPage, markPage, absencesPage, bankPage, emailPage;
 
@@ -87,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }, SPLASH_TIME_OUT);
             } else {
-                Toast.makeText(this, "Connect to the internet and retry", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.youre_offline), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -115,8 +115,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void scrapeMarks() {
         SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
-        ArrayList<Grades> grades = subjectsAndGrades.gradesList;
-        ArrayList<Subjects> subjects = subjectsAndGrades.subjectsList;
+        ArrayList<Grade> grades = subjectsAndGrades.gradeList;
+        ArrayList<Subject> subjects = subjectsAndGrades.subjectList;
 
         viewModel.insertSubjects(subjects);
         viewModel.insertGrades(grades);

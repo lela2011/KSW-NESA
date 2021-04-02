@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankRepository {
-    BankDAO bankDAO;
-    Context context;
+    final BankDAO bankDAO;
+    final Context context;
 
     public BankRepository(Application application) {
         Database database = Database.getInstance(application);
@@ -163,7 +163,7 @@ public class BankRepository {
     }
 
     public void deleteAll() {
-        Database.databaseWriteExecutor.execute(()-> bankDAO.deleteAll());
+        Database.databaseWriteExecutor.execute(bankDAO::deleteAll);
     }
 
     LiveData<List<BankStatement>> getBankStatement() {

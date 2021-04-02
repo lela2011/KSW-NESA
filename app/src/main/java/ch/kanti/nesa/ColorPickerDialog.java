@@ -3,7 +3,6 @@ package ch.kanti.nesa;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,19 +10,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.google.android.material.slider.Slider;
-
-import org.w3c.dom.Text;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ColorPickerDialog extends AppCompatDialogFragment {
@@ -76,22 +68,14 @@ public class ColorPickerDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Pick color")
-                .setPositiveButton(getString(R.string.dialogButtonOk), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listener.returnColor(range, color);
-                    }
-                })
-                .setNegativeButton(getString(R.string.dialogButtonCancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> listener.returnColor(range, color))
+                .setNegativeButton(getString(R.string.dialogButtonCancel), (dialog, which) -> {
 
-                    }
                 });
         return builder.create();
     }
 
-    SeekBar.OnSeekBarChangeListener changeListener = new SeekBar.OnSeekBarChangeListener() {
+    final SeekBar.OnSeekBarChangeListener changeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (!isTyped) {
@@ -130,7 +114,7 @@ public class ColorPickerDialog extends AppCompatDialogFragment {
         }
     };
 
-    TextWatcher watcher = new TextWatcher() {
+    final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             isTyped = true;

@@ -4,8 +4,6 @@
     <string name="login_button_label">LOGIN</string>
     <string name="username">Benutzername</string>
     <string name="password">Passwort</string>
-    <string name="internet_dialog_message">Sie müssen eine Internetberechtigung zur Nutzung dieser App erteilen!</string>
-    <string name="internet_dialog_title">Internetberechtigung</string>
     <string name="dialogButtonOk">OK</string>
     <string name="dialogButtonCancel">Abbrechen</string>
     <string name="loginErrorCredentials">Beim Login ist ein Fehler aufgetreten. Überprüfen Sie ihren Nutzernamen und Passwort</string>
@@ -42,13 +40,11 @@
     <string name="synced">Synchronisiert</string>
     <string name="average">Ø</string>
     <string name="plus">+</string>
-    <string name="back_to_overview">Zurück zur Übersicht</string>
     <string name="grade_details">Noten Details</string>
     <string name="weight">Gewicht</string>
     <string name="grade">Note</string>
     <string name="open_absences">Offen:</string>
     <string name="course">Kurs</string>
-    <string name="time">Zeit</string>
     <string name="absenceType">Absenz</string>
     <string name="delayType">Verspätung</string>
     <string name="department">Ausbildung</string>
@@ -79,4 +75,13 @@
     <string name="bankName">Zweck:\u0020</string>
     <string name="subject_name">Fach Name</string>
     <string name="logout">Abmelden</string>
+    <string name="invalidValues">Die eingegebenen Werte sind ungültig</string>
+
+    <string name="red">Rot</string>
+    <string name="green">Grün</string>
+    <string name="blue">Blau</string>
+    <string name="colour_customisation">Farbanpassung</string>
+    <string name="upto">Bis</string>
+    <string name="save">Speichern</string>
+    <string name="no_data_displayed">Keine Informationen angezeigt</string>
 </resources>

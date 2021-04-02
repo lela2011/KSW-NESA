@@ -2,8 +2,6 @@ package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
@@ -30,10 +26,9 @@ import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.scrapers.DocumentScraper;
 import ch.kanti.nesa.tables.Absence;
-import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Subject;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -53,13 +48,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public static final int SHORTCUT_BANK = 1;
     public static final int SHORTCUT_GRADES = 2;
     public static final int SHORTCUT_ABSENCE = 3;
-    public static final int GRADES_FRAGMENT = 1;
-    public static final int HOME_FRAGMENT = 0;
-    public static final int ABSENCES_FRAGMENT = 2;
-    public static final int BANK_FRAGMENT = 3;
-    public static final int SETTINGS_FRAGMENT = 4;
-
-    public int currentFragment = HOME_FRAGMENT;
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -97,15 +85,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         username = App.sharedPreferences.getString("username", "");
         password = App.sharedPreferences.getString("password", "");
 
-        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
-                executor.execute(() -> {
-                    // TODO: Activate syncData for release
-                    syncData();
-                });
-            }
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
+            // TODO: Activate syncData for release
+            executor.execute(this::syncData);
         });
 
         if(!firstLogin){
@@ -124,23 +107,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         switch (item.getItemId()) {
             case R.id.nav_home:
                 selectedFragment = new HomeFragment();
-                currentFragment = HOME_FRAGMENT;
                 break;
             case R.id.nav_grades:
                 selectedFragment = new SubjectsFragment();
-                currentFragment = GRADES_FRAGMENT;
                 break;
             case R.id.nav_absences:
                 selectedFragment = new AbsencesFragment();
-                currentFragment = ABSENCES_FRAGMENT;
                 break;
             case R.id.nav_account:
                 selectedFragment = new BankFragment();
-                currentFragment = BANK_FRAGMENT;
                 break;
             case R.id.nav_settings:
                 selectedFragment = new SettingsFragment();
-                currentFragment = SETTINGS_FRAGMENT;
                 break;
 
         }
@@ -162,16 +140,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         scrapeAbsences();
     }
 
-    private void scrapeMain() {
+    /*private void scrapeMain() {
         ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
         info.addAll(ContentScrapers.scrapeEmail(emailPage));
         viewModel.insertInfo(info);
-    }
+    }*/
 
     private void scrapeMarks() {
         SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
-        ArrayList<Grades> grades = subjectsAndGrades.gradesList;
-        ArrayList<Subjects> subjects = subjectsAndGrades.subjectsList;
+        ArrayList<Grade> grades = subjectsAndGrades.gradeList;
+        ArrayList<Subject> subjects = subjectsAndGrades.subjectList;
 
         viewModel.insertSubjects(subjects);
         viewModel.insertGrades(grades);
@@ -198,9 +176,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             emailPage = DocumentScraper.getEmailPage();
             initializeScraping();
             binding.swipeRefresh.setRefreshing(false);
-            runOnUiThread(()->{
-                Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show();
-            });
+            runOnUiThread(()-> Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show());
         } else if (LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_FAILED ||
                 LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_ERROR) {
             runOnUiThread(()->{
@@ -238,22 +214,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             case SHORTCUT_BANK:
                 selectedFragment = new BankFragment();
                 selectedIcon = R.id.nav_account;
-                currentFragment = BANK_FRAGMENT;
                 break;
             case SHORTCUT_GRADES:
                 selectedFragment = new SubjectsFragment();
                 selectedIcon = R.id.nav_grades;
-                currentFragment = GRADES_FRAGMENT;
                 break;
             case SHORTCUT_ABSENCE:
                 selectedFragment = new AbsencesFragment();
                 selectedIcon = R.id.nav_absences;
-                currentFragment = ABSENCES_FRAGMENT;
                 break;
             default:
                 selectedFragment = new HomeFragment();
                 selectedIcon = R.id.nav_home;
-                currentFragment = HOME_FRAGMENT;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();

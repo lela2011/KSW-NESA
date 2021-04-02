@@ -16,12 +16,12 @@ import java.util.List;
 import ch.kanti.nesa.activities.MainActivity;
 import ch.kanti.nesa.daos.GradesDAO;
 import ch.kanti.nesa.daos.SubjectsDAO;
-import ch.kanti.nesa.tables.Grades;
+import ch.kanti.nesa.tables.Grade;
 
 public class GradesRepository {
-    GradesDAO gradesDAO;
-    SubjectsDAO subjectsDao;
-    Context context;
+    final GradesDAO gradesDAO;
+    final SubjectsDAO subjectsDao;
+    final Context context;
 
     public GradesRepository(Application application) {
         Database database = Database.getInstance(application);
@@ -37,16 +37,16 @@ public class GradesRepository {
         this.context = context;
     }
 
-    public void insert(List<Grades> grades) {
+    public void insert(List<Grade> grades) {
         Database.databaseWriteExecutor.execute(() -> {
             int newGradesSize = 0;
-            //grades.add(3, new Grades("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
+            //grades.add(3, new Grade("Bio 4 - 2P","B-2P-ZI", "03.09.2020", 6.0f, 1.0f, 4,  0));
             //grades.remove(1);
             //grades.get(4).setGrade(6.0f);
             int oldGradesSize = gradesDAO.size();
             if (oldGradesSize != 0) { //oldGradesSize <= grades.size() &&
-                List<Grades> oldGrades = gradesDAO.getAllGradesOrdered();
-                List<Grades> newGrades = new ArrayList<>(grades);
+                List<Grade> oldGrades = gradesDAO.getAllGradesOrdered();
+                List<Grade> newGrades = new ArrayList<>(grades);
 
                 for (int i = 0; i < oldGrades.size(); i++) {
                     for (int k = 0; k < newGrades.size(); k++) {
@@ -67,7 +67,7 @@ public class GradesRepository {
                     }
                 }
 
-                List<Grades> modifiedGrades = new ArrayList<>();
+                List<Grade> modifiedGrades = new ArrayList<>();
 
                 for (int i = 0; i < oldGrades.size(); i++) {
                     for (int k = 0; k < newGrades.size(); k++) {
@@ -83,7 +83,7 @@ public class GradesRepository {
 
                 List<Notification> notificationList = new ArrayList<>();
 
-                for (Grades grade : oldGrades) {
+                for (Grade grade : oldGrades) {
                     gradesDAO.deleteByGrade(grade.getSubjectId(), grade.getExam(), grade.getDate());
                     String deletedText = context.getString(R.string.deletedGrades1) + grade.getExam() + context.getString(R.string.deletedGrades2);
 
@@ -114,7 +114,7 @@ public class GradesRepository {
                 }
 
                 gradesDAO.insert(newGrades);
-                for (Grades grade : newGrades) {
+                for (Grade grade : newGrades) {
                     String addedText = context.getString(R.string.addedGrades1) + grade.getExam() + context.getString(R.string.addedGrades2);
 
                     float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());
@@ -144,7 +144,7 @@ public class GradesRepository {
                 }
 
 
-                for (Grades grade : modifiedGrades) {
+                for (Grade grade : modifiedGrades) {
                     gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
                     String moddedText = context.getString(R.string.modifiedGrades1) + grade.getExam() + context.getString(R.string.modifiedGrades2);
 
@@ -190,7 +190,7 @@ public class GradesRepository {
         });
     }
 
-    LiveData<List<Grades>> getBySubject(String passedSubject) {
+    LiveData<List<Grade>> getBySubject(String passedSubject) {
         return gradesDAO.getBySubject(passedSubject);
     }
 

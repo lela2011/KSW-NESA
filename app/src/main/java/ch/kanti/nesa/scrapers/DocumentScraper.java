@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 
 public class DocumentScraper {
 
-    static ExecutorService executorService = Executors.newFixedThreadPool(3);
+    static final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     public static Document getMainPage() {
         String username = App.sharedPreferences.getString("username", "");

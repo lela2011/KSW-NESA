@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey;
 public class BankStatement {
     @PrimaryKey
     @NonNull
-    private String pk;
-    private int order;
-    private String date;
-    private String title;
-    private float amount;
-    private float balance;
+    private final String pk;
+    private final int order;
+    private final String date;
+    private final String title;
+    private final float amount;
+    private final float balance;
 
     public BankStatement(@NonNull String pk, int order, String date, String title, float amount, float balance) {
         this.pk = pk;
@@ -29,48 +29,24 @@ public class BankStatement {
         return pk;
     }
 
-    public void setPk(@NonNull String pk) {
-        this.pk = pk;
-    }
-
     public int getOrder() {
         return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public float getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
     public float getBalance() {
         return balance;
-    }
-
-    public void setBalance(float balance) {
-        this.balance = balance;
     }
 
     public boolean compare(BankStatement statement) {

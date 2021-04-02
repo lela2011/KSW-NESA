@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class CookieAndAuth {
 
-    public HashMap<String, String> cookies;
-    public String authToken;
+    public final HashMap<String, String> cookies;
+    public final String authToken;
 
     public CookieAndAuth(HashMap<String, String> cookies, String authToken) {
         this.cookies = cookies;

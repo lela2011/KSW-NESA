@@ -18,8 +18,8 @@ import ch.kanti.nesa.daos.AbsenceDAO;
 import ch.kanti.nesa.tables.Absence;
 
 public class AbsenceRepository {
-    AbsenceDAO absenceDAO;
-    Context context;
+    final AbsenceDAO absenceDAO;
+    final Context context;
 
 
     public AbsenceRepository(Application application) {
@@ -34,6 +34,7 @@ public class AbsenceRepository {
         this.context = context;
     }
 
+    @SuppressWarnings("SuspiciousListRemoveInLoop")
     public void insert(List<Absence> absences) {
         Database.databaseWriteExecutor.execute(() -> {
 

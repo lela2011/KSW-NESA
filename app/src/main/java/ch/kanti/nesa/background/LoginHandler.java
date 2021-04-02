@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import ch.kanti.nesa.App;
-import ch.kanti.nesa.activities.LoginActivity;
 
 public class LoginHandler {
     //run credential checking on background thread

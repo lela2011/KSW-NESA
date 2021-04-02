@@ -1,14 +1,15 @@
 package ch.kanti.nesa.scrapers;
 
+import android.annotation.SuppressLint;
+
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.PromotionRule;
-import ch.kanti.nesa.activities.SplashActivity;
 import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Subject;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,6 +38,7 @@ public class ContentScrapers {
         return userInfo;
     }
 
+    @SuppressLint("ApplySharedPref")
     public static SubjectsAndGrades scrapeMarks(Document page) {
         ArrayList<String> gymProm = new ArrayList<>(Arrays.asList("B", "C", "D", "F", "(?!EW)E", "(?!MU)M", "P", "^(?!BG)G$", "^G{2}$", "BG", "s.+", ".+[(]EF[)]", ".+[(]SP[)]", "EW", "PHI", "REL", "MU"));
 
@@ -46,15 +48,15 @@ public class ContentScrapers {
 
         ArrayList<Element> overview = new ArrayList<>();
         ArrayList<Element> detailView = new ArrayList<>();
-        ArrayList<Subjects> subjects = new ArrayList<>();
-        ArrayList<Grades> gradesList = new ArrayList<>();
-        Float grade = 0f;
-        Float gradeAverage = 0f;
+        ArrayList<Subject> subjects = new ArrayList<>();
+        ArrayList<Grade> gradeList = new ArrayList<>();
+        float grade;
+        float gradeAverage;
 
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
         ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
         int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
-        App.editor.putInt("year", yearFinal).commit();
+        App.sharedPreferences.edit().putInt("year", yearFinal).commit();
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
         int i = 0;
@@ -113,7 +115,7 @@ public class ContentScrapers {
             } else {
                 gradeAverage = Float.parseFloat(gradeAverageString);
             }
-            subjects.add(new Subjects(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, counts, counts));
+            subjects.add(new Subject(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, counts, counts));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             if (grades.size() != 0){
                 grades.remove(0);
@@ -129,12 +131,12 @@ public class ContentScrapers {
                     } else {
                         grade = Float.parseFloat(gradeString);
                     }
-                    Float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
-                    gradesList.add(new Grades(name, subjectId, date, grade, weight, d, g));
+                    float weight = Float.parseFloat(grades.get(d).select("td").get(3).text());
+                    gradeList.add(new Grade(name, subjectId, date, grade, weight, d, g));
                 }
             }
         }
-        return new SubjectsAndGrades(subjects, gradesList);
+        return new SubjectsAndGrades(subjects, gradeList);
     }
 
     public static ArrayList<Absence> scrapeAbsences(Document page){
@@ -238,7 +240,8 @@ public class ContentScrapers {
         }
     }
 
-    public static void calculatePromotionPoints(List<Subjects> subjects) {
+    //TODO: Pluspunkte berchnen
+    public static void calculatePromotionPoints(List<Subject> subjects) {
         ArrayList<PromotionRule> gymRules = new ArrayList<>();
         gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", 2f/3f, 1f/3f, false));
         gymRules.add(new PromotionRule(2,"sFB","sBW", 0.5f, 0.5f, false));
@@ -275,7 +278,7 @@ public class ContentScrapers {
         int finalYear = App.sharedPreferences.getInt("year", -1);
         String department = App.sharedPreferences.getString("department", "Gymnasium");
 
-        subjects.add(new Subjects("Physik", "100", 6.0f, 2.0f, "sP-2P-HB", 16, 1, 1));
+        subjects.add(new Subject("Physik", "100", 6.0f, 2.0f, "sP-2P-HB", 16, 1, 1));
 
         if(department.equals("Gymnasium")) {
             for(int i = 0; i < gymRules.size(); i++) {
@@ -291,7 +294,7 @@ public class ContentScrapers {
                 ArrayList<Float> weight = new ArrayList<>();
 
                 for(int k = 0; k < subjects.size(); k++) {
-                    Subjects subject = subjects.get(k);
+                    Subject subject = subjects.get(k);
                     String id = subject.getId();
                     if(pat1.matcher(id).find()) {
                         grades.add(subject.getGradeAverage());

@@ -6,17 +6,17 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Subject;
 
 import java.util.List;
 
 @Dao
 public interface SubjectsDAO {
     //@Update
-    //void update(Subjects subjects);
+    //void update(Subject subjects);
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<Subjects> subjects);
+    void insert(List<Subject> subjects);
 
     @Query("UPDATE subjects_table SET gradeAverage = :average, pluspoints = :pluspoints WHERE id = :id")
     void updateAverage(Float average, Float pluspoints, String id);
@@ -25,7 +25,7 @@ public interface SubjectsDAO {
     void deleteAll();
 
     @Query("SELECT * FROM subjects_table")
-    LiveData<List<Subjects>> getSubjects();
+    LiveData<List<Subject>> getSubjects();
 
     @Query("SELECT id FROM subjects_table")
     List<String> getSubjectIds();

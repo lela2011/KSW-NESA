@@ -13,13 +13,13 @@ import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Subject;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {AccountInfo.class, BankStatement.class, Grades.class, Subjects.class, Absence.class}, version = 22, exportSchema = false)
+@androidx.room.Database(entities = {AccountInfo.class, BankStatement.class, Grade.class, Subject.class, Absence.class}, version = 22, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     //initialize Database
     private static volatile Database instance;

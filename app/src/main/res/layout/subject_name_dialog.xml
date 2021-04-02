@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/subject_name"
         android:inputType="text"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:importantForAutofill="no" />
 
 </LinearLayout>

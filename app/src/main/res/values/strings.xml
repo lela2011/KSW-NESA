@@ -3,8 +3,6 @@
     <string name="login_button_label">LOGIN</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="internet_dialog_message">You need to grant internet permission to use this app!</string>
-    <string name="internet_dialog_title">Internet permission</string>
     <string name="dialogButtonOk">OK</string>
     <string name="dialogButtonCancel">Cancel</string>
     <string name="loginErrorCredentials">There was an error logging in. Check your username or password</string>
@@ -41,13 +39,11 @@
     <string name="synced">Synced</string>
     <string name="average">Ø</string>
     <string name="plus">+</string>
-    <string name="back_to_overview">Back to overview</string>
     <string name="grade_details">Grade details</string>
     <string name="weight">Weight</string>
     <string name="grade">Grade</string>
     <string name="open_absences">Open:</string>
     <string name="course">Course</string>
-    <string name="time">Time</string>
     <string name="absenceType">Absence</string>
     <string name="delayType">Delay</string>
     <string name="department">Department</string>
@@ -83,4 +79,15 @@
     <string name="subject_name">Subject name</string>
 
     <string name="logout">Logout</string>
+
+    <string name="invalidValues">The entered values are invalid</string>
+
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="colour_customisation">Colour customisation</string>
+    <string name="upto">Up to</string>
+    <string name="save">save</string>
+    <string name="no_data_displayed">No data displayed</string>
+
 </resources>

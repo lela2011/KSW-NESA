@@ -4,27 +4,23 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "grades_table")
-public class Grades {
+public class Grade {
     @PrimaryKey(autoGenerate = true)
     int id;
-    private String subjectId;
-    private String exam;
-    private float grade;
-    private float weight;
-    private String date;
-    private int subjectNumber;
+    private final String subjectId;
+    private final String exam;
+    private final float grade;
+    private final float weight;
+    private final String date;
+    private final int subjectNumber;
 
     public int getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+    private final int order;
 
-    private int order;
-
-    public Grades(String exam, String subjectId, String date, float grade, float weight, int order, int subjectNumber) {
+    public Grade(String exam, String subjectId, String date, float grade, float weight, int order, int subjectNumber) {
         this.exam = exam;
         this.grade = grade;
         this.weight = weight;
@@ -38,16 +34,8 @@ public class Grades {
         return subjectId;
     }
 
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public int getId() {
@@ -62,35 +50,19 @@ public class Grades {
         return exam;
     }
 
-    public void setExam(String subject) {
-        this.exam = subject;
-    }
-
     public float getGrade() {
         return grade;
-    }
-
-    public void setGrade(float grade) {
-        this.grade = grade;
     }
 
     public float getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
-
     public int getSubjectNumber() {
         return subjectNumber;
     }
 
-    public void setSubjectNumber(int subjectNumber) {
-        this.subjectNumber = subjectNumber;
-    }
-
-    public boolean compare(Grades toCompare) {
+    public boolean compare(Grade toCompare) {
         return this.getExam().equals(toCompare.getExam()) &&
                 this.getSubjectId().equals(toCompare.getSubjectId()) &&
                 this.getDate().equals(toCompare.getDate()) &&
@@ -98,7 +70,7 @@ public class Grades {
                 this.getWeight() == toCompare.getWeight();
     }
 
-    public boolean gradeModified(Grades toCompare) {
+    public boolean gradeModified(Grade toCompare) {
         return this.getExam().equals(toCompare.getExam()) &&
                 this.getSubjectId().equals(toCompare.getSubjectId()) &&
                 this.getDate().equals(toCompare.getDate());

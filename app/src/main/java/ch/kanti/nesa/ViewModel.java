@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grades;
-import ch.kanti.nesa.tables.Subjects;
+import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Subject;
 
 import java.util.List;
 
@@ -58,11 +58,11 @@ public class ViewModel extends AndroidViewModel {
         return bankRepository.getBalance();
     }
 
-    public void insertGrades(List<Grades> grades) {
+    public void insertGrades(List<Grade> grades) {
         gradesRepository.insert(grades);
     }
 
-    public LiveData<List<Grades>> getGradeBySubject(String passedSubject) {
+    public LiveData<List<Grade>> getGradeBySubject(String passedSubject) {
         return gradesRepository.getBySubject(passedSubject);
     }
 
@@ -70,11 +70,11 @@ public class ViewModel extends AndroidViewModel {
         gradesRepository.deleteAll();
     }
 
-    public void insertSubjects(List<Subjects> subjects) {
+    public void insertSubjects(List<Subject> subjects) {
         subjectsRepository.insert(subjects);
     }
 
-    public LiveData<List<Subjects>> getSubjects() {
+    public LiveData<List<Subject>> getSubjects() {
         return subjectsRepository.getSubjects();
     }
 

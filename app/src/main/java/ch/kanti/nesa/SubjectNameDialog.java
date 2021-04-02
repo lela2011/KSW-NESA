@@ -3,7 +3,6 @@ package ch.kanti.nesa;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
-import javax.security.auth.Subject;
 
 public class SubjectNameDialog extends AppCompatDialogFragment {
 
@@ -37,18 +34,12 @@ public class SubjectNameDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle(subjectId)
-                .setNegativeButton(getString(R.string.dialogButtonCancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton(getString(R.string.dialogButtonCancel), (dialog, which) -> {
 
-                    }
                 })
-                .setPositiveButton(getString(R.string.dialogButtonOk), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String newName = subjectName.getText().toString();
-                        listener.applyText(subjectId, newName);
-                    }
+                .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
+                    String newName = subjectName.getText().toString();
+                    listener.applyText(subjectId, newName);
                 });
 
         return builder.create();

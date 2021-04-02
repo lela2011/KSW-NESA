@@ -15,7 +15,8 @@
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/kantilogo" />
+        android:src="@drawable/ic_logo_ksw"
+        android:contentDescription="@string/kanti_logo" />
 
     <EditText
         android:id="@+id/username_ET"
@@ -24,7 +25,8 @@
         android:layout_marginBottom="16dp"
         android:hint="@string/username"
         android:imeOptions="actionNext"
-        android:inputType="text" />
+        android:inputType="text"
+        android:importantForAutofill="no" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,7 +39,8 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/password"
             android:imeOptions="actionDone"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <ImageButton
             android:id="@+id/show_hide_pwd"
@@ -47,7 +50,8 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/show_pwd"/>
+            android:src="@drawable/show_pwd"
+            tools:ignore="HardcodedText" />
 
     </FrameLayout>
 

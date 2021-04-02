@@ -12,7 +12,7 @@ import java.util.List;
 
 public class InfoRepository {
 
-    AccountInfoDAO accountInfoDAO;
+    final AccountInfoDAO accountInfoDAO;
 
     public InfoRepository(Application application) {
         Database database = Database.getInstance(application);
