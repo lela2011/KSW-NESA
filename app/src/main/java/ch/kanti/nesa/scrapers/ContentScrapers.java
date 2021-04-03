@@ -24,17 +24,31 @@ import java.util.regex.Pattern;
 
 public class ContentScrapers {
 
-    public static ArrayList<AccountInfo> scrapeMain(Document page){
-        Elements table = page.select("div.mdl-cell:nth-child(5) > table:nth-child(2) > tbody:nth-child(1) > tr");
-        ArrayList<AccountInfo> userInfo = new ArrayList<>(8);
-        for (int i = 1; i < 9; i++) {
-            Element entry = table.get(i - 1);
+    public static ArrayList<AccountInfo> scrapeMain(Document mainPage, Document emailPage){
+        Elements tableLoggedOut = mainPage.select("div.mdl-cell:nth-child(4) > table:nth-child(2) > tbody:nth-child(1) > tr");
+        Elements tableNotLoggedOut = mainPage.select("div.mdl-cell:nth-child(5) > table:nth-child(2) > tbody:nth-child(1) > tr");
+        String schoolMail = emailPage.select("#f0").get(0).attr("value");
+        String privateMail = emailPage.select("#f1").get(0).attr("value");
+        Elements table;
+
+        if(tableLoggedOut.size() > tableNotLoggedOut.size()) {
+            table = tableLoggedOut;
+        } else {
+            table = tableNotLoggedOut;
+        }
+
+        ArrayList<AccountInfo> userInfo = new ArrayList<>(10);
+        for (int i = 0; i < table.size(); i++) {
+            Element entry = table.get(i);
             String text = entry.child(1).text();
             if(text.equals("")){
                 text = "-";
             }
             userInfo.add(new AccountInfo(text, i));
         }
+
+        userInfo.add(new AccountInfo(schoolMail, userInfo.size()));
+        userInfo.add(new AccountInfo(privateMail, userInfo.size()+1));
         return userInfo;
     }
 
@@ -56,7 +70,7 @@ public class ContentScrapers {
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
         ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
         int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
-        App.sharedPreferences.edit().putInt("year", yearFinal).commit();
+        App.sharedPreferences.edit().putInt("year", yearFinal).apply();
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
         int i = 0;
@@ -199,15 +213,6 @@ public class ContentScrapers {
             statements.add(new BankStatement(pk ,i, date, name, amount, balance));
         }
         return statements;
-    }
-
-    public static ArrayList<AccountInfo> scrapeEmail(Document page) {
-        ArrayList<AccountInfo> emails = new ArrayList<>();
-        String schoolMail = page.select("#f0").get(0).attr("value");
-        String privateMail = page.select("#f1").get(0).attr("value");
-        emails.add(new AccountInfo(schoolMail, 9));
-        emails.add(new AccountInfo(privateMail, 10));
-        return emails;
     }
 
     public static float calculatePluspoints(float gradeExact){

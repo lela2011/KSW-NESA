@@ -6,20 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.jsoup.nodes.Document;
-
-import java.util.ArrayList;
-
 import ch.kanti.nesa.AbsenceRepository;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.BankRepository;
 import ch.kanti.nesa.GradesRepository;
 import ch.kanti.nesa.SubjectsRepository;
-import ch.kanti.nesa.objects.SubjectsAndGrades;
-import ch.kanti.nesa.scrapers.ContentScrapers;
-import ch.kanti.nesa.scrapers.DocumentScraper;
-import ch.kanti.nesa.tables.Absence;
-import ch.kanti.nesa.tables.BankStatement;
+import ch.kanti.nesa.objects.LoginAndScrape;
+import ch.kanti.nesa.scrapers.Network;
 
 public class SyncWorker extends Worker {
 
@@ -32,31 +25,30 @@ public class SyncWorker extends Worker {
     public Result doWork() {
         String username = App.sharedPreferences.getString("username","");
         String password = App.sharedPreferences.getString("password","");
-        if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
-            Document gradesPage, absencesPage, bankPage;
-            gradesPage = DocumentScraper.getMarkPage();
-            absencesPage = DocumentScraper.getAbsencesPage();
-            bankPage = DocumentScraper.getBankPage();
+        boolean firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, true);
 
-            ArrayList<Absence> absences = ContentScrapers.scrapeAbsences(absencesPage);
-            SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);
-            ArrayList<BankStatement> bankStatements = ContentScrapers.scrapeBank(bankPage);
+        GradesRepository gradesRepository = new GradesRepository(getApplicationContext());
+        SubjectsRepository subjectsRepository = new SubjectsRepository(getApplicationContext());
+        BankRepository bankRepository = new BankRepository(getApplicationContext());
+        AbsenceRepository absenceRepository = new AbsenceRepository(getApplicationContext());
 
-            Context context = getApplicationContext();
-
-            GradesRepository gradesRepository = new GradesRepository(context);
-            SubjectsRepository subjectsRepository = new SubjectsRepository(context);
-            BankRepository bankRepository = new BankRepository(context);
-            AbsenceRepository absenceRepository = new AbsenceRepository(context);
-
-            gradesRepository.insert(subjectsAndGrades.gradeList);
-            subjectsRepository.insert(subjectsAndGrades.subjectList);
-            bankRepository.insert(bankStatements);
-            absenceRepository.insert(absences);
-
-            return Result.success();
+        if (!firstLogin){
+            if (DeviceOnline.check()) {
+                LoginAndScrape scrape = Network.checkLoginAndPages(true, false, username, password);
+                if (scrape.isLoginCorrect()) {
+                    gradesRepository.insert(scrape.getSubjectsAndGrades().getGradeList());
+                    subjectsRepository.insert(scrape.getSubjectsAndGrades().getSubjectList());
+                    bankRepository.insert(scrape.getBankStatements());
+                    absenceRepository.insert(scrape.getAbsences());
+                    return Result.success();
+                } else {
+                    return Result.failure();
+                }
+            } else {
+                return Result.retry();
+            }
         } else {
-            return Result.retry();
+            return Result.failure();
         }
     }
 }

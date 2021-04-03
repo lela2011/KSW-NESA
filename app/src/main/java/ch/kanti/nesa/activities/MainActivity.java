@@ -11,32 +11,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
-import ch.kanti.nesa.background.LoginHandler;
+import ch.kanti.nesa.background.DeviceOnline;
 import ch.kanti.nesa.databinding.ActivityMainBinding;
 import ch.kanti.nesa.fragments.AbsencesFragment;
 import ch.kanti.nesa.fragments.BankFragment;
 import ch.kanti.nesa.fragments.GradesFragment;
+import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
 import ch.kanti.nesa.fragments.SubjectsFragment;
-import ch.kanti.nesa.fragments.HomeFragment;
-import ch.kanti.nesa.objects.SubjectsAndGrades;
-import ch.kanti.nesa.scrapers.ContentScrapers;
-import ch.kanti.nesa.scrapers.DocumentScraper;
-import ch.kanti.nesa.tables.Absence;
-import ch.kanti.nesa.tables.BankStatement;
-import ch.kanti.nesa.tables.Grade;
-import ch.kanti.nesa.tables.Subject;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.jsoup.nodes.Document;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import ch.kanti.nesa.objects.LoginAndScrape;
+import ch.kanti.nesa.scrapers.Network;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.HomeFragmentShortcut {
 
@@ -51,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    Document mainPage, markPage, absencesPage, bankPage, emailPage;
-
     boolean firstLogin;
 
     @Override
@@ -63,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         View view = binding.getRoot();
         setContentView(view);
 
+        boolean firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, true);
+
         BottomNavigationView bottomNav = binding.bottomNavigation;
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
@@ -72,28 +64,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         }
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
-        firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, false);
 
-        if(firstLogin) {
-            mainPage = SplashActivity.mainPage;
-            markPage = SplashActivity.markPage;
-            absencesPage = SplashActivity.absencesPage;
-            bankPage = SplashActivity.bankPage;
-            emailPage = SplashActivity.emailPage;
-            initializeScraping();
-        }
         username = App.sharedPreferences.getString("username", "");
         password = App.sharedPreferences.getString("password", "");
 
         binding.swipeRefresh.setOnRefreshListener(() -> {
             binding.swipeRefresh.setColorSchemeColors(getColor(R.color.primaryColor));
-            // TODO: Activate syncData for release
             executor.execute(this::syncData);
         });
 
-        if(!firstLogin){
+        if(!firstLogin) {
             executor.execute(this::syncData);
-            // TODO: Activate syncData for release
+        }
+
+        if(firstLogin) {
+            App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, false).apply();
         }
 
         Intent intent = getIntent();
@@ -133,78 +118,42 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         return true;
     };
 
-    private void initializeScraping() {
-        //scrapeMain();
-        scrapeBank();
-        scrapeMarks();
-        scrapeAbsences();
-    }
-
-    /*private void scrapeMain() {
-        ArrayList<AccountInfo> info = ContentScrapers.scrapeMain(mainPage);
-        info.addAll(ContentScrapers.scrapeEmail(emailPage));
-        viewModel.insertInfo(info);
-    }*/
-
-    private void scrapeMarks() {
-        SubjectsAndGrades subjectsAndGrades = ContentScrapers.scrapeMarks(markPage);
-        ArrayList<Grade> grades = subjectsAndGrades.gradeList;
-        ArrayList<Subject> subjects = subjectsAndGrades.subjectList;
-
-        viewModel.insertSubjects(subjects);
-        viewModel.insertGrades(grades);
-    }
-
-    private void scrapeAbsences() {
-        ArrayList<Absence> absences = ContentScrapers.scrapeAbsences(absencesPage);
-        viewModel.insertAbsences(absences);
-    }
-
-    private void scrapeBank() {
-        ArrayList<BankStatement> debits = ContentScrapers.scrapeBank(bankPage);
-        viewModel.insertBank(debits);
-    }
-
-    @SuppressLint("ApplySharedPref")
     private void syncData() {
-        //password = AES.encrypt("Lela&2011", App.passwordKey);
-        if(App.isDeviceOnline() && LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_SUCCESSFUL) {
-            //mainPage = DocumentScraper.getMainPage();
-            markPage = DocumentScraper.getMarkPage();
-            absencesPage = DocumentScraper.getAbsencesPage();
-            bankPage = DocumentScraper.getBankPage();
-            emailPage = DocumentScraper.getEmailPage();
-            initializeScraping();
+        if(DeviceOnline.check()) {
+            LoginAndScrape scrape = Network.checkLoginAndPages(true, false, username, password);
+            if (scrape.isLoginCorrect()) {
+                viewModel.insertSubjects(scrape.getSubjectsAndGrades().getSubjectList());
+                viewModel.insertGrades(scrape.getSubjectsAndGrades().getGradeList());
+                viewModel.insertBank(scrape.getBankStatements());
+                viewModel.insertAbsences(scrape.getAbsences());
+            } else {
+                runOnUiThread(()->{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("Login")
+                            .setMessage("Your username or password changed. You're about to be logged out")
+                            .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
+                                App.sharedPreferences.edit().putString("username", "").apply();
+                                App.sharedPreferences.edit().putString("password", "").apply();
+                                App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).apply();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                                viewModel.deleteAllBank();
+                                viewModel.deleteAllAbsences();
+                                viewModel.deleteAllSubjects();
+                                viewModel.deleteAllGrades();
+                                viewModel.deleteAllAccountInfo();
+                            })
+                            .setCancelable(false);
+                    builder.show();
+                });
+            }
             binding.swipeRefresh.setRefreshing(false);
             runOnUiThread(()-> Toast.makeText(this, getString(R.string.synced), Toast.LENGTH_SHORT).show());
-        } else if (LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_FAILED ||
-                LoginHandler.checkLoginCredentials(username, password) == App.LOGIN_ERROR) {
-            runOnUiThread(()->{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Login")
-                        .setMessage("Your username or password changed. You're about to be logged out")
-                        .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
-                            App.sharedPreferences.edit().putString("username", "").commit();
-                            App.sharedPreferences.edit().putString("password", "").commit();
-                            App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).commit();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                            viewModel.deleteAllBank();
-                            viewModel.deleteAllAbsences();
-                            viewModel.deleteAllSubjects();
-                            viewModel.deleteAllGrades();
-                            viewModel.deleteAllAccountInfo();
-                        })
-                        .setCancelable(false);
-                builder.show();
-            });
         } else {
             binding.swipeRefresh.setRefreshing(false);
         }
     }
-
-
 
     @Override
     public void onShortcutClicked(int shortcut) {

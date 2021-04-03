@@ -6,11 +6,19 @@ import ch.kanti.nesa.tables.Subject;
 import java.util.ArrayList;
 
 public class SubjectsAndGrades {
-    public final ArrayList<Subject> subjectList;
-    public final ArrayList<Grade> gradeList;
+    private final ArrayList<Subject> subjectList;
+    private final ArrayList<Grade> gradeList;
 
     public SubjectsAndGrades(ArrayList<Subject> subjectList, ArrayList<Grade> gradeList) {
         this.subjectList = subjectList;
         this.gradeList = gradeList;
+    }
+
+    public ArrayList<Subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public ArrayList<Grade> getGradeList() {
+        return gradeList;
     }
 }

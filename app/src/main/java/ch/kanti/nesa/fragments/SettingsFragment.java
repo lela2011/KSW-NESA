@@ -72,12 +72,12 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
                 float range1f = Float.parseFloat(range1);
                 float range2f = Float.parseFloat(range2);
                 if (range1f >= 1.0f && range1f <= 6.0f && range2f>= 1.0f && range2f <= 6.0f && range1f != range2f) {
-                    App.sharedPreferences.edit().putInt("colCol1", col1).commit();
-                    App.sharedPreferences.edit().putInt("colCol2", col2).commit();
-                    App.sharedPreferences.edit().putInt("colCol3", col3).commit();
-                    App.sharedPreferences.edit().putInt("colCol4", col4).commit();
-                    App.sharedPreferences.edit().putFloat("colRange1", range1f).commit();
-                    App.sharedPreferences.edit().putFloat("colRange2", range2f).commit();
+                    App.sharedPreferences.edit().putInt("colCol1", col1).apply();
+                    App.sharedPreferences.edit().putInt("colCol2", col2).apply();
+                    App.sharedPreferences.edit().putInt("colCol3", col3).apply();
+                    App.sharedPreferences.edit().putInt("colCol4", col4).apply();
+                    App.sharedPreferences.edit().putFloat("colRange1", range1f).apply();
+                    App.sharedPreferences.edit().putFloat("colRange2", range2f).apply();
                 } else {
                     Toast.makeText(getContext(), getText(R.string.invalidValues), Toast.LENGTH_SHORT).show();
                 }
