@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 
 import ch.kanti.nesa.adapters.SubjectAdapter;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.scrapers.ContentScrapers;
 
 public class SubjectsFragment extends Fragment implements SubjectNameDialog.DialogListener {
 
@@ -58,7 +59,13 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
         viewModel.getSubjects().observe(getViewLifecycleOwner(), subjects -> {
             subjectAdapter.setStatements(subjects);
             recyclerView.scrollToPosition(position);
-            //ContentScrapers.calculatePromotionPoints(subjects);
+            float pluspoints = ContentScrapers.calculatePromotionPoints(subjects);
+            binding.pluspoints.setText(df.format(pluspoints));
+            if (pluspoints > 0) {
+                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.green));
+            } else {
+                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
+            }
         });
 
         viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), aFloat -> {
@@ -69,15 +76,6 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
                 binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.orange));
             } else {
                 binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.red));
-            }
-        });
-
-        viewModel.getPluspoints().observe(getViewLifecycleOwner(), aFloat -> {
-            binding.pluspoints.setText(df.format(aFloat));
-            if (aFloat > 0) {
-                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.green));
-            } else {
-                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
             }
         });
 

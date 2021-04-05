@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.activities.MainActivity;
@@ -18,9 +19,12 @@ import ch.kanti.nesa.ViewModel;
 
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.FragmentHomeBinding;
+import ch.kanti.nesa.scrapers.ContentScrapers;
+import ch.kanti.nesa.tables.Subject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import static ch.kanti.nesa.activities.MainActivity.SHORTCUT_ABSENCE;
 import static ch.kanti.nesa.activities.MainActivity.SHORTCUT_BANK;
@@ -94,15 +98,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        viewModel.getPluspoints().observe(getViewLifecycleOwner(), aFloat -> {
-            binding.pluspoints.setText(String.valueOf(df.format(aFloat)));
-            if (aFloat != null) {
-                if (aFloat > 0) {
+        viewModel.getSubjects().observe(getViewLifecycleOwner(), subjects -> {
+            if (subjects != null) {
+                float pluspoints = ContentScrapers.calculatePromotionPoints(subjects);
+                binding.pluspoints.setText(df.format(pluspoints));
+                if (pluspoints > 0) {
                     binding.pluspoints.setTextColor(ContextCompat.getColor(getContext() , R.color.green));
                 } else {
                     binding.pluspoints.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
             }
+
         });
 
         viewModel.getAbsenceSize().observe(getViewLifecycleOwner(), integer -> {

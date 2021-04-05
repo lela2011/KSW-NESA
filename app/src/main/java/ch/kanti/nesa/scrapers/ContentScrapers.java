@@ -335,7 +335,7 @@ public class ContentScrapers {
         }
     }
 
-    public static void calculatePromotionPoints(List<Subject> subjects) {
+    public static float calculatePromotionPoints(List<Subject> subjects) {
 
         ArrayList<Float> pluspoints = new ArrayList<>();
 
@@ -346,14 +346,54 @@ public class ContentScrapers {
         gymRules.add(new PromotionRule(2,"sB","sC", "NULL", 0.5f, 0.5f, 0, true));
         gymRules.add(new PromotionRule(2,"MU","BG", "NULL", 0.5f, 0.5f, 0, true));
 
-        subjects.add(new Subject("Physik", "100", 5.25f, 1.5f, "sP-2P-HB", 16, 1, 1));
+        ArrayList<PromotionRule> fms12Rules = new ArrayList<>();
+        fms12Rules.add(new PromotionRule(2, "sM", "M", "NULL", 0.5f, 0.5f, 0,true));
+        fms12Rules.add(new PromotionRule(2, "sPY", "PY", "NULL",0.5f, 0.5f,0, true));
+        fms12Rules.add(new PromotionRule(2, "MU", ".+[(]SP[)]","NULL", 2f/3f, 1f/3f,0, false));
+        fms12Rules.add(new PromotionRule(2, "sPBF", "sBFU","NULL", 0.5f, 0.5f,0, true));
+        fms12Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "sZWT", "sDKF", "NULL",0.25f, 0.75f, 0,true));
+        fms12Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
+        fms12Rules.add(new PromotionRule(2, "sKoiK", "E", "NULL",1f/3f, 2f/3f,0, true));
+
+        ArrayList<PromotionRule> fms3Rules = new ArrayList<>();
+        fms3Rules.add(new PromotionRule(2, "sM", "M","NULL", 0.5f, 0.5f,0, true));
+        fms3Rules.add(new PromotionRule(2, "sPY", "PY","NULL", 0.5f, 0.5f, 0,true));
+        fms3Rules.add(new PromotionRule(2, "SPO", "RH", "NULL",2f/3f, 1f/3f,0, false));
+        fms3Rules.add(new PromotionRule(2, "sMU", ".+[(]SP[)]","NULL", 2f/3f, 1f/3f,0, false));
+        fms3Rules.add(new PromotionRule(2, "sPBF", "sBFU", "NULL",0.5f, 0.5f,0, true));
+        fms3Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "sZWT", "sDKF", "NULL",0.25f, 0.75f, 0,true));
+        fms3Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
+        fms3Rules.add(new PromotionRule(2, "sKoiK", "E","NULL", 1f/3f, 2f/3f,0, true));
+
+        //subjects.add(new Subject("Physik", "100", 5.0f, 1.5f, "sP-2P-HB", 16, 1, 1));
+
+        int finalYear = App.sharedPreferences.getInt("year", -1);
+        String department = App.sharedPreferences.getString("department", "Gymnasium");
+
+        ArrayList<PromotionRule> rules = new ArrayList<>();
+
+        if(department.equals("Gymnasium")) {
+            rules.addAll(gymRules);
+        } else {
+            if (finalYear < 3) {
+                rules.addAll(fms12Rules);
+            } else {
+                rules.addAll(fms3Rules);
+            }
+        }
 
         HashMap<String, Float> subjectsMap = new HashMap<>();
         for(Subject temp : subjects) {
-            subjectsMap.put(temp.getId(), temp.getGradeAverage());
+            if (temp.getCountsAverage() == 1) {
+                subjectsMap.put(temp.getId(), temp.getGradeAverage());
+            }
         }
 
-        for (PromotionRule rule : gymRules) {
+        for (PromotionRule rule : rules) {
 
             Pattern pat1 = Pattern.compile(rule.getId1());
             Pattern pat2 = Pattern.compile(rule.getId2());
@@ -388,13 +428,16 @@ public class ContentScrapers {
         }
         ArrayList<Float> unmodified = new ArrayList<>(subjectsMap.values());
         for (float average : unmodified) {
-            pluspoints.add(calculatePluspoints(average));
+            float calculatedPluspoint = calculatePluspoints(average);
+            if (calculatedPluspoint != -10.0f) {
+                pluspoints.add(calculatedPluspoint);
+            }
         }
 
         float pluspointsSum = (float) pluspoints.stream()
                 .mapToDouble(Float::floatValue)
                 .sum();
 
-        Log.d("TAG", String.format("calculatePromotionPoints: %s", pluspointsSum));
+        return pluspointsSum;
     }
 }
