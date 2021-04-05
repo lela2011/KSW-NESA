@@ -32,7 +32,7 @@ public class SyncWorker extends Worker {
         BankRepository bankRepository = new BankRepository(getApplicationContext());
         AbsenceRepository absenceRepository = new AbsenceRepository(getApplicationContext());
 
-        if (!firstLogin){
+        if (/*!firstLogin*/ false){
             if (DeviceOnline.check()) {
                 LoginAndScrape scrape = Network.checkLoginAndPages(true, false, username, password);
                 if (scrape.isLoginCorrect()) {

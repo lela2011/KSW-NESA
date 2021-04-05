@@ -1,6 +1,7 @@
 package ch.kanti.nesa.scrapers;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.PromotionRule;
@@ -15,12 +16,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.sql.PreparedStatement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ContentScrapers {
 
@@ -150,6 +155,7 @@ public class ContentScrapers {
                 }
             }
         }
+        calculatePromotionPoints(subjects);
         return new SubjectsAndGrades(subjects, gradeList);
     }
 
@@ -246,7 +252,7 @@ public class ContentScrapers {
     }
 
     //TODO: Pluspunkte berchnen
-    public static void calculatePromotionPoints(List<Subject> subjects) {
+    public static void calculatePromotionPointsA(List<Subject> subjects) {
         ArrayList<PromotionRule> gymRules = new ArrayList<>();
         gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", 2f/3f, 1f/3f, false));
         gymRules.add(new PromotionRule(2,"sFB","sBW", 0.5f, 0.5f, false));
@@ -283,7 +289,7 @@ public class ContentScrapers {
         int finalYear = App.sharedPreferences.getInt("year", -1);
         String department = App.sharedPreferences.getString("department", "Gymnasium");
 
-        subjects.add(new Subject("Physik", "100", 6.0f, 2.0f, "sP-2P-HB", 16, 1, 1));
+        subjects.add(new Subject("Physik", "100", 5.25f, 1.5f, "sP-2P-HB", 16, 1, 1));
 
         if(department.equals("Gymnasium")) {
             for(int i = 0; i < gymRules.size(); i++) {
@@ -316,16 +322,79 @@ public class ContentScrapers {
                 if(grades.size() == rule.getSubjectsCount()) {
                     float average = 0;
                     if(rule.isRound()) {
-                        for (int l = 0; l < grades.size(); i++) {
+                        for (int l = 0; l < grades.size(); l++) {
                             grades.set(l, Math.round(grades.get(l)*2)/2.0f);
                         }
                     }
-                    for (int l = 0; l < grades.size(); i++) {
+                    for (int l = 0; l < grades.size(); l++) {
                         average = average + grades.get(l) * weight.get(l);
                     }
                     pluspoints.add(calculatePluspoints(average));
                 }
             }
         }
+    }
+
+    public static void calculatePromotionPoints(List<Subject> subjects) {
+
+        ArrayList<Float> pluspoints = new ArrayList<>();
+
+        ArrayList<PromotionRule> gymRules = new ArrayList<>();
+        gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", "NULL", 2f/3f, 1f/3f, 0, false));
+        gymRules.add(new PromotionRule(2,"sFB","sBW", "NULL", 0.5f, 0.5f, 0, false));
+        gymRules.add(new PromotionRule(2,"sP","sM", "NULL", 0.5f, 0.5f, 0, true));
+        gymRules.add(new PromotionRule(2,"sB","sC", "NULL", 0.5f, 0.5f, 0, true));
+        gymRules.add(new PromotionRule(2,"MU","BG", "NULL", 0.5f, 0.5f, 0, true));
+
+        subjects.add(new Subject("Physik", "100", 5.25f, 1.5f, "sP-2P-HB", 16, 1, 1));
+
+        HashMap<String, Float> subjectsMap = new HashMap<>();
+        for(Subject temp : subjects) {
+            subjectsMap.put(temp.getId(), temp.getGradeAverage());
+        }
+
+        for (PromotionRule rule : gymRules) {
+
+            Pattern pat1 = Pattern.compile(rule.getId1());
+            Pattern pat2 = Pattern.compile(rule.getId2());
+            Pattern pat3 = Pattern.compile(rule.getId3());
+
+            List<String> subs = subjectsMap.keySet()
+                    .stream()
+                    .filter(c -> pat1.matcher(c).find() | pat2.matcher(c).find() | pat3.matcher(c).find())
+                    .collect(Collectors.toList());
+
+            float average = 0;
+
+            if (subs.size() == rule.getSubjectsCount()) {
+                for (String foundSub : subs) {
+                    float grade = subjectsMap.get(foundSub);
+                    if (rule.isRound()) {
+                        grade = Math.round(grade*2.0f)/2.0f;
+                    }
+                    if (pat1.matcher(foundSub).find()) {
+                        average += grade * rule.getWeight1();
+                        subjectsMap.remove(foundSub);
+                    } else if (pat2.matcher(foundSub).find()) {
+                        average += grade * rule.getWeight2();
+                        subjectsMap.remove(foundSub);
+                    } else if (pat3.matcher(foundSub).find()) {
+                        average += grade * rule.getWeight3();
+                        subjectsMap.remove(foundSub);
+                    }
+                }
+                pluspoints.add(calculatePluspoints(average));
+            }
+        }
+        ArrayList<Float> unmodified = new ArrayList<>(subjectsMap.values());
+        for (float average : unmodified) {
+            pluspoints.add(calculatePluspoints(average));
+        }
+
+        float pluspointsSum = (float) pluspoints.stream()
+                .mapToDouble(Float::floatValue)
+                .sum();
+
+        Log.d("TAG", String.format("calculatePromotionPoints: %s", pluspointsSum));
     }
 }
