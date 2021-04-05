@@ -14,12 +14,14 @@ public class Student {
     private final String name;
     private final String gender;
     private final String degree;
-    private final boolean bilingual;
+    private final String bilingual;
     private final String course;
     private final String address;
     private final String phone;
+    private final String additionalCourses;
+    private final String status;
 
-    public Student(String name, String gender, String degree, boolean bilingual, String course, String address, String phone) {
+    public Student(String name, String gender, String degree, String bilingual, String course, String address, String phone, String additionalCourses, String status) {
         this.name = name;
         this.gender = gender;
         this.degree = degree;
@@ -27,6 +29,8 @@ public class Student {
         this.course = course;
         this.address = address;
         this.phone = phone;
+        this.additionalCourses = additionalCourses;
+        this.status = status;
     }
 
     public int getPk() {
@@ -45,7 +49,7 @@ public class Student {
         return degree;
     }
 
-    public boolean isBilingual() {
+    public String getBilingual() {
         return bilingual;
     }
 
@@ -61,13 +65,27 @@ public class Student {
         return phone;
     }
 
+    public String getAdditionalCourses() {
+        return additionalCourses;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setPk(int pk) {
+        this.pk = pk;
+    }
+
     public boolean equals(Student student) {
         return this.name.equals(student.getName()) &&
                 this.gender.equals(student.getGender()) &&
                 this.degree.equals(student.getDegree()) &&
-                this.bilingual == student.isBilingual() &&
+                this.bilingual == student.getBilingual() &&
                 this.course.equals(student.getCourse()) &&
                 this.address.equals(student.getAddress()) &&
-                this.phone.equals(student.getPhone());
+                this.phone.equals(student.getPhone()) &&
+                this.additionalCourses.equals(student.getAdditionalCourses()) &&
+                this.status.equals(student.getStatus());
     }
 }

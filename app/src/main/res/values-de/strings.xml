@@ -84,4 +84,7 @@
     <string name="upto">Bis</string>
     <string name="save">Speichern</string>
     <string name="no_data_displayed">Keine Informationen angezeigt</string>
+    <string name="gender">Geschlecht</string>
+    <string name="additional_courses">Zusätzliche Klassen</string>
+    <string name="status">Status</string>
 </resources>

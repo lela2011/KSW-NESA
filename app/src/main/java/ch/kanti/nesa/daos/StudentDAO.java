@@ -21,6 +21,6 @@ public interface StudentDAO {
     @Query("SELECT * FROM student_table")
     List<Student> getStudentsSync();
 
-    @Query("DELETE FROM student_table WHERE name = :name")
-    void delete(String name);
+    @Query("DELETE FROM student_table")
+    void deleteAll();
 }

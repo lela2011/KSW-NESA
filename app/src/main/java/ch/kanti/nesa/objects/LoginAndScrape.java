@@ -8,6 +8,7 @@ import java.util.HashMap;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
+import ch.kanti.nesa.tables.Student;
 
 public class LoginAndScrape {
 
@@ -16,14 +17,16 @@ public class LoginAndScrape {
     private final ArrayList<AccountInfo> accountInfos;
     private final ArrayList<Absence> absences;
     private final ArrayList<BankStatement> bankStatements;
+    private final ArrayList<Student> students;
     private final SubjectsAndGrades subjectsAndGrades;
 
-    public LoginAndScrape(boolean loginCorrect, boolean checkSuccessful, ArrayList<AccountInfo> accountInfos, ArrayList<Absence> absences, ArrayList<BankStatement> bankStatements, SubjectsAndGrades subjectsAndGrades) {
+    public LoginAndScrape(boolean loginCorrect, boolean checkSuccessful, ArrayList<AccountInfo> accountInfos, ArrayList<Absence> absences, ArrayList<BankStatement> bankStatements, ArrayList<Student> students, SubjectsAndGrades subjectsAndGrades) {
         this.loginCorrect = loginCorrect;
         this.checkSuccessful = checkSuccessful;
         this.accountInfos = accountInfos;
         this.absences = absences;
         this.bankStatements = bankStatements;
+        this.students = students;
         this.subjectsAndGrades = subjectsAndGrades;
     }
 
@@ -45,6 +48,10 @@ public class LoginAndScrape {
 
     public ArrayList<BankStatement> getBankStatements() {
         return bankStatements;
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
     }
 
     public SubjectsAndGrades getSubjectsAndGrades() {

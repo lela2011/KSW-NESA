@@ -89,5 +89,8 @@
     <string name="upto">Up to</string>
     <string name="save">save</string>
     <string name="no_data_displayed">No data displayed</string>
+    <string name="gender">Gender</string>
+    <string name="additional_courses">Additional courses</string>
+    <string name="status">Status</string>
 
 </resources>

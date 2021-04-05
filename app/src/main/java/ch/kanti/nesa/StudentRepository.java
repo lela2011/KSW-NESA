@@ -33,36 +33,10 @@ public class StudentRepository {
     }
 
     public void insert(List<Student> students) {
-        Database.databaseWriteExecutor.execute(()->{
-            int newSubjectsSize = 0;
-            List<Student> oldStudents = studentDAO.getStudentsSync();
-            for (int i = 0; i < oldStudents.size(); i++) {
-                for (int k = 0; k < students.size(); k++) {
-                    k = newSubjectsSize;
-                    if (oldStudents.get(i).equals(students.get(k))) {
-                        students.remove(k);
-                        oldStudents.remove(i);
-                        i--;
-                        break;
-                    } else if (i+1 < oldStudents.size()) {
-                        if (oldStudents.get(i+1).equals(students.get(k))) {
-                            students.remove(k);
-                            oldStudents.remove(i+1);
-                            break;
-                        }
-                    }
-                    newSubjectsSize++;
-                }
-            }
-
-            for (Student student : oldStudents) {
-                studentDAO.delete(student.getName());
-            }
-
-            for (Student student : students) {
-                studentDAO.insert(student);
-            }
-        });
+        studentDAO.deleteAll();
+        for (Student student : students) {
+            studentDAO.insert(student);
+        }
     }
 
     public LiveData<List<Student>> getStudents() {

@@ -26,6 +26,7 @@ import ch.kanti.nesa.fragments.BankFragment;
 import ch.kanti.nesa.fragments.GradesFragment;
 import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
+import ch.kanti.nesa.fragments.StudentsFragment;
 import ch.kanti.nesa.fragments.SubjectsFragment;
 import ch.kanti.nesa.objects.LoginAndScrape;
 import ch.kanti.nesa.scrapers.Network;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     @Override
     public void onBackPressed() {
         GradesFragment gradesFragment = (GradesFragment) getSupportFragmentManager().findFragmentByTag("GRADES_FRAGMENT");
+        StudentsFragment studentsFragment = (StudentsFragment) getSupportFragmentManager().findFragmentByTag("STUDENTS_FRAGMENT");
         if (gradesFragment != null && gradesFragment.isVisible()) {
             int subjectPosition = gradesFragment.getSubjectPosition();
             SubjectsFragment subjectsFragment = new SubjectsFragment();
@@ -192,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             subjectsFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, subjectsFragment).commit();
             binding.bottomNavigation.setSelectedItemId(R.id.nav_grades);
+        } else if (studentsFragment != null && studentsFragment.isVisible()) {
+            SettingsFragment settingsFragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment).commit();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);
         } else {
             super.onBackPressed();
         }

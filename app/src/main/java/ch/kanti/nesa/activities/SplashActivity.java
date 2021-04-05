@@ -79,6 +79,7 @@ public class SplashActivity extends AppCompatActivity {
                             viewModel.insertGrades(scrape.getSubjectsAndGrades().getGradeList());
                             viewModel.insertBank(scrape.getBankStatements());
                             viewModel.insertAbsences(scrape.getAbsences());
+                            viewModel.insertStudents(scrape.getStudents());
                         }
                     }
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {

@@ -442,7 +442,27 @@ public class ContentScrapers {
         return pluspointsSum;
     }
 
-    public static List<Student> scrapeStudents(List<Document> documents) {
-        return null;
+    public static ArrayList<Student> scrapeStudents(List<Document> documents) {
+        HashMap<String, Student> studentSet = new HashMap<>();
+        for (Document page : documents) {
+            Elements studentRows = page.select("#cls-table-Kursliste > tbody:nth-child(3) > tr");
+            for (Element row : studentRows) {
+                String name = row.select("td").get(1).text() + " " + row.select("td").get(2).text();
+                if (!studentSet.containsKey(name)) {
+                    String gender = row.select("td").get(3).text();
+                    String degree = row.select("td").get(4).text();
+                    String bilingual = row.select("td").get(5).text();
+                    String course = row.select("td").get(6).text();
+                    String address = row.select("td").get(7).text() + ", " + row.select("td").get(8).text() + " " + row.select("td").get(9).text();
+                    String phone = row.select("td").get(10).text();
+                    String additionalCourses = row.select("td").get(11).text();
+                    String status = row.select("td").get(12).text();
+                    Student student = new Student(name, gender, degree, bilingual, course, address, phone, additionalCourses, status);
+                    studentSet.put(name, student);
+                }
+            }
+        }
+        ArrayList<Student> students = new ArrayList<>(studentSet.values());
+        return students;
     }
 }

@@ -86,6 +86,14 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
             }
 
         });
+
+        binding.studentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StudentsFragment studentsFragment = new StudentsFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, studentsFragment, "STUDENTS_FRAGMENT").commit();
+            }
+        });
     }
 
     @SuppressLint("ApplySharedPref")

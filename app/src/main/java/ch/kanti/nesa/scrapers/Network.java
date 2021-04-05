@@ -19,6 +19,7 @@ import ch.kanti.nesa.objects.SubjectsAndGrades;
 import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
+import ch.kanti.nesa.tables.Student;
 
 public class Network {
 
@@ -26,6 +27,7 @@ public class Network {
         boolean loginCorrect = false;
 
         ArrayList<AccountInfo> accountInfos = null;
+        ArrayList<Student> students = null;
         ArrayList<Absence> absences;
         ArrayList<BankStatement> bankStatements;
         SubjectsAndGrades subjectsAndGrades;
@@ -98,7 +100,7 @@ public class Network {
                             .execute()
                             .parse();
 
-                    Document studentPage = Jsoup.connect("https://ksw.nesa-sg.ch/index.php?pageid=&id=22348" + id + "&transid=" + transid)
+                    Document studentPage = Jsoup.connect("https://ksw.nesa-sg.ch/index.php?pageid=22348&id=" + id + "&transid=" + transid)
                             .cookies(mainCookies)
                             .method(Connection.Method.POST)
                             .execute()
@@ -118,7 +120,7 @@ public class Network {
                     }
 
                     accountInfos = ContentScrapers.scrapeMain(mainPage, emailPage);
-                    ContentScrapers.scrapeStudents(studentPages);
+                    students = ContentScrapers.scrapeStudents(studentPages);
                 }
 
                 subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);
@@ -127,17 +129,17 @@ public class Network {
 
                 logout(id, transid, mainCookies);
 
-                return new LoginAndScrape(true, true, accountInfos, absences, bankStatements, subjectsAndGrades);
+                return new LoginAndScrape(true, true, accountInfos, absences, bankStatements, students, subjectsAndGrades);
             } else {
                 if (loginCorrect) {
                     logout(id, transid, mainCookies);
                 }
-                return new LoginAndScrape(loginCorrect, true, null, null, null, null);
+                return new LoginAndScrape(loginCorrect, true, null, null, null, null, null);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new LoginAndScrape(false, false, null, null, null, null);
+            return new LoginAndScrape(false, false, null, null, null, null, null);
         }
     }
 
