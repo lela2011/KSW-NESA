@@ -143,7 +143,6 @@ public class GradesRepository {
                     notificationList.add(notificationAdd);
                 }
 
-
                 for (Grade grade : modifiedGrades) {
                     gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
                     String moddedText = context.getString(R.string.modifiedGrades1) + grade.getExam() + context.getString(R.string.modifiedGrades2);

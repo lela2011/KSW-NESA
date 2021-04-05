@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ch.kanti.nesa.AES;
 import ch.kanti.nesa.App;
@@ -97,7 +98,27 @@ public class Network {
                             .execute()
                             .parse();
 
+                    Document studentPage = Jsoup.connect("https://ksw.nesa-sg.ch/index.php?pageid=&id=22348" + id + "&transid=" + transid)
+                            .cookies(mainCookies)
+                            .method(Connection.Method.POST)
+                            .execute()
+                            .parse();
+
+                    int courses = studentPage.select("label.mdl-radio").size();
+
+                    List<Document> studentPages = new ArrayList<>();
+                    for (int i = 0; i < courses; i++) {
+                        Document page = Jsoup.connect("https://ksw.nesa-sg.ch/index.php?pageid=22348&listindex_s=" + i + "&id=" + id + "&transid=" + transid)
+                                .cookies(mainCookies)
+                                .method(Connection.Method.POST)
+                                .execute()
+                                .parse();
+
+                        studentPages.add(page);
+                    }
+
                     accountInfos = ContentScrapers.scrapeMain(mainPage, emailPage);
+                    ContentScrapers.scrapeStudents(studentPages);
                 }
 
                 subjectsAndGrades = ContentScrapers.scrapeMarks(gradesPage);

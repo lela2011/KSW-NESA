@@ -10,6 +10,7 @@ import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Student;
 import ch.kanti.nesa.tables.Subject;
 
 import org.jsoup.nodes.Document;
@@ -439,5 +440,9 @@ public class ContentScrapers {
                 .sum();
 
         return pluspointsSum;
+    }
+
+    public static List<Student> scrapeStudents(List<Document> documents) {
+        return null;
     }
 }
