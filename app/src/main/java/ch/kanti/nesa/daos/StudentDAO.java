@@ -15,11 +15,8 @@ public interface StudentDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Student student);
 
-    @Query("SELECT * FROM student_table")
+    @Query("SELECT * FROM student_table ORDER BY name ASC")
     LiveData<List<Student>> getStudents();
-
-    @Query("SELECT * FROM student_table")
-    List<Student> getStudentsSync();
 
     @Query("DELETE FROM student_table")
     void deleteAll();

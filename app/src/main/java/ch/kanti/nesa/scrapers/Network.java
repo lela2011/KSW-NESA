@@ -36,6 +36,7 @@ public class Network {
         String transid = "";
 
         try {
+
             Connection.Response loginResponse = Jsoup.connect("https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
@@ -129,12 +130,12 @@ public class Network {
 
                 logout(id, transid, mainCookies);
 
-                return new LoginAndScrape(true, true, accountInfos, absences, bankStatements, students, subjectsAndGrades);
+                return new LoginAndScrape(true, true,  accountInfos, absences, bankStatements, students, subjectsAndGrades);
             } else {
                 if (loginCorrect) {
                     logout(id, transid, mainCookies);
                 }
-                return new LoginAndScrape(loginCorrect, true, null, null, null, null, null);
+                return new LoginAndScrape(loginCorrect, true,  null, null, null, null, null);
             }
 
         } catch (IOException e) {

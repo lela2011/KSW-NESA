@@ -1,7 +1,6 @@
 package ch.kanti.nesa.activities;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }, SPLASH_TIME_OUT);
                 } else {
-                    Toast.makeText(this, getString(R.string.youre_offline), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(()-> Toast.makeText(this, getString(R.string.youre_offline), Toast.LENGTH_SHORT).show());
                 }
             }
         });
