@@ -415,10 +415,16 @@ public class ContentScrapers {
                 String[] start_date = temp.getElementsByTag("start_date").get(0).data().replace("--","").replace("[CDATA[","").replace("]]","").split(" ");
                 String[] end_date = temp.getElementsByTag("end_date").get(0).data().replace("[CDATA[","").replace("]]","").split(" ");
                 String[] subjectTeacher = temp.getElementsByTag("text").get(0).data().replace("[CDATA[","").replace("]]","").split("-");
+                String teacher = "-";
+                try {
+                    teacher = subjectTeacher[2];
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
                 String marking = temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]","");
                 String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
                 String comment = temp.getElementsByTag("kommentar").get(0).data().replace("[CDATA[","").replace("]]","");
-                Lesson lesson = new Lesson(start_date[0],start_date[0] + "-" + end_date[0], start_date[1], end_date[1], subjectTeacher[0], subjectTeacher[2], null, marking, comment, color, true, times.get(start_date[1]), 0);
+                Lesson lesson = new Lesson(start_date[0],start_date[0] + "-" + end_date[0], start_date[1], end_date[1], subjectTeacher[0], teacher, null, marking, comment, color, true, times.get(start_date[1]), 0);
                 exams.add(lesson);
             } catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
