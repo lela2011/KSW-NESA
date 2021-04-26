@@ -94,5 +94,6 @@
     <string name="status">Status</string>
 
     <string name="credentialsChanged">Your username or password changed. You\'re about to be logged out</string>
+    <string name="upcomming_lesson">Upcomming Lesson</string>
 
 </resources>

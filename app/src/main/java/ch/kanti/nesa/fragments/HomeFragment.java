@@ -23,6 +23,7 @@ import ch.kanti.nesa.scrapers.ContentScrapers;
 import ch.kanti.nesa.tables.Subject;
 
 import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        int lesson = getLessonIndex() + 1;
     }
 
     @Override
@@ -141,5 +148,48 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         shortcut = null;
+    }
+
+    private int getLessonIndex() {
+        LocalTime now = LocalTime.now();
+        if (isAfterOrEqual(LocalTime.parse("07:40")) && now.isBefore(LocalTime.parse("08:30"))) {
+            return 1;
+        } else if (isAfterOrEqual(LocalTime.parse("08:30")) && now.isBefore(LocalTime.parse("09:35"))) {
+            return 2;
+        } else if (isAfterOrEqual(LocalTime.parse("09:35")) && now.isBefore(LocalTime.parse("10:25"))) {
+            return 3;
+        } else if (isAfterOrEqual(LocalTime.parse("10:25")) && now.isBefore(LocalTime.parse("11:20"))) {
+            return 4;
+        } else if (isAfterOrEqual(LocalTime.parse("11:20")) && now.isBefore(LocalTime.parse("12:10"))) {
+            return 5;
+        } else if (isAfterOrEqual(LocalTime.parse("12:10")) && now.isBefore(LocalTime.parse("13:00"))) {
+            return 6;
+        } else if (isAfterOrEqual(LocalTime.parse("13:00")) && now.isBefore(LocalTime.parse("13:50"))) {
+            return 7;
+        } else if (isAfterOrEqual(LocalTime.parse("13:50")) && now.isBefore(LocalTime.parse("14:45"))) {
+            return 8;
+        } else if (isAfterOrEqual(LocalTime.parse("14:45")) && now.isBefore(LocalTime.parse("15:35"))) {
+            return 9;
+        } else if (isAfterOrEqual(LocalTime.parse("15:35")) && now.isBefore(LocalTime.parse("16:30"))) {
+            return 10;
+        } else if (isAfterOrEqual(LocalTime.parse("16:30")) && now.isBefore(LocalTime.parse("17:20"))) {
+            return 11;
+        } else if (isAfterOrEqual(LocalTime.parse("17:20")) && now.isBefore(LocalTime.parse("18:00"))) {
+            return 12;
+        } else if (isAfterOrEqual(LocalTime.parse("18:00")) && now.isBefore(LocalTime.parse("19:00"))) {
+            return 13;
+        } else if (isAfterOrEqual(LocalTime.parse("19:00")) && now.isBefore(LocalTime.parse("20:00"))) {
+            return 14;
+        } else if (isAfterOrEqual(LocalTime.parse("20:00")) && now.isBefore(LocalTime.parse("21:00"))) {
+            return 15;
+        } else if (isAfterOrEqual(LocalTime.parse("21:00")) && now.isBefore(LocalTime.parse("22.00"))) {
+            return 16;
+        } else {
+            return 0;
+        }
+    }
+
+    private boolean isAfterOrEqual(LocalTime time) {
+        return LocalTime.now().isAfter(time) || LocalTime.now().equals(time);
     }
 }

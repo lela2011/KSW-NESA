@@ -89,4 +89,6 @@
     <string name="status">Status</string>
 
     <string name="credentialsChanged">Ihre Zugangsdaten haben isch geändert. Sie werden abgemeldet</string>
+
+    <string name="upcomming_lesson">Nächste Lektion</string>
 </resources>
