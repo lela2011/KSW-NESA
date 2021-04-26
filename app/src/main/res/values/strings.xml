@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">NESA</string>
-    <string name="login_button_label">LOGIN</string>
+    <string name="login_button_label">login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="dialogButtonOk">OK</string>
@@ -92,5 +92,7 @@
     <string name="gender">Gender</string>
     <string name="additional_courses">Additional courses</string>
     <string name="status">Status</string>
+
+    <string name="credentialsChanged">Your username or password changed. You\'re about to be logged out</string>
 
 </resources>

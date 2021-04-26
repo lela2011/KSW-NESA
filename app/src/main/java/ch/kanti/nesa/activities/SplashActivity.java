@@ -1,6 +1,5 @@
 package ch.kanti.nesa.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,12 +25,11 @@ import ch.kanti.nesa.scrapers.Network;
 public class SplashActivity extends AppCompatActivity {
 
     ActivitySplashBinding binding;
-    public static int SPLASH_TIME_OUT = 1500;
-    public static String username, password;
+    public static final int SPLASH_TIME_OUT = 1500;
+    public String username, password;
 
     ViewModel viewModel;
 
-    @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
                         App.sharedPreferences.edit().putFloat("colRange1", 5.0f).apply();
                         App.sharedPreferences.edit().putFloat("colRange2", 4.0f).apply();
 
-                        LoginAndScrape scrape = Network.checkLoginAndPages(true, true, username, password);
+                        LoginAndScrape scrape = Network.checkLoginAndPages(true, true, true, true, username, password);
                         if (scrape.isLoginCorrect()) {
                             viewModel.insertInfo(scrape.getAccountInfos());
                             viewModel.insertSubjects(scrape.getSubjectsAndGrades().getSubjectList());
@@ -79,6 +77,7 @@ public class SplashActivity extends AppCompatActivity {
                             viewModel.insertBank(scrape.getBankStatements());
                             viewModel.insertAbsences(scrape.getAbsences());
                             viewModel.insertStudents(scrape.getStudents());
+                            viewModel.insertLessons(false, scrape.getLessons(), scrape.getExams());
                         }
                     }
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {

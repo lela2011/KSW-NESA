@@ -28,6 +28,7 @@ import ch.kanti.nesa.fragments.HomeFragment;
 import ch.kanti.nesa.fragments.SettingsFragment;
 import ch.kanti.nesa.fragments.StudentsFragment;
 import ch.kanti.nesa.fragments.SubjectsFragment;
+import ch.kanti.nesa.fragments.TimetableDayFragment;
 import ch.kanti.nesa.objects.LoginAndScrape;
 import ch.kanti.nesa.scrapers.Network;
 
@@ -43,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public static final int SHORTCUT_ABSENCE = 3;
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
-
-    boolean firstLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
 
     private void syncData() {
         if(DeviceOnline.check()) {
-            LoginAndScrape scrape = Network.checkLoginAndPages(true, false, username, password);
+            LoginAndScrape scrape = Network.checkLoginAndPages(true, false, true, false, username, password);
             if (scrape.isLoginCorrect()) {
                 viewModel.insertSubjects(scrape.getSubjectsAndGrades().getSubjectList());
                 viewModel.insertGrades(scrape.getSubjectsAndGrades().getGradeList());
@@ -130,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             } else {
                 runOnUiThread(()->{
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Login")
-                            .setMessage("Your username or password changed. You're about to be logged out")
+                            .setTitle(R.string.login_button_label)
+                            .setMessage(R.string.credentialsChanged)
                             .setPositiveButton(getString(R.string.dialogButtonOk), (dialog, which) -> {
                                 App.sharedPreferences.edit().putString("username", "").apply();
                                 App.sharedPreferences.edit().putString("password", "").apply();
@@ -186,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public void onBackPressed() {
         GradesFragment gradesFragment = (GradesFragment) getSupportFragmentManager().findFragmentByTag("GRADES_FRAGMENT");
         StudentsFragment studentsFragment = (StudentsFragment) getSupportFragmentManager().findFragmentByTag("STUDENTS_FRAGMENT");
+        TimetableDayFragment timetableFragment = (TimetableDayFragment) getSupportFragmentManager().findFragmentByTag("TIMETABLE_FRAGMENT");
         if (gradesFragment != null && gradesFragment.isVisible()) {
             int subjectPosition = gradesFragment.getSubjectPosition();
             SubjectsFragment subjectsFragment = new SubjectsFragment();
@@ -195,6 +195,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, subjectsFragment).commit();
             binding.bottomNavigation.setSelectedItemId(R.id.nav_grades);
         } else if (studentsFragment != null && studentsFragment.isVisible()) {
+            SettingsFragment settingsFragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment).commit();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);
+        } else if (timetableFragment != null && timetableFragment.isVisible()) {
             SettingsFragment settingsFragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment).commit();
             binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);

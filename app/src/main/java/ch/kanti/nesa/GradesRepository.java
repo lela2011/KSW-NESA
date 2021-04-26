@@ -11,7 +11,11 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import ch.kanti.nesa.activities.MainActivity;
 import ch.kanti.nesa.daos.GradesDAO;
@@ -50,20 +54,12 @@ public class GradesRepository {
 
                 for (int i = 0; i < oldGrades.size(); i++) {
                     for (int k = 0; k < newGrades.size(); k++) {
-                        k = newGradesSize;
                         if (oldGrades.get(i).compare(newGrades.get(k))) {
                             newGrades.remove(k);
                             oldGrades.remove(i);
                             i--;
                             break;
-                        } else if (i+1 < oldGrades.size()) {
-                            if (oldGrades.get(i+1).compare(newGrades.get(k))) {
-                                newGrades.remove(k);
-                                oldGrades.remove(i+1);
-                                break;
-                            }
                         }
-                        newGradesSize++;
                     }
                 }
 
@@ -81,10 +77,22 @@ public class GradesRepository {
                     }
                 }
 
+                List<Grade> totalManipulation = new ArrayList<>();
+                totalManipulation.addAll(oldGrades);
+                totalManipulation.addAll(newGrades);
+                totalManipulation.addAll(modifiedGrades);
+
+                Set<String> affectedSubjects = totalManipulation.stream().map(Grade::getSubjectId).collect(Collectors.toSet());
+
+                for(String affectedSubject : affectedSubjects) {
+                    gradesDAO.deleteBySubject(affectedSubject);
+                    gradesDAO.insert(grades.stream().filter(c -> c.getSubjectId().equals(affectedSubject)).collect(Collectors.toList()));
+                }
+
                 List<Notification> notificationList = new ArrayList<>();
 
                 for (Grade grade : oldGrades) {
-                    gradesDAO.deleteByGrade(grade.getSubjectId(), grade.getExam(), grade.getDate());
+                    //gradesDAO.deleteByGrade(grade.getSubjectId(), grade.getExam(), grade.getDate());
                     String deletedText = context.getString(R.string.deletedGrades1) + grade.getExam() + context.getString(R.string.deletedGrades2);
 
                     float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());
@@ -113,7 +121,7 @@ public class GradesRepository {
                     notificationList.add(notificationDel);
                 }
 
-                gradesDAO.insert(newGrades);
+                //gradesDAO.insert(newGrades);
                 for (Grade grade : newGrades) {
                     String addedText = context.getString(R.string.addedGrades1) + grade.getExam() + context.getString(R.string.addedGrades2);
 
@@ -144,7 +152,7 @@ public class GradesRepository {
                 }
 
                 for (Grade grade : modifiedGrades) {
-                    gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
+                    //gradesDAO.updateGrade(grade.getSubjectId(), grade.getExam(), grade.getDate(), grade.getGrade(), grade.getWeight());
                     String moddedText = context.getString(R.string.modifiedGrades1) + grade.getExam() + context.getString(R.string.modifiedGrades2);
 
                     float subjectAverage = subjectsDao.getSubjectAverage(grade.getSubjectId());

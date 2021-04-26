@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NESA</string>
-    <string name="login_button_label">LOGIN</string>
+    <string name="login_button_label">Login</string>
     <string name="username">Benutzername</string>
     <string name="password">Passwort</string>
     <string name="dialogButtonOk">OK</string>
@@ -87,4 +87,6 @@
     <string name="gender">Geschlecht</string>
     <string name="additional_courses">Zusätzliche Klassen</string>
     <string name="status">Status</string>
+
+    <string name="credentialsChanged">Ihre Zugangsdaten haben isch geändert. Sie werden abgemeldet</string>
 </resources>

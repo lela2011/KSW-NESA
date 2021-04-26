@@ -19,6 +19,9 @@ public interface GradesDAO {
     @Query("DELETE FROM grades_table")
     void deleteAll();
 
+    @Query("DELETE FROM grades_table WHERE subjectId = :id")
+    void deleteBySubject(String id);
+
     @Query("SELECT * FROM grades_table WHERE subjectId = :passedSubject")
     LiveData<List<Grade>> getBySubject(String passedSubject);
 

@@ -170,4 +170,12 @@
         android:textSize="16sp"
         android:id="@+id/studentsButton"/>
 
+    <Button
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Timetable"
+        android:textSize="16sp"
+        android:id="@+id/timetableButton"/>
+
 </LinearLayout>

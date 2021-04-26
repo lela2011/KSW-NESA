@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.usernameET.getText().clear();
         binding.passwordET.getText().clear();
 
-        LoginAndScrape loginAndScrape = Network.checkLoginAndPages(false, false, username, password);
+        LoginAndScrape loginAndScrape = Network.checkLoginAndPages(false, false, false, false, username, password);
 
         runOnUiThread(()->{
             if(!loginAndScrape.isLoginCorrect() && loginAndScrape.isCheckSuccessful()){

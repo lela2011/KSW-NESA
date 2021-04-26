@@ -10,6 +10,7 @@ import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Lesson;
 import ch.kanti.nesa.tables.Student;
 import ch.kanti.nesa.tables.Subject;
 
@@ -22,6 +23,7 @@ public class ViewModel extends AndroidViewModel {
     private final SubjectsRepository subjectsRepository;
     private final AbsenceRepository absenceRepository;
     private final StudentRepository studentRepository;
+    private final LessonRepository lessonRepository;
     //initialize repository
     public ViewModel(@NonNull Application application) {
         super(application);
@@ -31,6 +33,7 @@ public class ViewModel extends AndroidViewModel {
         subjectsRepository = new SubjectsRepository(application);
         absenceRepository = new AbsenceRepository(application);
         studentRepository = new StudentRepository(application);
+        lessonRepository = new LessonRepository(application);
     }
 
     public void insertInfo(List<AccountInfo> info) {
@@ -119,5 +122,13 @@ public class ViewModel extends AndroidViewModel {
 
     public LiveData<List<Student>> getStudents() {
         return studentRepository.getStudents();
+    }
+
+    public void insertLessons(boolean week, List<Lesson> lessons, List<Lesson> exams) {
+        lessonRepository.insert(week, lessons, exams);
+    }
+
+    public LiveData<List<Lesson>> getLessons(String day) {
+        return lessonRepository.getLessons(day);
     }
 }

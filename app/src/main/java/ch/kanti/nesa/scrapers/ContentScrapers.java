@@ -2,6 +2,7 @@ package ch.kanti.nesa.scrapers;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+import android.widget.Toast;
 
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.objects.PromotionRule;
@@ -10,6 +11,7 @@ import ch.kanti.nesa.tables.Absence;
 import ch.kanti.nesa.tables.AccountInfo;
 import ch.kanti.nesa.tables.BankStatement;
 import ch.kanti.nesa.tables.Grade;
+import ch.kanti.nesa.tables.Lesson;
 import ch.kanti.nesa.tables.Student;
 import ch.kanti.nesa.tables.Subject;
 
@@ -19,6 +21,8 @@ import org.jsoup.select.Elements;
 
 import java.sql.PreparedStatement;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +33,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ContentScrapers {
+
+    static HashMap<String, Integer> parallelLessons = new HashMap<>();
 
     public static ArrayList<AccountInfo> scrapeMain(Document mainPage, Document emailPage){
         Elements tableLoggedOut = mainPage.select("div.mdl-cell:nth-child(4) > table:nth-child(2) > tbody:nth-child(1) > tr");
@@ -222,6 +228,225 @@ public class ContentScrapers {
         return statements;
     }
 
+    public static ArrayList<Lesson> scrapeTimetable (Document page) {
+        //<editor-fold desc="rooms">
+        HashMap<Integer, String> rooms = new HashMap<>();
+        rooms.put(0,"Ausserhalb");
+        rooms.put(1,"01");
+        rooms.put(2,"02");
+        rooms.put(3,"03");
+        rooms.put(4,"04");
+        rooms.put(5,"05");
+        rooms.put(6,"06");
+        rooms.put(7,"07");
+        rooms.put(8,"08");
+        rooms.put(9,"09");
+        rooms.put(10,"10");
+        rooms.put(11,"11");
+        rooms.put(12,"12");
+        rooms.put(13,"13");
+        rooms.put(14,"14");
+        rooms.put(15,"15");
+        rooms.put(16,"16");
+        rooms.put(17,"Aula");
+        rooms.put(18,"B");
+        rooms.put(19,"BL");
+        rooms.put(20,"BLapW");
+        rooms.put(21,"Ch");
+        rooms.put(22,"CL");
+        rooms.put(23,"E01");
+        rooms.put(24,"E02");
+        rooms.put(25,"E03");
+        rooms.put(26,"E04");
+        rooms.put(27,"E05");
+        rooms.put(28,"E06");
+        rooms.put(29,"E07");
+        rooms.put(30,"E08");
+        rooms.put(31,"E11");
+        rooms.put(32,"E12");
+        rooms.put(33,"E13");
+        rooms.put(34,"E16");
+        rooms.put(35,"E17");
+        rooms.put(36,"E20");
+        rooms.put(37,"E22");
+        rooms.put(38,"E24");
+        rooms.put(39,"E25");
+        rooms.put(40,"E26");
+        rooms.put(41,"E30");
+        rooms.put(42,"E31");
+        rooms.put(43,"E32");
+        rooms.put(44,"E33");
+        rooms.put(45,"E34");
+        rooms.put(46,"E35");
+        rooms.put(47,"E36");
+        rooms.put(48,"Gg");
+        rooms.put(49,"GgLapW");
+        rooms.put(50,"H");
+        rooms.put(51,"Hb");
+        rooms.put(52,"Hf1");
+        rooms.put(53,"ILapW");
+        rooms.put(54,"Inf");
+        rooms.put(55,"Inf2");
+        rooms.put(56,"K");
+        rooms.put(57,"Kr");
+        rooms.put(58,"LBiblio");
+        rooms.put(59,"Lehrerbüro");
+        rooms.put(60,"LZ1");
+        rooms.put(61,"LZ2");
+        rooms.put(62,"LZ3");
+        rooms.put(63,"m1");
+        rooms.put(64,"m10");
+        rooms.put(65,"m2");
+        rooms.put(66,"m3");
+        rooms.put(67,"m4");
+        rooms.put(68,"m5");
+        rooms.put(69,"m6");
+        rooms.put(70,"m7");
+        rooms.put(71,"m8");
+        rooms.put(72,"m9");
+        rooms.put(73,"Mediothek");
+        rooms.put(74,"Mensa");
+        rooms.put(75,"Nat");
+        rooms.put(76,"Ph");
+        rooms.put(77,"PL1");
+        rooms.put(78,"PL2");
+        rooms.put(79,"PLapW");
+        rooms.put(80,"R1");
+        rooms.put(81,"R2");
+        rooms.put(82,"RT");
+        rooms.put(83,"SLI");
+        rooms.put(84,"Z");
+        //</editor-fold>
+        //<editor-fold desc="times">
+        HashMap<String, Integer> times = new HashMap<>();
+        times.put("00:00",0);
+        times.put("07:40",1);
+        times.put("08:30",2);
+        times.put("09:35",3);
+        times.put("10:25",4);
+        times.put("11:20",5);
+        times.put("12:10",6);
+        times.put("13:00",7);
+        times.put("13:50",8);
+        times.put("14:45",9);
+        times.put("15:35",10);
+        times.put("16:30",11);
+        times.put("17:20",12);
+        times.put("18:00",13);
+        times.put("19:00",14);
+        times.put("20:00",15);
+        times.put("21:00",16);
+        //</editor-fold>
+        //<editor-fold desc="markings">
+        HashMap<String, String> markings = new HashMap<>();
+        markings.put("none","Keine Markierung");
+        markings.put("new","Neu eingef\u00fcgt");
+        markings.put("moved","Verschoben");
+        markings.put("deleted","Gel\u00f6scht");
+        markings.put("100","Auftrag via Teams\\/Mail");
+        //</editor-fold>
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        ArrayList<Lesson> lessonsList = new ArrayList<>();
+        List<Lesson> dayLessons = new ArrayList<>();
+        LocalDate lastDate = null;
+        Elements lessons = page.getElementsByTag("event");
+        for (Element temp : lessons) {
+            try {
+                String[] start_date = temp.getElementsByTag("start_date").get(0).data().replace("--","").replace("[CDATA[","").replace("]]","").split(" ");
+                if (lastDate == null) {
+                    lastDate = LocalDate.parse(start_date[0], formatter);
+                    resetSublessons();
+                }
+                if (LocalDate.parse(start_date[0], formatter).isAfter(lastDate)) {
+                    lastDate = LocalDate.parse(start_date[0], formatter);
+                    for (Lesson daylesson : dayLessons) {
+                        daylesson.setSiblingLessons(parallelLessons.get(daylesson.getStartTime()));
+                    }
+                    lessonsList.addAll(dayLessons);
+                    dayLessons.clear();
+                    resetSublessons();
+                }
+                String[] end_date = temp.getElementsByTag("end_date").get(0).data().replace("[CDATA[","").replace("]]","").split(" ");
+                String subject = temp.getElementsByTag("fachkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
+                String teacherShort = temp.getElementsByTag("lehrerkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
+                String room = rooms.get(Integer.parseInt(temp.getElementsByTag("zimmer").get(0).data().replace("[CDATA[","").replace("]]","")));
+                String marking = markings.get(temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]",""));
+                String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
+                Lesson lesson = new Lesson(start_date[0], start_date[0]+ "-" + end_date[0], start_date[1], end_date[1], subject, teacherShort, room, marking, null, color, false, times.get(start_date[1]), parallelLessons.get(start_date[1]));
+                dayLessons.add(lesson);
+                parallelLessons.put(start_date[1], parallelLessons.get(start_date[1]) + 1);
+            } catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+        }
+        for (Lesson daylesson : dayLessons) {
+            daylesson.setSiblingLessons(parallelLessons.get(daylesson.getStartTime()));
+        }
+        lessonsList.addAll(dayLessons);
+        return lessonsList;
+    }
+
+    public static ArrayList<Lesson> scrapeExams(Document page) {
+        //<editor-fold desc="times">
+        HashMap<String, Integer> times = new HashMap<>();
+        times.put("00:00:00",0);
+        times.put("07:40",1);
+        times.put("08:30",2);
+        times.put("09:35",3);
+        times.put("10:25",4);
+        times.put("11:20",5);
+        times.put("12:10",6);
+        times.put("13:00",7);
+        times.put("13:50",8);
+        times.put("14:45",9);
+        times.put("15:35",10);
+        times.put("16:30",11);
+        times.put("17:20",12);
+        times.put("18:00",13);
+        times.put("19:00",14);
+        times.put("20:00",15);
+        times.put("21:00",16);
+        //</editor-fold>
+        ArrayList<Lesson> exams = new ArrayList<>();
+        Elements lessons = page.getElementsByTag("event");
+        for (Element temp : lessons) {
+            try {
+                String[] start_date = temp.getElementsByTag("start_date").get(0).data().replace("--","").replace("[CDATA[","").replace("]]","").split(" ");
+                String[] end_date = temp.getElementsByTag("end_date").get(0).data().replace("[CDATA[","").replace("]]","").split(" ");
+                String[] subjectTeacher = temp.getElementsByTag("text").get(0).data().replace("[CDATA[","").replace("]]","").split("-");
+                String marking = temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]","");
+                String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
+                String comment = temp.getElementsByTag("kommentar").get(0).data().replace("[CDATA[","").replace("]]","");
+                Lesson lesson = new Lesson(start_date[0],start_date[0] + "-" + end_date[0], start_date[1], end_date[1], subjectTeacher[0], subjectTeacher[2], null, marking, comment, color, true, times.get(start_date[1]), 0);
+                exams.add(lesson);
+            } catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+        }
+
+        return exams;
+    }
+
+    private static void resetSublessons() {
+        parallelLessons.put("07:40",0);
+        parallelLessons.put("08:30",0);
+        parallelLessons.put("09:35",0);
+        parallelLessons.put("10:25",0);
+        parallelLessons.put("11:20",0);
+        parallelLessons.put("12:10",0);
+        parallelLessons.put("13:00",0);
+        parallelLessons.put("13:50",0);
+        parallelLessons.put("14:45",0);
+        parallelLessons.put("15:35",0);
+        parallelLessons.put("16:30",0);
+        parallelLessons.put("17:20",0);
+        parallelLessons.put("18:00",0);
+        parallelLessons.put("19:00",0);
+        parallelLessons.put("20:00",0);
+        parallelLessons.put("21:00",0);
+    }
+
     public static float calculatePluspoints(float gradeExact){
         DecimalFormat df = new DecimalFormat("#.###");
         float grade = Float.parseFloat(df.format(gradeExact));
@@ -249,90 +474,6 @@ public class ContentScrapers {
             return -6f;
         } else {
             return -10f;
-        }
-    }
-
-    //TODO: Pluspunkte berchnen
-    public static void calculatePromotionPointsA(List<Subject> subjects) {
-        ArrayList<PromotionRule> gymRules = new ArrayList<>();
-        gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", 2f/3f, 1f/3f, false));
-        gymRules.add(new PromotionRule(2,"sFB","sBW", 0.5f, 0.5f, false));
-        gymRules.add(new PromotionRule(2,"sP","sM", 0.5f, 0.5f, true));
-        gymRules.add(new PromotionRule(2,"sB","sC", 0.5f, 0.5f, true));
-        gymRules.add(new PromotionRule(2,"MU","BG", 0.5f, 0.5f, true));
-
-        ArrayList<PromotionRule> fms12Rules = new ArrayList<>();
-        fms12Rules.add(new PromotionRule(2, "sM", "M", 0.5f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(2, "sPY", "PY", 0.5f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(2, "MU", ".+[(]SP[)]", 2f/3f, 1f/3f, false));
-        fms12Rules.add(new PromotionRule(2, "sPBF", "sBFU", 0.5f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(2, "sZWT", "sDKF", 0.25f, 0.75f, true));
-        fms12Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
-        fms12Rules.add(new PromotionRule(2, "sKoiK", "E", 1f/3f, 2f/3f, true));
-
-        ArrayList<PromotionRule> fms3Rules = new ArrayList<>();
-        fms3Rules.add(new PromotionRule(2, "sM", "M", 0.5f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(2, "sPY", "PY", 0.5f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(2, "SPO", "RH", 2f/3f, 1f/3f, false));
-        fms3Rules.add(new PromotionRule(2, "sMU", ".+[(]SP[)]", 2f/3f, 1f/3f, false));
-        fms3Rules.add(new PromotionRule(2, "sPBF", "sBFU", 0.5f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(3, "sSWT", "sD", "D", 0.125f, 0.375f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(3, "sSWT", "sZWT", "sPFB", 0.25f, 0.25f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(2, "sZWT", "sDKF", 0.25f, 0.75f, true));
-        fms3Rules.add(new PromotionRule(3, "sKA", "sSWT", "D", 0.375f, 0.125f, 0.5f, true));
-        fms3Rules.add(new PromotionRule(2, "sKoiK", "E", 1f/3f, 2f/3f, true));
-
-        ArrayList<Float> pluspoints = new ArrayList<>();
-        ArrayList<Float> modifiedGrades = new ArrayList<>();
-
-        int finalYear = App.sharedPreferences.getInt("year", -1);
-        String department = App.sharedPreferences.getString("department", "Gymnasium");
-
-        subjects.add(new Subject("Physik", "100", 5.25f, 1.5f, "sP-2P-HB", 16, 1, 1));
-
-        if(department.equals("Gymnasium")) {
-            for(int i = 0; i < gymRules.size(); i++) {
-                PromotionRule rule = gymRules.get(i);
-                Pattern pat1 = Pattern.compile(rule.getId1());
-                Pattern pat2 = Pattern.compile(rule.getId2());
-                Pattern pat3 = null;
-                if(rule.getId3() != null) {
-                    pat3 = Pattern.compile(rule.getId3());
-                }
-
-                ArrayList<Float> grades = new ArrayList<>();
-                ArrayList<Float> weight = new ArrayList<>();
-
-                for(int k = 0; k < subjects.size(); k++) {
-                    Subject subject = subjects.get(k);
-                    String id = subject.getId();
-                    if(pat1.matcher(id).find()) {
-                        grades.add(subject.getGradeAverage());
-                        weight.add(rule.getWeight1());
-                    } else if (pat2.matcher(id).find()) {
-                        grades.add(subject.getGradeAverage());
-                        weight.add(rule.getWeight2());
-                    } else if (pat3 != null) {
-                        if (pat3.matcher(id).find())
-                        grades.add(subject.getGradeAverage());
-                        weight.add(rule.getWeight3());
-                    }
-                }
-                if(grades.size() == rule.getSubjectsCount()) {
-                    float average = 0;
-                    if(rule.isRound()) {
-                        for (int l = 0; l < grades.size(); l++) {
-                            grades.set(l, Math.round(grades.get(l)*2)/2.0f);
-                        }
-                    }
-                    for (int l = 0; l < grades.size(); l++) {
-                        average = average + grades.get(l) * weight.get(l);
-                    }
-                    pluspoints.add(calculatePluspoints(average));
-                }
-            }
         }
     }
 

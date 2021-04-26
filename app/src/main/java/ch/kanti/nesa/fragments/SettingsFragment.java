@@ -94,6 +94,14 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, studentsFragment, "STUDENTS_FRAGMENT").commit();
             }
         });
+
+        binding.timetableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimetableDayFragment timetableFragment = new TimetableDayFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timetableFragment, "TIMETABLE_FRAGMENT").commit();
+            }
+        });
     }
 
     @SuppressLint("ApplySharedPref")
