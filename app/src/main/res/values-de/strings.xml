@@ -103,6 +103,7 @@
     <string name="theme">Theme</string>
     <string name="dark_variant">Dunkel Variante</string>
     <string name="variant">Variante</string>
+    <string name="reset">Zurücksetzen</string>
 
     <string-array name="themespinner">
         <item>System folgen</item>

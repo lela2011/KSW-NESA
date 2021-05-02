@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 viewModel.insertGrades(scrape.getSubjectsAndGrades().getGradeList());
                 viewModel.insertBank(scrape.getBankStatements());
                 viewModel.insertAbsences(scrape.getAbsences());
+                viewModel.insertLessons(true, scrape.getLessons(), scrape.getExams());
             } else {
                 runOnUiThread(()->{
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)

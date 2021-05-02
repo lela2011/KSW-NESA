@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.App;
+import ch.kanti.nesa.activities.SplashActivity;
 import ch.kanti.nesa.dialogs.ColorPickerDialog;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
@@ -157,6 +158,24 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
             @Override
             public void onClick(View v) {
                 getActivity().recreate();
+            }
+        });
+
+        binding.reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, true).apply();
+                App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).apply();
+                Intent intent = new Intent(getContext(), SplashActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+                viewModel.deleteAllBank();
+                viewModel.deleteAllAbsences();
+                viewModel.deleteAllSubjects();
+                viewModel.deleteAllGrades();
+                viewModel.deleteAllAccountInfo();
+                viewModel.deleteAllStudents();
+                viewModel.deleteAllLessons();
             }
         });
     }

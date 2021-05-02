@@ -10,6 +10,7 @@ import ch.kanti.nesa.AbsenceRepository;
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.BankRepository;
 import ch.kanti.nesa.GradesRepository;
+import ch.kanti.nesa.LessonRepository;
 import ch.kanti.nesa.SubjectsRepository;
 import ch.kanti.nesa.objects.LoginAndScrape;
 import ch.kanti.nesa.scrapers.Network;
@@ -23,7 +24,6 @@ public class SyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        /*
         String username = App.sharedPreferences.getString("username","");
         String password = App.sharedPreferences.getString("password","");
         boolean firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, true);
@@ -32,6 +32,7 @@ public class SyncWorker extends Worker {
         SubjectsRepository subjectsRepository = new SubjectsRepository(getApplicationContext());
         BankRepository bankRepository = new BankRepository(getApplicationContext());
         AbsenceRepository absenceRepository = new AbsenceRepository(getApplicationContext());
+        LessonRepository lessonRepository = new LessonRepository(getApplicationContext());
 
         if (!firstLogin){
             if (DeviceOnline.check()) {
@@ -41,6 +42,8 @@ public class SyncWorker extends Worker {
                     subjectsRepository.insert(scrape.getSubjectsAndGrades().getSubjectList());
                     bankRepository.insert(scrape.getBankStatements());
                     absenceRepository.insert(scrape.getAbsences());
+                    lessonRepository.insert(true, scrape.getLessons(), scrape.getExams());
+
                     return Result.success();
                 } else {
                     return Result.failure();
@@ -50,7 +53,6 @@ public class SyncWorker extends Worker {
             }
         } else {
             return Result.failure();
-        }*/
-        return Result.success();
+        }
     }
 }
