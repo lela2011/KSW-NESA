@@ -17,4 +17,8 @@
 
     <color name="onBackground">#FFFFFF</color>
     <color name="onSurface">#FFFFFF</color>
+
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="secondaryTextColor">#FFFFFF</color>
+
 </resources>

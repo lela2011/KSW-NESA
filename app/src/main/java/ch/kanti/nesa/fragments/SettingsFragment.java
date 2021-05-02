@@ -1,21 +1,28 @@
 package ch.kanti.nesa.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.App;
-import ch.kanti.nesa.ColorPickerDialog;
+import ch.kanti.nesa.dialogs.ColorPickerDialog;
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.activities.LoginActivity;
 import ch.kanti.nesa.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment implements ColorPickerDialog.ReturnColor {
@@ -35,6 +42,16 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ArrayAdapter<CharSequence> adapterTheme = ArrayAdapter.createFromResource(getContext(), R.array.themespinner, android.R.layout.simple_spinner_item);
+        adapterTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter<CharSequence> adapterVariant = ArrayAdapter.createFromResource(getContext(), R.array.screentype, android.R.layout.simple_spinner_item);
+        adapterVariant.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.themeSpinner.setAdapter(adapterTheme);
+        binding.darkVariant.setAdapter(adapterVariant);
+
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
 
         col1 = App.sharedPreferences.getInt("colCol1",  getContext().getColor(R.color.gold));
@@ -87,19 +104,59 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
 
         });
 
-        binding.studentsButton.setOnClickListener(new View.OnClickListener() {
+        binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StudentsFragment studentsFragment = new StudentsFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, studentsFragment, "STUDENTS_FRAGMENT").commit();
+                App.sharedPreferences.edit().putString("username", "").apply();
+                App.sharedPreferences.edit().putString("password", "").apply();
+                App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).apply();
+                App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).apply();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+                viewModel.deleteAllBank();
+                viewModel.deleteAllAbsences();
+                viewModel.deleteAllSubjects();
+                viewModel.deleteAllGrades();
+                viewModel.deleteAllAccountInfo();
+                viewModel.deleteAllStudents();
+                viewModel.deleteAllLessons();
             }
         });
 
-        binding.timetableButton.setOnClickListener(new View.OnClickListener() {
+        int theme = App.sharedPreferences.getInt("theme", 0);
+        int border = App.sharedPreferences.getInt("border", 0);
+
+        binding.themeSpinner.setSelection(theme);
+        binding.darkVariant.setSelection(border);
+
+        binding.themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                App.sharedPreferences.edit().putInt("theme", position).apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        binding.darkVariant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                App.sharedPreferences.edit().putInt("border", position).apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        binding.saveTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimetableDayFragment timetableFragment = new TimetableDayFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timetableFragment, "TIMETABLE_FRAGMENT").commit();
+                getActivity().recreate();
             }
         });
     }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,13 +43,32 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public static final int SHORTCUT_BANK = 1;
     public static final int SHORTCUT_GRADES = 2;
     public static final int SHORTCUT_ABSENCE = 3;
+    public static final int SHORTCUT_TIMETABLE = 4;
+    public static final int SHORTCUT_STUDENTS = 5;
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_NESA_OLED);
+
+        int theme = App.sharedPreferences.getInt("theme", 0);
+        int border = App.sharedPreferences.getInt("border", 0);
+
+        if (theme == 0) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (theme == 1) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (theme == 2) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        if(border == 0) {
+            setTheme(R.style.Theme_NESA);
+        } else if (border == 1) {
+            setTheme(R.style.Theme_NESA_OLED);
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -96,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             case R.id.nav_grades:
                 selectedFragment = new SubjectsFragment();
                 break;
-            case R.id.nav_absences:
-                selectedFragment = new AbsencesFragment();
+            case R.id.nav_timetable:
+                selectedFragment = new TimetableDayFragment();
                 break;
             case R.id.nav_account:
                 selectedFragment = new BankFragment();
@@ -135,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                                 App.sharedPreferences.edit().putString("username", "").apply();
                                 App.sharedPreferences.edit().putString("password", "").apply();
                                 App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).apply();
+                                App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).apply();
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -143,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                                 viewModel.deleteAllSubjects();
                                 viewModel.deleteAllGrades();
                                 viewModel.deleteAllAccountInfo();
+                                viewModel.deleteAllStudents();
+                                viewModel.deleteAllLessons();
                             })
                             .setCancelable(false);
                     builder.show();
@@ -159,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     public void onShortcutClicked(int shortcut) {
         Fragment selectedFragment;
         int selectedIcon;
+        String tag = "";
         switch (shortcut){
             case SHORTCUT_BANK:
                 selectedFragment = new BankFragment();
@@ -170,22 +194,33 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 break;
             case SHORTCUT_ABSENCE:
                 selectedFragment = new AbsencesFragment();
-                selectedIcon = R.id.nav_absences;
+                selectedIcon = R.id.nav_home;
+                tag = "ABSENCE_FRAGMENT";
+                break;
+            case SHORTCUT_TIMETABLE:
+                selectedFragment = new AbsencesFragment();
+                selectedIcon = R.id.nav_timetable;
+                break;
+            case SHORTCUT_STUDENTS:
+                selectedFragment = new StudentsFragment();
+                selectedIcon = R.id.nav_home;
+                tag = "STUDENTS_FRAGMENT";
                 break;
             default:
                 selectedFragment = new HomeFragment();
                 selectedIcon = R.id.nav_home;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                selectedFragment).commit();
         binding.bottomNavigation.setSelectedItemId(selectedIcon);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment, tag)
+                .commit();
     }
 
     @Override
     public void onBackPressed() {
         GradesFragment gradesFragment = (GradesFragment) getSupportFragmentManager().findFragmentByTag("GRADES_FRAGMENT");
         StudentsFragment studentsFragment = (StudentsFragment) getSupportFragmentManager().findFragmentByTag("STUDENTS_FRAGMENT");
-        TimetableDayFragment timetableFragment = (TimetableDayFragment) getSupportFragmentManager().findFragmentByTag("TIMETABLE_FRAGMENT");
+        AbsencesFragment absencesFragment = (AbsencesFragment) getSupportFragmentManager().findFragmentByTag("ABSENCE_FRAGMENT");
         if (gradesFragment != null && gradesFragment.isVisible()) {
             int subjectPosition = gradesFragment.getSubjectPosition();
             SubjectsFragment subjectsFragment = new SubjectsFragment();
@@ -195,14 +230,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, subjectsFragment).commit();
             binding.bottomNavigation.setSelectedItemId(R.id.nav_grades);
         } else if (studentsFragment != null && studentsFragment.isVisible()) {
-            SettingsFragment settingsFragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment).commit();
-            binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);
-        } else if (timetableFragment != null && timetableFragment.isVisible()) {
-            SettingsFragment settingsFragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settingsFragment).commit();
-            binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);
-        } else {
+            HomeFragment homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
+        } else if (absencesFragment != null && absencesFragment.isVisible()) {
+            HomeFragment homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
+        } else{
             super.onBackPressed();
         }
     }
@@ -231,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
             } else if (intent.getIntExtra("type", -1) == 1) {
                 AbsencesFragment absencesFragment = new AbsencesFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, absencesFragment).commit();
-                binding.bottomNavigation.setSelectedItemId(R.id.nav_absences);
+                binding.bottomNavigation.setSelectedItemId(R.id.nav_settings);
             } else if (intent.getIntExtra("type", -1) == 2) {
                 BankFragment bankFragment = new BankFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, bankFragment).commit();

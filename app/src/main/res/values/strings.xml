@@ -96,4 +96,28 @@
     <string name="credentialsChanged">Your username or password changed. You\'re about to be logged out</string>
     <string name="upcomming_lesson">Upcomming Lesson</string>
 
+    <string name="timetable">Timetable</string>
+    <string name="time">Time</string>
+    <string name="teacher">Teacher</string>
+    <string name="room">Room</string>
+    <string name="comment">Comment</string>
+    <string name="marking">Marking</string>
+    <string name="fullDay">Full day</string>
+    <string name="contact">Contact</string>
+    <string name="students">Students</string>
+    <string name="theme">Theme</string>
+    <string name="dark_variant">Dark Variant</string>
+    <string name="variant">Variant</string>
+
+    <string-array name="themespinner">
+        <item>Follow System</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="screentype">
+        <item>Without border</item>
+        <item>With border</item>
+    </string-array>
+
 </resources>

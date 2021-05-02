@@ -2,6 +2,7 @@ package ch.kanti.nesa.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,7 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.activities.LessonDetailView;
 import ch.kanti.nesa.adapters.TimetableAdapter;
+import ch.kanti.nesa.daos.LessonDAO;
 import ch.kanti.nesa.databinding.FragmentTimetableDayBinding;
 import ch.kanti.nesa.tables.Lesson;
 
@@ -79,6 +82,21 @@ public class TimetableDayFragment extends Fragment {
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), listener, date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
                 datePickerDialog.show();
+            }
+        });
+
+        adapter.setOnItemClickListener(new TimetableAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Lesson lesson) {
+                Intent intent = new Intent(getContext(), LessonDetailView.class);
+                intent.putExtra("subject", lesson.getSubject());
+                intent.putExtra("date", lesson.getDay());
+                intent.putExtra("time", String.format("%s - %s", lesson.getStartTime(), lesson.getEndTime()));
+                intent.putExtra("teacher", lesson.getTeacherShort());
+                intent.putExtra("room", lesson.getRoom());
+                intent.putExtra("marking", lesson.getMarking());
+                intent.putExtra("comment", lesson.getComment());
+                startActivity(intent);
             }
         });
     }

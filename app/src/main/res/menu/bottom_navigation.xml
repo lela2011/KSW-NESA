@@ -12,9 +12,9 @@
         android:title="@string/grades" />
 
     <item
-        android:id="@+id/nav_absences"
-        android:icon="@drawable/absences_icon"
-        android:title="@string/absences" />
+        android:id="@+id/nav_timetable"
+        android:icon="@drawable/calendar_icon"
+        android:title="@string/timetable" />
 
     <item
         android:id="@+id/nav_account"

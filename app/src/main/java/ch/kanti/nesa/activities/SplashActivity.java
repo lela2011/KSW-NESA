@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,24 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_NESA_OLED);
+
+        int theme = App.sharedPreferences.getInt("theme", 0);
+        int border = App.sharedPreferences.getInt("border", 0);
+
+        if (theme == 0) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (theme == 1) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (theme == 2) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        if(border == 0) {
+            setTheme(R.style.Theme_NESA);
+        } else if (border == 1) {
+            setTheme(R.style.Theme_NESA_OLED);
+        }
+
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -86,7 +104,15 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }, SPLASH_TIME_OUT);
                 } else {
-                    runOnUiThread(()-> Toast.makeText(this, getString(R.string.youre_offline), Toast.LENGTH_SHORT).show());
+                    if(firstLogin) {
+                        runOnUiThread(()-> Toast.makeText(this, getString(R.string.youre_offline), Toast.LENGTH_SHORT).show());
+                    } else {
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            Intent mainActivity = new Intent(this, MainActivity.class);
+                            startActivity(mainActivity);
+                            finish();
+                        }, SPLASH_TIME_OUT);
+                    }
                 }
             }
         });

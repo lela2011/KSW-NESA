@@ -1,181 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/colour_customisation"
-        android:textSize="32sp"/>
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/grade"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:layout_margin="16dp"
+            android:text="@string/colour_customisation"
+            android:textSize="32sp"/>
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="6"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:layout_marginEnd="16dp"
-            tools:ignore="HardcodedText" />
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/grade"
+                android:textSize="16sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/color_picker_btn_1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/gold"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/upto"
+                android:textSize="16sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textSize="16sp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/color_picker_btn_2"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/green"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/upto"
+                android:textSize="16sp"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/edit_grad_range_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:inputType="numberDecimal"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:ignore="HardcodedText,LabelFor"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/color_picker_btn_3"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/orange"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/upto"
+                android:textSize="16sp"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/edit_grad_range_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:inputType="numberDecimal"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:ignore="HardcodedText,LabelFor"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/color_picker_btn_4"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/red"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/color_picker_btn_1"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/gold"
-            android:layout_weight="1"/>
+            android:id="@+id/colorSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:textSize="16sp"
+            android:text="@string/save"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/theme"
+            android:textSize="32sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/theme"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:id="@+id/themeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/themespinner"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/darkVariantTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/variant"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:id="@+id/darkVariant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/screentype"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/saveTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16sp"
+            android:text="@string/save"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/logout"
+            android:textSize="32sp"/>
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16sp"
+            android:text="@string/logout"
+            android:clickable="true"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/upto"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="6"
-            android:textSize="16sp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            tools:ignore="HardcodedText" />
-
-        <Button
-            android:id="@+id/color_picker_btn_2"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/green"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/upto"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
-
-        <EditText
-            android:id="@+id/edit_grad_range_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="5"
-            android:inputType="numberDecimal"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            tools:ignore="HardcodedText,LabelFor"
-            android:importantForAutofill="no" />
-
-        <Button
-            android:id="@+id/color_picker_btn_3"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/orange"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/upto"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
-
-        <EditText
-            android:id="@+id/edit_grad_range_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="4"
-            android:inputType="numberDecimal"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            tools:ignore="HardcodedText,LabelFor"
-            android:importantForAutofill="no" />
-
-        <Button
-            android:id="@+id/color_picker_btn_4"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/red"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/colorSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textSize="16sp"
-        android:text="@string/save"/>
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textSize="16sp"
-        android:text="@string/logout"
-        android:clickable="true"/>
-
-    <Button
-        android:layout_marginHorizontal="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Students"
-        android:textSize="16sp"
-        android:id="@+id/studentsButton"/>
-
-    <Button
-        android:layout_marginHorizontal="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Timetable"
-        android:textSize="16sp"
-        android:id="@+id/timetableButton"/>
-
-</LinearLayout>
+</ScrollView>

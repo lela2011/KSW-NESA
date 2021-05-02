@@ -1,4 +1,4 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.util.regex.Pattern;
+
+import ch.kanti.nesa.R;
 
 public class ColorPickerDialog extends AppCompatDialogFragment {
 

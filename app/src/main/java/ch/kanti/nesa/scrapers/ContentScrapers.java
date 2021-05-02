@@ -162,7 +162,6 @@ public class ContentScrapers {
                 }
             }
         }
-        calculatePromotionPoints(subjects);
         return new SubjectsAndGrades(subjects, gradeList);
     }
 

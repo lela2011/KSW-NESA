@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 
 import ch.kanti.nesa.AES;
@@ -40,6 +41,24 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int theme = App.sharedPreferences.getInt("theme", 0);
+        int border = App.sharedPreferences.getInt("border", 0);
+
+        if (theme == 0) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (theme == 1) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (theme == 2) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        if(border == 0) {
+            setTheme(R.style.Theme_NESA);
+        } else if (border == 1) {
+            setTheme(R.style.Theme_NESA_OLED);
+        }
+
         binding = LoginActivityBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);

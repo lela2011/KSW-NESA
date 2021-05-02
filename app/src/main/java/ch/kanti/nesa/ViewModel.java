@@ -131,4 +131,16 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<List<Lesson>> getLessons(String day) {
         return lessonRepository.getLessons(day);
     }
+
+    public LiveData<List<Lesson>> getNextLesson(String day, int lesson) {
+        return lessonRepository.getNextLesson(day, lesson);
+    }
+
+    public void deleteAllStudents() {
+        studentRepository.deleteAll();
+    }
+
+    public void deleteAllLessons() {
+        lessonRepository.deleteAll();
+    }
 }

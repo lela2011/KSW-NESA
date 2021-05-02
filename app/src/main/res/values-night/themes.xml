@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.NESA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColorVariant</item>
@@ -24,8 +27,6 @@
         <item name="colorOnBackground">@color/onBackground</item>
 
         <item name="materialCardViewStyle">@style/CardView.LCD.Dark</item>
-
-
     </style>
 
     <style name="CardView.LCD.Dark" parent="CardView.Dark">
@@ -60,6 +61,7 @@
 
         <item name="materialCardViewStyle">@style/CardView.OLED</item>
 
+        <item name="android:listDivider">@color/onBackground</item>
 
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Custom</item>
 
@@ -69,7 +71,7 @@
     <style name="CardView.OLED" parent="CardView.Dark">
         <item name="cardCornerRadius">16dp</item>
         <item name="cardBackgroundColor">?attr/colorSurface</item>
-        <item name="strokeColor">#ababab</item>
+        <item name="strokeColor">#ffffff</item>
         <item name="strokeWidth">1dp</item>
         <item name="cardElevation">0dp</item>
         <item name="cardMaxElevation">0dp</item>

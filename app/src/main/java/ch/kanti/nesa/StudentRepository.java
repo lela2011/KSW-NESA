@@ -33,14 +33,20 @@ public class StudentRepository {
     }
 
     public void insert(List<Student> students) {
-        studentDAO.deleteAll();
-        for (Student student : students) {
-            studentDAO.insert(student);
-        }
+        Database.databaseWriteExecutor.execute(()->{
+            studentDAO.deleteAll();
+            for (Student student : students) {
+                studentDAO.insert(student);
+            }
+        });
     }
 
     public LiveData<List<Student>> getStudents() {
         return studentDAO.getStudents();
+    }
+
+    public void deleteAll () {
+        studentDAO.deleteAll();
     }
 
 

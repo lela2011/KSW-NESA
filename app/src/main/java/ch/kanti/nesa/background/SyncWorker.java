@@ -23,6 +23,7 @@ public class SyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        /*
         String username = App.sharedPreferences.getString("username","");
         String password = App.sharedPreferences.getString("password","");
         boolean firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, true);
@@ -49,6 +50,7 @@ public class SyncWorker extends Worker {
             }
         } else {
             return Result.failure();
-        }
+        }*/
+        return Result.success();
     }
 }

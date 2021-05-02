@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.kanti.nesa.adapters.BankAdapter;
-import ch.kanti.nesa.DetailedBankStatement;
+import ch.kanti.nesa.activities.DetailedBankStatement;
 import ch.kanti.nesa.ViewModel;
 
 import ch.kanti.nesa.R;

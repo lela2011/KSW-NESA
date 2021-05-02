@@ -1,6 +1,8 @@
 package ch.kanti.nesa.adapters;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
-import ch.kanti.nesa.databinding.RecviewTimetableDayBinding;
-import ch.kanti.nesa.tables.Lesson;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.kanti.nesa.R;
+import ch.kanti.nesa.databinding.RecviewTimetableDayBinding;
+import ch.kanti.nesa.tables.Lesson;
 
 public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.ViewHolder> {
 
     private List<Lesson> dataList = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -35,10 +39,23 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             holder.time.setVisibility(View.GONE);
             holder.subject.setText(String.format("%s", currentItem.getSubject()));
         } else {
+            holder.time.setVisibility(View.VISIBLE);
             holder.time.setText(String.format("%s - %s", currentItem.getStartTime(), currentItem.getEndTime()));
             holder.subject.setText(String.format("%s - %s", currentItem.getSubject(), currentItem.getRoom()));
         }
-        holder.rootView.setCardBackgroundColor(Color.parseColor(currentItem.getColor()));
+        if(currentItem.isExam() || !currentItem.getMarking().equals("Keine Markierung")) {
+            holder.rootView.setCardBackgroundColor(Color.parseColor(currentItem.getColor()));
+            holder.time.setTextColor(Color.BLACK);
+            holder.subject.setTextColor(Color.BLACK);
+        } else {
+            TypedValue typedValueCard = new TypedValue();
+            Resources.Theme theme = holder.rootView.getContext().getTheme();
+            theme.resolveAttribute(R.attr.colorSurface, typedValueCard, true);
+            int color = holder.rootView.getContext().getColor(R.color.primaryTextColor);
+            holder.time.setTextColor(color);
+            holder.subject.setTextColor(color);
+            holder.rootView.setCardBackgroundColor(typedValueCard.data);
+        }
     }
 
     @Override
@@ -51,7 +68,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         //define views
         TextView time, subject;
         MaterialCardView rootView;
@@ -61,6 +78,20 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             time = binding.time;
             subject = binding.subject;
             rootView = binding.rootView;
+            rootView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(dataList.get(position));
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Lesson lesson);
+    }
+
+    public void setOnItemClickListener (OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

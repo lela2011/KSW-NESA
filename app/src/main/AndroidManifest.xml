@@ -16,12 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NESA"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ActivityDetailedStudent"></activity>
+        <activity android:name=".activities.LessonDetailView"></activity>
+        <activity android:name=".activities.ActivityDetailedStudent" />
         <activity
-            android:name=".DetailedBankStatement"
+            android:name=".activities.DetailedBankStatement"
             android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".GradeDetailActivity"
+            android:name=".activities.GradeDetailActivity"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.MainActivity"

@@ -28,5 +28,5 @@ public interface LessonDAO {
     void updateExam(String marking, String comment, String color, boolean isExam, String day, int lesson, String subject);
 
     @Query("SELECT * FROM lesson_table WHERE day = :day AND lesson = :lesson")
-    LiveData<List<Lesson>> getNextLesson(String day, String lesson);
+    LiveData<List<Lesson>> getNextLesson(String day, int lesson);
 }

@@ -91,4 +91,27 @@
     <string name="credentialsChanged">Ihre Zugangsdaten haben isch geändert. Sie werden abgemeldet</string>
 
     <string name="upcomming_lesson">Nächste Lektion</string>
+    <string name="timetable">Stundenplan</string>
+    <string name="time">Zeit</string>
+    <string name="teacher">Lehrer</string>
+    <string name="room">Raum</string>
+    <string name="comment">Kommentar</string>
+    <string name="marking">Markierung</string>
+    <string name="fullDay">Ganzer Tag</string>
+    <string name="contact">Kontakt</string>
+    <string name="students">Schüler</string>
+    <string name="theme">Theme</string>
+    <string name="dark_variant">Dunkel Variante</string>
+    <string name="variant">Variante</string>
+
+    <string-array name="themespinner">
+        <item>System folgen</item>
+        <item>Hell</item>
+        <item>Dunkel</item>
+    </string-array>
+
+    <string-array name="screentype">
+        <item>ohne Rahmen</item>
+        <item>mit Rahmen</item>
+    </string-array>
 </resources>

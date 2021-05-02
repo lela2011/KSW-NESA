@@ -1,10 +1,13 @@
-package ch.kanti.nesa;
+package ch.kanti.nesa.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import ch.kanti.nesa.App;
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.ActivityDetailedBankStatementBinding;
 
 public class DetailedBankStatement extends AppCompatActivity {
@@ -14,7 +17,24 @@ public class DetailedBankStatement extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_NESA_OLED);
+
+        int theme = App.sharedPreferences.getInt("theme", 0);
+        int border = App.sharedPreferences.getInt("border", 0);
+
+        if (theme == 0) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (theme == 1) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (theme == 2) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        if(border == 0) {
+            setTheme(R.style.Theme_NESA);
+        } else if (border == 1) {
+            setTheme(R.style.Theme_NESA_OLED);
+        }
+
         binding = ActivityDetailedBankStatementBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

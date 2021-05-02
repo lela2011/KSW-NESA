@@ -106,13 +106,18 @@ public class GradesRepository {
 
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                    String gradeString = "-";
+                    if (grade.getGrade() != -1.0f) {
+                        gradeString = String.valueOf(grade.getGrade());
+                    }
+
                     Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(deletedText)
                             .setStyle(new NotificationCompat.InboxStyle()
                             .addLine(context.getString(R.string.subject) + grade.getSubjectId())
                             .addLine(context.getString(R.string.exam) + grade.getExam())
-                            .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                            .addLine(context.getString(R.string.gradeNot) + gradeString)
                             .setBigContentTitle(deletedText))
                             .setSmallIcon(R.drawable.ktstgallen)
                             .setContentIntent(pendingIntent)
@@ -136,13 +141,18 @@ public class GradesRepository {
 
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                    String gradeString = "-";
+                    if (grade.getGrade() != -1.0f) {
+                        gradeString = String.valueOf(grade.getGrade());
+                    }
+
                     Notification notificationAdd = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(addedText)
                             .setStyle(new NotificationCompat.InboxStyle()
                                     .addLine(context.getString(R.string.subject) + grade.getSubjectId())
                                     .addLine(context.getString(R.string.exam) + grade.getExam())
-                                    .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                                    .addLine(context.getString(R.string.gradeNot) + gradeString)
                                     .setBigContentTitle(addedText))
                             .setSmallIcon(R.drawable.ktstgallen)
                             .setContentIntent(pendingIntent)
@@ -166,13 +176,18 @@ public class GradesRepository {
 
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                    String gradeString = "-";
+                    if (grade.getGrade() != -1.0f) {
+                        gradeString = String.valueOf(grade.getGrade());
+                    }
+
                     Notification notificationMod = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(grade.getExam())
                             .setContentText(moddedText)
                             .setStyle(new NotificationCompat.InboxStyle()
                                     .addLine(context.getString(R.string.subject) + grade.getSubjectId())
                                     .addLine(context.getString(R.string.exam) + grade.getExam())
-                                    .addLine(context.getString(R.string.gradeNot) + grade.getGrade())
+                                    .addLine(context.getString(R.string.gradeNot) + gradeString)
                                     .setBigContentTitle(moddedText))
                             .setSmallIcon(R.drawable.ktstgallen)
                             .setContentIntent(pendingIntent)
@@ -182,8 +197,6 @@ public class GradesRepository {
                 }
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-                //notificationList.add(new NotificationCompat.Builder(context, App.CHANNEL_GRADES).setContentTitle("Worker triggered").setSmallIcon(R.drawable.ktstgallen).build());
 
                 if (notificationList.size() < 10) {
                     for (int i = 0; i < notificationList.size(); i++) {

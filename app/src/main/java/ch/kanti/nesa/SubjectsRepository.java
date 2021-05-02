@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import ch.kanti.nesa.daos.GradesDAO;
 import ch.kanti.nesa.daos.SubjectsDAO;
 import ch.kanti.nesa.tables.Subject;
 
@@ -14,17 +15,20 @@ import java.util.List;
 
 public class SubjectsRepository {
     final SubjectsDAO subjectsDAO;
+    final GradesDAO gradesDAO;
     final Context context;
 
     public SubjectsRepository(Application application) {
         Database database = Database.getInstance(application);
         subjectsDAO = database.subjectsDAO();
+        gradesDAO = database.gradesDAO();
         context = application.getApplicationContext();
     }
 
     public SubjectsRepository(Context context) {
         Database database = Database.getInstance(context);
         subjectsDAO = database.subjectsDAO();
+        gradesDAO = database.gradesDAO();
         this.context = context;
     }
 
@@ -42,6 +46,7 @@ public class SubjectsRepository {
                     subjectsDAO.updateAverage(subject.getGradeAverage(), subject.getPluspoints(), subject.getId());
                 }
             } else {
+                gradesDAO.deleteAll();
                 subjectsDAO.deleteAll();
                 subjectsDAO.insert(subjects);
             }

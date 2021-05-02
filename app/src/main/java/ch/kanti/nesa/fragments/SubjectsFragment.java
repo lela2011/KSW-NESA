@@ -1,6 +1,8 @@
 package ch.kanti.nesa.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ch.kanti.nesa.App;
 import ch.kanti.nesa.R;
-import ch.kanti.nesa.SubjectNameDialog;
+import ch.kanti.nesa.dialogs.SubjectNameDialog;
 import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
 
 import java.text.DecimalFormat;
@@ -34,6 +37,9 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
 
     int position;
 
+    int col1, col2, col3, col4;
+    float range3, range4;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,6 +47,12 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
         if (getArguments() != null){
             position = getArguments().getInt("position", 0);
         }
+        col1 = App.sharedPreferences.getInt("colCol1",  getContext().getColor(R.color.gold));
+        col2 = App.sharedPreferences.getInt("colCol2",  getContext().getColor(R.color.green));
+        col3 = App.sharedPreferences.getInt("colCol3",  getContext().getColor(R.color.orange));
+        col4 = App.sharedPreferences.getInt("colCol4",  getContext().getColor(R.color.red));
+        range3 = App.sharedPreferences.getFloat("colRange1", 5f);
+        range4 = App.sharedPreferences.getFloat("colRange2", 4f);
         return binding.getRoot();
     }
 
@@ -61,21 +73,40 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
             recyclerView.scrollToPosition(position);
             float pluspoints = ContentScrapers.calculatePromotionPoints(subjects);
             binding.pluspoints.setText(df.format(pluspoints));
-            if (pluspoints > 0) {
-                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.green));
-            } else {
-                binding.pluspoints.setTextColor(ContextCompat.getColor(binding.pluspoints.getContext(), R.color.red));
+
+            if (pluspoints > 2) {
+                binding.pluspoints.setTextColor(getContext().getColor(R.color.green));
+            } else if (pluspoints <= 2 && pluspoints >= 0) {
+                binding.pluspoints.setTextColor(getContext().getColor(R.color.orange));
+            } else if (pluspoints < 0) {
+                binding.pluspoints.setTextColor(getContext().getColor(R.color.red));
             }
         });
 
         viewModel.getSubjectAverage().observe(getViewLifecycleOwner(), aFloat -> {
-            binding.average.setText(df.format(aFloat));
-            if (aFloat >= 5.0f) {
-                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.green));
-            } else if (aFloat >= 4.0f) {
-                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.orange));
+            if (aFloat != null) {
+                binding.average.setText(df.format(aFloat));
+                if (aFloat == 6.0f) {
+                    binding.average.setTextColor(col1);
+                } else if (range3 > range4 && aFloat >= range3) {
+                    binding.average.setTextColor(col2);
+                } else if (range4 > range3 && aFloat >= range4) {
+                    binding.average.setTextColor(col2);
+                } else if (range3 > range4 && aFloat >= range4) {
+                    binding.average.setTextColor(col3);
+                } else if (range4 > range3 && aFloat >= range3) {
+                    binding.average.setTextColor(col4);
+                } else if (range3 > range4 && aFloat < range4 && aFloat != -1) {
+                    binding.average.setTextColor(col4);
+                } else if (range4 > range3 && aFloat < range3 && aFloat != -1) {
+                    binding.average.setTextColor(col3);
+                }
             } else {
-                binding.average.setTextColor(ContextCompat.getColor(binding.average.getContext(), R.color.red));
+                binding.average.setText("-");
+                TypedValue typedValue = new TypedValue();
+                Resources.Theme theme = getContext().getTheme();
+                theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
+                binding.average.setTextColor(typedValue.data);
             }
         });
 

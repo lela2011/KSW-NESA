@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,14 @@ public class LessonRepository {
 
     public LiveData<List<Lesson>> getLessons(String day) {
         return lessonDAO.getLessons(day);
+    }
+
+    public LiveData<List<Lesson>> getNextLesson(String day, int lesson) {
+        return lessonDAO.getNextLesson(day, lesson);
+    }
+
+    public void deleteAll () {
+        lessonDAO.deleteAll();
     }
 
 }

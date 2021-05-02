@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ch.kanti.nesa.activities.DetailedBankStatement">
+    tools:context=".activities.LessonDetailView">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/grade_details"
             android:layout_margin="16dp"
             android:textSize="32sp"/>
 
@@ -28,14 +29,59 @@
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="-"
             android:layout_margin="16dp"
             android:textSize="32sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/description"
+            android:text="@string/time"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_margin="16dp"
+            android:textSize="32sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/teacher"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/teacher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_margin="16dp"
+            android:textSize="32sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/room"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_margin="16dp"
+            android:textSize="32sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/marking"
             android:layout_marginHorizontal="16dp"
             android:textSize="16sp"/>
 
@@ -43,37 +89,22 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="-"
             android:layout_margin="16dp"
             android:textSize="32sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/weight"
+            android:text="@string/comment"
             android:layout_marginHorizontal="16dp"
             android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/weight"
+            android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_margin="16dp"
-            android:textSize="32sp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/grade"
-            android:layout_marginHorizontal="16dp"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/grade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
+            android:text="-"
             android:layout_margin="16dp"
             android:textSize="32sp"/>
 
