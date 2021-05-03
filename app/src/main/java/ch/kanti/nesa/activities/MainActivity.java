@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
                 tag = "ABSENCE_FRAGMENT";
                 break;
             case SHORTCUT_TIMETABLE:
-                selectedFragment = new AbsencesFragment();
+                selectedFragment = new TimetableDayFragment();
                 selectedIcon = R.id.nav_timetable;
                 break;
             case SHORTCUT_STUDENTS:
