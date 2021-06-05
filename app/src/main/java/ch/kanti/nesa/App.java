@@ -4,8 +4,10 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -30,10 +32,6 @@ public class App extends Application {
     public static final String CHANNEL_ABSENCES = "channel_absences";
     public static final String CHANNEL_BANK = "channel_bank";
 
-    public static final int LOGIN_SUCCESSFUL = 1;
-    public static final int LOGIN_ERROR = 2;
-    public static final int LOGIN_FAILED = -1;
-
     public static final String usernameKey = "eThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u";
     public static final String passwordKey = "C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeS";
 
@@ -43,7 +41,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannels();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannels();
+        }
 
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -59,6 +60,7 @@ public class App extends Application {
         sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannels() {
         NotificationChannel gradesChannel = new NotificationChannel(
                 CHANNEL_GRADES,

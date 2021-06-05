@@ -10,7 +10,6 @@ public class Lesson {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private final String day;
-    private final String week;
     private final String startTime;
     private final String endTime;
     private final String subject;
@@ -19,12 +18,13 @@ public class Lesson {
     private final String marking;
     private final String comment;
     private final boolean isExam;
+    private final int week;
     private final int lesson;
     private final int sublesson;
     private int siblingLessons;
     private String color;
 
-    public Lesson(String day, String week, String startTime, String endTime, String subject, String teacherShort, String room, String marking, String comment, String color, boolean isExam, int lesson, int sublesson) {
+    public Lesson(String day, int week, String startTime, String endTime, String subject, String teacherShort, String room, String marking, String comment, String color, boolean isExam, int lesson, int sublesson) {
         this.week = week;
         this.day = day;
         this.startTime = startTime;
@@ -80,7 +80,7 @@ public class Lesson {
         return day;
     }
 
-    public String getWeek() {
+    public int getWeek() {
         return week;
     }
 

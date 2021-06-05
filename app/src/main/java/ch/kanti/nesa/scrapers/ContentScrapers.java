@@ -23,10 +23,12 @@ import java.sql.PreparedStatement;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
 
 public class ContentScrapers {
 
-    static HashMap<String, Integer> parallelLessons = new HashMap<>();
+    static final HashMap<String, Integer> parallelLessons = new HashMap<>();
 
     public static ArrayList<AccountInfo> scrapeMain(Document mainPage, Document emailPage){
         Elements tableLoggedOut = mainPage.select("div.mdl-cell:nth-child(4) > table:nth-child(2) > tbody:nth-child(1) > tr");
@@ -87,16 +89,19 @@ public class ContentScrapers {
         table.remove(0);
         int i = 0;
         int l = 2;
-        while (i < table.size()) {
-            if (l == 2) {
-                overview.add(table.get(i));
-                l = 1;
+
+        for (int h = 0; h < table.size(); h++) {
+            String tableClass = table.get(h).attr("class").trim();
+            String tableId = table.get(h).attr("id").trim();
+            if(tableClass.contains("detailrow")) {
+                detailView.add(table.get(h));
+            } else if (!tableId.contains("schueleruebersicht")) {
+                if (table.get(h).childrenSize() == 5) {
+                    overview.add(table.get(h));
+                } else if (table.get(h).childrenSize() == 1){
+                    detailView.add(table.get(h));
+                }
             }
-            else if (l == 1) {
-                detailView.add(table.get(i));
-                l = 2;
-            }
-            i+=l;
         }
 
         for (int g = 0; g < overview.size(); g++) {
@@ -134,6 +139,7 @@ public class ContentScrapers {
                     }
                 }
             }
+
             String subjectName = overview.get(g).select("td:nth-child(1)").get(0).text().replace(subjectId + " ", "");
             String gradeAverageString = overview.get(g).select("td").get(1).text().replace("*", "").replace("-", "");
             if(gradeAverageString.equals("")){
@@ -143,9 +149,22 @@ public class ContentScrapers {
             }
             subjects.add(new Subject(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, counts, counts));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
-            if (grades.size() != 0){
+            if (grades.size() != 0) {
+                if(g+1 <= detailView.size()-1) {
+                    if(grades.last().text().contains("Aktueller Durchschnitt")) {
+                        grades.remove(grades.size()-1);
+                    } else {
+                        Elements additionalGrades = detailView.get(g+1).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
+                        additionalGrades.remove(additionalGrades.size()-1);
+                        grades.addAll(additionalGrades);
+                        detailView.remove(g+1);
+                    }
+                } else if (g == detailView.size()-1) {
+                    if(grades.last().text().contains("Aktueller Durchschnitt")) {
+                        grades.remove(grades.size()-1);
+                    }
+                }
                 grades.remove(0);
-                grades.remove(grades.size()-1);
                 for (int d = 0; d < grades.size(); d++) {
                     String date = grades.get(d).select("td").get(0).text();
                     String name = grades.get(d).select("td").get(1).text();
@@ -212,7 +231,7 @@ public class ContentScrapers {
 
         ArrayList<BankStatement> statements = new ArrayList<>();
 
-        Elements table = page.select("#content-card > table:nth-child(6) > tbody:nth-child(1) > tr");
+        Elements table = page.select("#content-card > table:nth-child(8) > tbody > tr");
         table.remove(0);
         table.remove(table.last());
         for(int i = 0; i<table.size(); i++ ){
@@ -342,7 +361,7 @@ public class ContentScrapers {
         markings.put("new","Neu eingef\u00fcgt");
         markings.put("moved","Verschoben");
         markings.put("deleted","Gel\u00f6scht");
-        markings.put("100","Auftrag via Teams\\/Mail");
+        markings.put("100","Auftrag via Teams/Mail");
         //</editor-fold>
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -372,7 +391,9 @@ public class ContentScrapers {
                 String room = rooms.get(Integer.parseInt(temp.getElementsByTag("zimmer").get(0).data().replace("[CDATA[","").replace("]]","")));
                 String marking = markings.get(temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]",""));
                 String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
-                Lesson lesson = new Lesson(start_date[0], start_date[0]+ "-" + end_date[0], start_date[1], end_date[1], subject, teacherShort, room, marking, null, color, false, times.get(start_date[1]), parallelLessons.get(start_date[1]));
+                WeekFields weekField = WeekFields.of(Locale.getDefault());
+                int week = LocalDate.parse(start_date[0]).get(weekField.weekOfWeekBasedYear());
+                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subject, teacherShort, room, marking, null, color, false, times.get(start_date[1]), parallelLessons.get(start_date[1]));
                 dayLessons.add(lesson);
                 parallelLessons.put(start_date[1], parallelLessons.get(start_date[1]) + 1);
             } catch (IndexOutOfBoundsException e){
@@ -423,9 +444,14 @@ public class ContentScrapers {
                 String marking = temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]","");
                 String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
                 String comment = temp.getElementsByTag("kommentar").get(0).data().replace("[CDATA[","").replace("]]","");
-                Lesson lesson = new Lesson(start_date[0],start_date[0] + "-" + end_date[0], start_date[1], end_date[1], subjectTeacher[0], teacher, null, marking, comment, color, true, times.get(start_date[1]), 0);
+                WeekFields weekField = WeekFields.of(Locale.getDefault());
+                int week = LocalDate.parse(start_date[0]).get(weekField.weekOfWeekBasedYear());
+                if(times.get(start_date[1] ) == null) {
+                    Log.d("tag", "scrapeExams: Nullpointer");
+                }
+                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subjectTeacher[0], teacher, null, marking, comment, color, true, times.get(start_date[1]), 0);
                 exams.add(lesson);
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         }

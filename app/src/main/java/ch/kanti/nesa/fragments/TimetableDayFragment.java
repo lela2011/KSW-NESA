@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -17,18 +17,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.kanti.nesa.ViewModel;
 import ch.kanti.nesa.activities.LessonDetailView;
 import ch.kanti.nesa.adapters.TimetableAdapter;
-import ch.kanti.nesa.daos.LessonDAO;
 import ch.kanti.nesa.databinding.FragmentTimetableDayBinding;
 import ch.kanti.nesa.tables.Lesson;
 
@@ -61,48 +59,61 @@ public class TimetableDayFragment extends Fragment {
         binding.title.setText(now.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
         setRecyclerView();
 
-        binding.previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                date = date.minusDays(1);
-                setRecyclerView();
-            }
+        binding.previous.setOnClickListener(v -> {
+            date = date.minusDays(1);
+            setRecyclerView();
         });
 
-        binding.next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                date = date.plusDays(1);
-                setRecyclerView();
-            }
+        binding.next.setOnClickListener(v -> {
+            date = date.plusDays(1);
+            setRecyclerView();
         });
 
-        binding.datePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), listener, date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
-                datePickerDialog.show();
-            }
+        binding.datePicker.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), listener, date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
+            datePickerDialog.show();
         });
 
-        adapter.setOnItemClickListener(new TimetableAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Lesson lesson) {
-                Intent intent = new Intent(getContext(), LessonDetailView.class);
-                intent.putExtra("subject", lesson.getSubject());
-                intent.putExtra("date", lesson.getDay());
-                intent.putExtra("time", String.format("%s - %s", lesson.getStartTime(), lesson.getEndTime()));
-                intent.putExtra("teacher", lesson.getTeacherShort());
-                intent.putExtra("room", lesson.getRoom());
-                intent.putExtra("marking", lesson.getMarking());
-                intent.putExtra("comment", lesson.getComment());
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener(lesson -> {
+            Intent intent = new Intent(getContext(), LessonDetailView.class);
+            intent.putExtra("subject", lesson.getSubject());
+            intent.putExtra("date", lesson.getDay());
+            intent.putExtra("time", String.format("%s - %s", lesson.getStartTime(), lesson.getEndTime()));
+            intent.putExtra("teacher", lesson.getTeacherShort());
+            intent.putExtra("room", lesson.getRoom());
+            intent.putExtra("marking", lesson.getMarking());
+            intent.putExtra("comment", lesson.getComment());
+            startActivity(intent);
         });
     }
 
     private void setRecyclerView () {
         viewModel.getLessons(date.toString()).observe(getViewLifecycleOwner(), lessons -> {
+
+            HashMap<String, Integer> parallelLessons = new HashMap<>();
+            parallelLessons.put("07:40",0);
+            parallelLessons.put("08:30",0);
+            parallelLessons.put("09:35",0);
+            parallelLessons.put("10:25",0);
+            parallelLessons.put("11:20",0);
+            parallelLessons.put("12:10",0);
+            parallelLessons.put("13:00",0);
+            parallelLessons.put("13:50",0);
+            parallelLessons.put("14:45",0);
+            parallelLessons.put("15:35",0);
+            parallelLessons.put("16:30",0);
+            parallelLessons.put("17:20",0);
+            parallelLessons.put("18:00",0);
+            parallelLessons.put("19:00",0);
+            parallelLessons.put("20:00",0);
+            parallelLessons.put("21:00",0);
+
+            for(Lesson temp : lessons) {
+                String startTime = temp.getStartTime();
+                int parallelLessonCount = parallelLessons.get(startTime);
+                parallelLessons.put(startTime, parallelLessonCount+1);
+            }
+
             List<Integer> factors = lessons.stream()
                     .filter(c -> c.getSiblingLessons() != 0)
                     .map(Lesson::getSiblingLessons)
@@ -119,11 +130,13 @@ public class TimetableDayFragment extends Fragment {
             layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
+                    //return factor;
                     if (lessons.get(position).getLesson() == 0) {
                         return factor;
                     } else {
-                        return factor / lessons.get(position).getSiblingLessons();
+                        return  factor / parallelLessons.get(lessons.get(position).getStartTime());
                     }
+
                 }
             });
 

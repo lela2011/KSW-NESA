@@ -9,21 +9,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ch.kanti.nesa.App;
-import ch.kanti.nesa.R;
-import ch.kanti.nesa.dialogs.SubjectNameDialog;
-import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
-
 import java.text.DecimalFormat;
 
-import ch.kanti.nesa.adapters.SubjectAdapter;
+import ch.kanti.nesa.App;
+import ch.kanti.nesa.R;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.adapters.SubjectAdapter;
+import ch.kanti.nesa.databinding.FragmentSubjectsBinding;
+import ch.kanti.nesa.dialogs.SubjectNameDialog;
 import ch.kanti.nesa.scrapers.ContentScrapers;
 
 public class SubjectsFragment extends Fragment implements SubjectNameDialog.DialogListener {
@@ -47,10 +45,10 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
         if (getArguments() != null){
             position = getArguments().getInt("position", 0);
         }
-        col1 = App.sharedPreferences.getInt("colCol1",  getContext().getColor(R.color.gold));
-        col2 = App.sharedPreferences.getInt("colCol2",  getContext().getColor(R.color.green));
-        col3 = App.sharedPreferences.getInt("colCol3",  getContext().getColor(R.color.orange));
-        col4 = App.sharedPreferences.getInt("colCol4",  getContext().getColor(R.color.red));
+        col1 = App.sharedPreferences.getInt("colCol1",  requireContext().getColor(R.color.gold));
+        col2 = App.sharedPreferences.getInt("colCol2",  requireContext().getColor(R.color.green));
+        col3 = App.sharedPreferences.getInt("colCol3",  requireContext().getColor(R.color.orange));
+        col4 = App.sharedPreferences.getInt("colCol4",  requireContext().getColor(R.color.red));
         range3 = App.sharedPreferences.getFloat("colRange1", 5f);
         range4 = App.sharedPreferences.getFloat("colRange2", 4f);
         return binding.getRoot();
@@ -75,11 +73,11 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
             binding.pluspoints.setText(df.format(pluspoints));
 
             if (pluspoints > 2) {
-                binding.pluspoints.setTextColor(getContext().getColor(R.color.green));
+                binding.pluspoints.setTextColor(requireContext().getColor(R.color.green));
             } else if (pluspoints <= 2 && pluspoints >= 0) {
-                binding.pluspoints.setTextColor(getContext().getColor(R.color.orange));
+                binding.pluspoints.setTextColor(requireContext().getColor(R.color.orange));
             } else if (pluspoints < 0) {
-                binding.pluspoints.setTextColor(getContext().getColor(R.color.red));
+                binding.pluspoints.setTextColor(requireContext().getColor(R.color.red));
             }
         });
 
@@ -104,7 +102,7 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
             } else {
                 binding.average.setText("-");
                 TypedValue typedValue = new TypedValue();
-                Resources.Theme theme = getContext().getTheme();
+                Resources.Theme theme = requireContext().getTheme();
                 theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
                 binding.average.setTextColor(typedValue.data);
             }
@@ -118,7 +116,7 @@ public class SubjectsFragment extends Fragment implements SubjectNameDialog.Dial
             bundle.putInt("position", position);
             GradesFragment newSubject = new GradesFragment();
             newSubject.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newSubject, "GRADES_FRAGMENT").commit();
         });
 
         subjectAdapter.setOnItemLongClickListener(subject -> {

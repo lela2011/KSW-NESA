@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,10 +66,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        col1 = App.sharedPreferences.getInt("colCol1",  getContext().getColor(R.color.gold));
-        col2 = App.sharedPreferences.getInt("colCol2",  getContext().getColor(R.color.green));
-        col3 = App.sharedPreferences.getInt("colCol3",  getContext().getColor(R.color.orange));
-        col4 = App.sharedPreferences.getInt("colCol4",  getContext().getColor(R.color.red));
+        col1 = App.sharedPreferences.getInt("colCol1",  requireContext().getColor(R.color.gold));
+        col2 = App.sharedPreferences.getInt("colCol2",  requireContext().getColor(R.color.green));
+        col3 = App.sharedPreferences.getInt("colCol3",  requireContext().getColor(R.color.orange));
+        col4 = App.sharedPreferences.getInt("colCol4",  requireContext().getColor(R.color.red));
         range3 = App.sharedPreferences.getFloat("colRange1", 5f);
         range4 = App.sharedPreferences.getFloat("colRange2", 4f);
 
@@ -84,8 +85,6 @@ public class HomeFragment extends Fragment {
             date = LocalDate.now().plusDays(1).toString();
             lesson = 1;
         }
-        //date = "2021-04-28";
-        //lesson = 3;
         getLesson(date, lesson);
     }
 
@@ -100,6 +99,31 @@ public class HomeFragment extends Fragment {
                         getLesson(date, lesson+1);
                     }
                 }
+
+                HashMap<String, Integer> parallelLessons = new HashMap<>();
+                parallelLessons.put("07:40",0);
+                parallelLessons.put("08:30",0);
+                parallelLessons.put("09:35",0);
+                parallelLessons.put("10:25",0);
+                parallelLessons.put("11:20",0);
+                parallelLessons.put("12:10",0);
+                parallelLessons.put("13:00",0);
+                parallelLessons.put("13:50",0);
+                parallelLessons.put("14:45",0);
+                parallelLessons.put("15:35",0);
+                parallelLessons.put("16:30",0);
+                parallelLessons.put("17:20",0);
+                parallelLessons.put("18:00",0);
+                parallelLessons.put("19:00",0);
+                parallelLessons.put("20:00",0);
+                parallelLessons.put("21:00",0);
+
+                for(Lesson temp : lessons) {
+                    String startTime = temp.getStartTime();
+                    int parallelLessonCount = parallelLessons.get(startTime);
+                    parallelLessons.put(startTime, parallelLessonCount+1);
+                }
+
                 List<Integer> factors = lessons.stream()
                         .filter(c -> c.getSiblingLessons() != 0)
                         .map(Lesson::getSiblingLessons)
@@ -116,10 +140,11 @@ public class HomeFragment extends Fragment {
                 layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
+                        //return factor;
                         if (lessons.get(position).getLesson() == 0) {
                             return factor;
                         } else {
-                            return factor / lessons.get(position).getSiblingLessons();
+                            return  factor / parallelLessons.get(lessons.get(position).getStartTime());
                         }
                     }
                 });
@@ -167,11 +192,11 @@ public class HomeFragment extends Fragment {
                 String balance = aFloat + " " + getString(R.string.chf);
                 binding.balance.setText(balance);
                 if(aFloat >= 100){
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                    binding.balance.setTextColor(ContextCompat.getColor(requireContext(), R.color.green));
                 } else if(aFloat > 0) {
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
+                    binding.balance.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange));
                 } else {
-                    binding.balance.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    binding.balance.setTextColor(ContextCompat.getColor(requireContext(), R.color.red));
                 }
             }
         });
@@ -197,7 +222,7 @@ public class HomeFragment extends Fragment {
             } else {
                 binding.gradeAverage.setText("-");
                 TypedValue typedValue = new TypedValue();
-                Resources.Theme theme = getContext().getTheme();
+                Resources.Theme theme = requireContext().getTheme();
                 theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true);
                 binding.gradeAverage.setTextColor(typedValue.data);
             }
@@ -208,11 +233,11 @@ public class HomeFragment extends Fragment {
                 float pluspoints = ContentScrapers.calculatePromotionPoints(subjects);
                 binding.pluspoints.setText(df.format(pluspoints));
                 if (pluspoints > 2) {
-                    binding.pluspoints.setTextColor(getContext().getColor(R.color.green));
+                    binding.pluspoints.setTextColor(requireContext().getColor(R.color.green));
                 } else if (pluspoints <= 2 && pluspoints >= 0) {
-                    binding.pluspoints.setTextColor(getContext().getColor(R.color.orange));
+                    binding.pluspoints.setTextColor(requireContext().getColor(R.color.orange));
                 } else if (pluspoints < 0) {
-                    binding.pluspoints.setTextColor(getContext().getColor(R.color.red));
+                    binding.pluspoints.setTextColor(requireContext().getColor(R.color.red));
                 } else if (pluspoints == -10.0f) {
                     binding.pluspoints.setText("-");
                     TypedValue typedValue = new TypedValue();
@@ -238,12 +263,7 @@ public class HomeFragment extends Fragment {
 
         binding.openAbsencesCard.setOnClickListener(view1 -> shortcut.onShortcutClicked(SHORTCUT_ABSENCE));
 
-        binding.studentShortcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shortcut.onShortcutClicked(SHORTCUT_STUDENTS);
-            }
-        });
+        binding.studentShortcut.setOnClickListener(v -> shortcut.onShortcutClicked(SHORTCUT_STUDENTS));
     }
 
     @Override
@@ -299,8 +319,8 @@ public class HomeFragment extends Fragment {
             return 15;
         } else if (isAfterOrEqual(LocalTime.parse("21:00")) && now.isBefore(LocalTime.parse("22:00"))) {
             return 16;
-        } else if (isAfterOrEqual(LocalTime.parse("22:00")) && now.isBefore(LocalTime.parse("00:00"))) {
-            return -1;
+        } else if (isAfterOrEqual(LocalTime.parse("22:00"))) {
+            return -2;
         } else {
             return 0;
         }

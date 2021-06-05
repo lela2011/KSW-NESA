@@ -6,15 +6,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.BankRecyclerItemBinding;
 import ch.kanti.nesa.tables.BankStatement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementHolder> {
 
@@ -36,7 +35,7 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankStatementH
         holder.titleView.setText(currentStatement.getTitle());
         holder.amountView.setText(String.format("%.2f", currentStatement.getAmount()));
         if(currentStatement.getAmount() > 0){
-            holder.amountView.setTextColor(ContextCompat.getColor(holder.amountView.getContext(), R.color.green));
+            holder.amountView.setTextColor(holder.amountView.getContext().getColor(R.color.green));
         }
     }
 
