@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 import java.sql.PreparedStatement;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -82,8 +83,8 @@ public class ContentScrapers {
         float gradeAverage;
 
         String year = page.select("#uebersicht_bloecke > page:nth-child(1) > h3:nth-child(1)").get(0).text();
-        ArrayList<String> yearChars = new ArrayList<>(Arrays.asList(year.split("")));
-        int yearFinal = Integer.parseInt(yearChars.get(yearChars.size() - 3));
+        year = year.replaceAll("[^0-9]+","");
+        int yearFinal = Integer.parseInt(year);
         App.sharedPreferences.edit().putInt("year", yearFinal).apply();
         Elements table = page.select(".mdl-data-table > tbody:nth-child(1) > tr");
         table.remove(0);
@@ -336,7 +337,7 @@ public class ContentScrapers {
         rooms.put(84,"Z");
         //</editor-fold>
         //<editor-fold desc="times">
-        HashMap<String, Integer> times = new HashMap<>();
+        /*HashMap<String, Integer> times = new HashMap<>();
         times.put("00:00",0);
         times.put("07:40",1);
         times.put("08:30",2);
@@ -353,7 +354,7 @@ public class ContentScrapers {
         times.put("18:00",13);
         times.put("19:00",14);
         times.put("20:00",15);
-        times.put("21:00",16);
+        times.put("21:00",16);*/
         //</editor-fold>
         //<editor-fold desc="markings">
         HashMap<String, String> markings = new HashMap<>();
@@ -372,7 +373,7 @@ public class ContentScrapers {
         for (Element temp : lessons) {
             try {
                 String[] start_date = temp.getElementsByTag("start_date").get(0).data().replace("--","").replace("[CDATA[","").replace("]]","").split(" ");
-                if (lastDate == null) {
+                /*if (lastDate == null) {
                     lastDate = LocalDate.parse(start_date[0], formatter);
                     resetSublessons();
                 }
@@ -384,7 +385,7 @@ public class ContentScrapers {
                     lessonsList.addAll(dayLessons);
                     dayLessons.clear();
                     resetSublessons();
-                }
+                }*/
                 String[] end_date = temp.getElementsByTag("end_date").get(0).data().replace("[CDATA[","").replace("]]","").split(" ");
                 String subject = temp.getElementsByTag("fachkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
                 String teacherShort = temp.getElementsByTag("lehrerkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
@@ -393,41 +394,16 @@ public class ContentScrapers {
                 String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
                 WeekFields weekField = WeekFields.of(Locale.getDefault());
                 int week = LocalDate.parse(start_date[0]).get(weekField.weekOfWeekBasedYear());
-                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subject, teacherShort, room, marking, null, color, false, times.get(start_date[1]), parallelLessons.get(start_date[1]));
-                dayLessons.add(lesson);
-                parallelLessons.put(start_date[1], parallelLessons.get(start_date[1]) + 1);
+                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subject, teacherShort, room, marking, null, color, false, App.getLessonIndex(LocalTime.parse(start_date[1])));
+                lessonsList.add(lesson);
             } catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
             }
         }
-        for (Lesson daylesson : dayLessons) {
-            daylesson.setSiblingLessons(parallelLessons.get(daylesson.getStartTime()));
-        }
-        lessonsList.addAll(dayLessons);
         return lessonsList;
     }
 
     public static ArrayList<Lesson> scrapeExams(Document page) {
-        //<editor-fold desc="times">
-        HashMap<String, Integer> times = new HashMap<>();
-        times.put("00:00:00",0);
-        times.put("07:40",1);
-        times.put("08:30",2);
-        times.put("09:35",3);
-        times.put("10:25",4);
-        times.put("11:20",5);
-        times.put("12:10",6);
-        times.put("13:00",7);
-        times.put("13:50",8);
-        times.put("14:45",9);
-        times.put("15:35",10);
-        times.put("16:30",11);
-        times.put("17:20",12);
-        times.put("18:00",13);
-        times.put("19:00",14);
-        times.put("20:00",15);
-        times.put("21:00",16);
-        //</editor-fold>
         ArrayList<Lesson> exams = new ArrayList<>();
         Elements lessons = page.getElementsByTag("event");
         for (Element temp : lessons) {
@@ -446,10 +422,7 @@ public class ContentScrapers {
                 String comment = temp.getElementsByTag("kommentar").get(0).data().replace("[CDATA[","").replace("]]","");
                 WeekFields weekField = WeekFields.of(Locale.getDefault());
                 int week = LocalDate.parse(start_date[0]).get(weekField.weekOfWeekBasedYear());
-                if(times.get(start_date[1] ) == null) {
-                    Log.d("tag", "scrapeExams: Nullpointer");
-                }
-                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subjectTeacher[0], teacher, null, marking, comment, color, true, times.get(start_date[1]), 0);
+                Lesson lesson = new Lesson(start_date[0], week, start_date[1], end_date[1], subjectTeacher[0], teacher, null, marking, comment, color, true, App.getLessonIndex(LocalTime.parse(start_date[1])));
                 exams.add(lesson);
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

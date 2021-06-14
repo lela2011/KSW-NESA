@@ -33,7 +33,7 @@
     <string name="balance">Saldo</string>
     <string name="date">Datum</string>
     <string name="kanti_logo">kanti logo</string>
-    <string name="hold_on_while_we_get_your_data">Warten Sie, während wir ihre Daten Laden</string>
+    <string name="hold_on_while_we_get_your_data">Warten Sie, während wir Ihre Daten laden</string>
     <string name="private_mail">Private E-Mail</string>
     <string name="school_mail">School E-Mail</string>
     <string name="youre_offline">Sie sind offline</string>
@@ -104,6 +104,7 @@
     <string name="dark_variant">Dunkel Variante</string>
     <string name="variant">Variante</string>
     <string name="reset">Zurücksetzen</string>
+    <string name="calculate">Berechnen</string>
 
     <string-array name="themespinner">
         <item>System folgen</item>

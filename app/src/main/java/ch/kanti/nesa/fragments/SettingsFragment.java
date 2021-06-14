@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import ch.kanti.nesa.App;
 import ch.kanti.nesa.activities.SplashActivity;
 import ch.kanti.nesa.dialogs.ColorPickerDialog;
@@ -108,20 +111,23 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.sharedPreferences.edit().putString("username", "").apply();
-                App.sharedPreferences.edit().putString("password", "").apply();
-                App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).apply();
-                App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).apply();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-                viewModel.deleteAllBank();
-                viewModel.deleteAllAbsences();
-                viewModel.deleteAllSubjects();
-                viewModel.deleteAllGrades();
-                viewModel.deleteAllAccountInfo();
-                viewModel.deleteAllStudents();
-                viewModel.deleteAllLessons();
+                ExecutorService service = Executors.newSingleThreadExecutor();
+                service.execute(()->{
+                    App.sharedPreferences.edit().putString("username", "").apply();
+                    App.sharedPreferences.edit().putString("password", "").apply();
+                    App.sharedPreferences.edit().putBoolean(App.LOGIN_COMPLETED, false).apply();
+                    App.sharedPreferences.edit().putBoolean(App.FIRST_LOGIN, true).apply();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                    viewModel.deleteAllBank();
+                    viewModel.deleteAllAbsences();
+                    viewModel.deleteAllSubjects();
+                    viewModel.deleteAllGrades();
+                    viewModel.deleteAllAccountInfo();
+                    viewModel.deleteAllStudents();
+                    viewModel.deleteAllLessons();
+                });
             }
         });
 

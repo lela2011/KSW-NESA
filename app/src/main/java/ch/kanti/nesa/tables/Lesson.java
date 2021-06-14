@@ -20,11 +20,10 @@ public class Lesson {
     private final boolean isExam;
     private final int week;
     private final int lesson;
-    private final int sublesson;
     private int siblingLessons;
     private String color;
 
-    public Lesson(String day, int week, String startTime, String endTime, String subject, String teacherShort, String room, String marking, String comment, String color, boolean isExam, int lesson, int sublesson) {
+    public Lesson(String day, int week, String startTime, String endTime, String subject, String teacherShort, String room, String marking, String comment, String color, boolean isExam, int lesson) {
         this.week = week;
         this.day = day;
         this.startTime = startTime;
@@ -37,7 +36,6 @@ public class Lesson {
         this.color = color;
         this.isExam = isExam;
         this.lesson = lesson;
-        this.sublesson = sublesson;
     }
 
     public String getStartTime() {
@@ -86,10 +84,6 @@ public class Lesson {
 
     public int getLesson() {
         return lesson;
-    }
-
-    public int getSublesson() {
-        return sublesson;
     }
 
     public int getSiblingLessons() {

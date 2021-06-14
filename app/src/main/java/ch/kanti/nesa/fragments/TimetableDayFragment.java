@@ -90,33 +90,34 @@ public class TimetableDayFragment extends Fragment {
     private void setRecyclerView () {
         viewModel.getLessons(date.toString()).observe(getViewLifecycleOwner(), lessons -> {
 
-            HashMap<String, Integer> parallelLessons = new HashMap<>();
-            parallelLessons.put("07:40",0);
-            parallelLessons.put("08:30",0);
-            parallelLessons.put("09:35",0);
-            parallelLessons.put("10:25",0);
-            parallelLessons.put("11:20",0);
-            parallelLessons.put("12:10",0);
-            parallelLessons.put("13:00",0);
-            parallelLessons.put("13:50",0);
-            parallelLessons.put("14:45",0);
-            parallelLessons.put("15:35",0);
-            parallelLessons.put("16:30",0);
-            parallelLessons.put("17:20",0);
-            parallelLessons.put("18:00",0);
-            parallelLessons.put("19:00",0);
-            parallelLessons.put("20:00",0);
-            parallelLessons.put("21:00",0);
+            HashMap<Integer, Integer> parallelLessons = new HashMap<>();
+            parallelLessons.put(0,0);
+            parallelLessons.put(1,0);
+            parallelLessons.put(2,0);
+            parallelLessons.put(3,0);
+            parallelLessons.put(4,0);
+            parallelLessons.put(5,0);
+            parallelLessons.put(6,0);
+            parallelLessons.put(7,0);
+            parallelLessons.put(8,0);
+            parallelLessons.put(9,0);
+            parallelLessons.put(10,0);
+            parallelLessons.put(11,0);
+            parallelLessons.put(12,0);
+            parallelLessons.put(13,0);
+            parallelLessons.put(14,0);
+            parallelLessons.put(15,0);
+            parallelLessons.put(16,0);
 
             for(Lesson temp : lessons) {
-                String startTime = temp.getStartTime();
+                int startTime = temp.getLesson();
                 int parallelLessonCount = parallelLessons.get(startTime);
                 parallelLessons.put(startTime, parallelLessonCount+1);
             }
 
-            List<Integer> factors = lessons.stream()
-                    .filter(c -> c.getSiblingLessons() != 0)
-                    .map(Lesson::getSiblingLessons)
+            List<Integer> factors = parallelLessons.values()
+                    .stream()
+                    .filter(c -> c != 0)
                     .distinct()
                     .collect(Collectors.toList());
 
@@ -134,7 +135,7 @@ public class TimetableDayFragment extends Fragment {
                     if (lessons.get(position).getLesson() == 0) {
                         return factor;
                     } else {
-                        return  factor / parallelLessons.get(lessons.get(position).getStartTime());
+                        return  factor / parallelLessons.get(lessons.get(position).getLesson());
                     }
 
                 }

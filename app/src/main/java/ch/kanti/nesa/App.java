@@ -17,6 +17,7 @@ import androidx.work.WorkManager;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
 
 import ch.kanti.nesa.background.SyncWorker;
@@ -88,5 +89,51 @@ public class App extends Application {
         manager.createNotificationChannel(bankChannel);
         manager.createNotificationChannel(absencesChannel);
 
+    }
+
+    public static int getLessonIndex(LocalTime time) {
+        if (isAfterOrEqual(LocalTime.parse("00:00"), time) && time.isBefore(LocalTime.parse("07:40"))) {
+            return 0;
+        } else if (isAfterOrEqual(LocalTime.parse("07:40"), time) && time.isBefore(LocalTime.parse("08:30"))) {
+            return 1;
+        } else if (isAfterOrEqual(LocalTime.parse("08:30"), time) && time.isBefore(LocalTime.parse("09:35"))) {
+            return 2;
+        } else if (isAfterOrEqual(LocalTime.parse("09:35"), time) && time.isBefore(LocalTime.parse("10:25"))) {
+            return 3;
+        } else if (isAfterOrEqual(LocalTime.parse("10:25"), time) && time.isBefore(LocalTime.parse("11:20"))) {
+            return 4;
+        } else if (isAfterOrEqual(LocalTime.parse("11:20"), time) && time.isBefore(LocalTime.parse("12:10"))) {
+            return 5;
+        } else if (isAfterOrEqual(LocalTime.parse("12:10"), time) && time.isBefore(LocalTime.parse("13:00"))) {
+            return 6;
+        } else if (isAfterOrEqual(LocalTime.parse("13:00"), time) && time.isBefore(LocalTime.parse("13:50"))) {
+            return 7;
+        } else if (isAfterOrEqual(LocalTime.parse("13:50"), time) && time.isBefore(LocalTime.parse("14:45"))) {
+            return 8;
+        } else if (isAfterOrEqual(LocalTime.parse("14:45"), time) && time.isBefore(LocalTime.parse("15:35"))) {
+            return 9;
+        } else if (isAfterOrEqual(LocalTime.parse("15:35"), time) && time.isBefore(LocalTime.parse("16:30"))) {
+            return 10;
+        } else if (isAfterOrEqual(LocalTime.parse("16:30"), time) && time.isBefore(LocalTime.parse("17:20"))) {
+            return 11;
+        } else if (isAfterOrEqual(LocalTime.parse("17:20"), time) && time.isBefore(LocalTime.parse("18:00"))) {
+            return 12;
+        } else if (isAfterOrEqual(LocalTime.parse("18:00"), time) && time.isBefore(LocalTime.parse("19:00"))) {
+            return 13;
+        } else if (isAfterOrEqual(LocalTime.parse("19:00"), time) && time.isBefore(LocalTime.parse("20:00"))) {
+            return 14;
+        } else if (isAfterOrEqual(LocalTime.parse("20:00"), time) && time.isBefore(LocalTime.parse("21:00"))) {
+            return 15;
+        } else if (isAfterOrEqual(LocalTime.parse("21:00"), time) && time.isBefore(LocalTime.parse("22:00"))) {
+            return 16;
+        } else if (isAfterOrEqual(LocalTime.parse("22:00"), time)) {
+            return -2;
+        } else {
+            return 0;
+        }
+    }
+
+    public static boolean isAfterOrEqual(LocalTime time, LocalTime currentTime) {
+        return currentTime.isAfter(time) || currentTime.equals(time);
     }
 }

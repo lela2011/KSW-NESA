@@ -21,7 +21,7 @@ public interface LessonDAO {
     @Query("DELETE FROM lesson_table WHERE week = :week")
     void deleteByWeek(int week);
 
-    @Query("SELECT * FROM lesson_table WHERE day = :day ORDER BY lesson ASC, sublesson ASC")
+    @Query("SELECT * FROM lesson_table WHERE day = :day ORDER BY lesson ASC")
     LiveData<List<Lesson>> getLessons(String day);
 
     @Query("UPDATE lesson_table SET marking = :marking, comment = :comment, color = :color, isExam = :isExam WHERE day = :day AND lesson = :lesson AND subject = :subject")

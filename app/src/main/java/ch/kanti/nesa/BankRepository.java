@@ -39,36 +39,27 @@ public class BankRepository {
         Database.databaseWriteExecutor.execute(()-> {
             if(statement.size() != 0) {
                 //statement.add(new BankStatement("pk", 16, "11.03.2021", "Test", 10, 69420));
-                int newBankSize = 0;
                 List<BankStatement> oldBank = bankDAO.getBankStatementSync();
                 for (int i = 0; i < oldBank.size(); i++) {
                     for (int k = 0; k < statement.size(); k++) {
-                        k = newBankSize;
                         if (oldBank.get(i).compare(statement.get(k))) {
                             statement.remove(k);
                             oldBank.remove(i);
                             i--;
                             break;
-                        } else if (i+1 < oldBank.size()) {
-                            if (oldBank.get(i+1).compare(statement.get(k))) {
-                                statement.remove(k);
-                                oldBank.remove(i+1);
-                                break;
-                            }
                         }
-                        newBankSize++;
                     }
                 }
 
                 List<BankStatement> modifiedBank = new ArrayList<>();
 
-                for (int i = 0; i < oldBank.size(); i++) {
+                for (int j = 0; j < oldBank.size(); j++) {
                     for (int k = 0; k < statement.size(); k++) {
-                        if (oldBank.get(i).bankModified(statement.get(k))) {
+                        if (oldBank.get(j).bankModified(statement.get(k))) {
                             modifiedBank.add(statement.get(k));
-                            oldBank.remove(i);
+                            oldBank.remove(j);
                             statement.remove(k);
-                            i--;
+                            j--;
                             break;
                         }
                     }
@@ -152,8 +143,8 @@ public class BankRepository {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
                 if (notificationList.size() < 10) {
-                    for (int i = 0; i < notificationList.size(); i++) {
-                        notificationManager.notify(i, notificationList.get(i));
+                    for (int l = 0; l < notificationList.size(); l++) {
+                        notificationManager.notify(l, notificationList.get(l));
                     }
                 }
             } else {

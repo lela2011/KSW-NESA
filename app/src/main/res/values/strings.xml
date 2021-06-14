@@ -109,6 +109,7 @@
     <string name="dark_variant">Dark Variant</string>
     <string name="variant">Variant</string>
     <string name="reset">Reset</string>
+    <string name="calculate">calculate</string>
 
     <string-array name="themespinner">
         <item>Follow System</item>

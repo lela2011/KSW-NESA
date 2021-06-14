@@ -21,9 +21,12 @@ import ch.kanti.nesa.R;
 import ch.kanti.nesa.databinding.FragmentGradesBinding;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import ch.kanti.nesa.adapters.GradeAdapter;
 import ch.kanti.nesa.ViewModel;
+import ch.kanti.nesa.dialogs.NeededMarkDialog;
+import ch.kanti.nesa.tables.Grade;
 
 public class GradesFragment extends Fragment {
 
@@ -41,6 +44,8 @@ public class GradesFragment extends Fragment {
     
     int col1, col2, col3, col4;
     float range3, range4;
+
+    static List<Grade> gradesList;
 
     @Nullable
     @Override
@@ -73,6 +78,7 @@ public class GradesFragment extends Fragment {
         recyclerView.setAdapter(gradeAdapter);
 
         viewModel.getGradeBySubject(subjectId).observe(getViewLifecycleOwner(), grades -> {
+            gradesList = grades;
             gradeAdapter.setStatements(grades);
             if (grades.size() == 0) {
                 binding.empty.setVisibility(View.VISIBLE);
@@ -126,6 +132,14 @@ public class GradesFragment extends Fragment {
             intent.putExtra("grade", grade.getGrade());
 
             startActivity(intent);
+        });
+
+        binding.neededGrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NeededMarkDialog dialog = new NeededMarkDialog(gradesList);
+                dialog.show(getChildFragmentManager(), "neededGrade");
+            }
         });
     }
 

@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        int lesson = getLessonIndex() + 1;
+        int lesson = App.getLessonIndex(LocalTime.now()) + 1;
         String date = LocalDate.now().toString();
         if(lesson == -1) {
             date = LocalDate.now().plusDays(1).toString();
@@ -100,33 +100,40 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                HashMap<String, Integer> parallelLessons = new HashMap<>();
-                parallelLessons.put("07:40",0);
-                parallelLessons.put("08:30",0);
-                parallelLessons.put("09:35",0);
-                parallelLessons.put("10:25",0);
-                parallelLessons.put("11:20",0);
-                parallelLessons.put("12:10",0);
-                parallelLessons.put("13:00",0);
-                parallelLessons.put("13:50",0);
-                parallelLessons.put("14:45",0);
-                parallelLessons.put("15:35",0);
-                parallelLessons.put("16:30",0);
-                parallelLessons.put("17:20",0);
-                parallelLessons.put("18:00",0);
-                parallelLessons.put("19:00",0);
-                parallelLessons.put("20:00",0);
-                parallelLessons.put("21:00",0);
+                HashMap<Integer, Integer> parallelLessons = new HashMap<>();
+                parallelLessons.put(0,0);
+                parallelLessons.put(1,0);
+                parallelLessons.put(2,0);
+                parallelLessons.put(3,0);
+                parallelLessons.put(4,0);
+                parallelLessons.put(5,0);
+                parallelLessons.put(6,0);
+                parallelLessons.put(7,0);
+                parallelLessons.put(8,0);
+                parallelLessons.put(9,0);
+                parallelLessons.put(10,0);
+                parallelLessons.put(11,0);
+                parallelLessons.put(12,0);
+                parallelLessons.put(13,0);
+                parallelLessons.put(14,0);
+                parallelLessons.put(15,0);
+                parallelLessons.put(16,0);
 
                 for(Lesson temp : lessons) {
-                    String startTime = temp.getStartTime();
+                    int startTime = temp.getLesson();
                     int parallelLessonCount = parallelLessons.get(startTime);
                     parallelLessons.put(startTime, parallelLessonCount+1);
                 }
 
-                List<Integer> factors = lessons.stream()
+                /*List<Integer> factors_ = lessons.stream()
                         .filter(c -> c.getSiblingLessons() != 0)
                         .map(Lesson::getSiblingLessons)
+                        .distinct()
+                        .collect(Collectors.toList());*/
+
+                List<Integer> factors = parallelLessons.values()
+                        .stream()
+                        .filter(c -> c != 0)
                         .distinct()
                         .collect(Collectors.toList());
 
@@ -144,7 +151,7 @@ public class HomeFragment extends Fragment {
                         if (lessons.get(position).getLesson() == 0) {
                             return factor;
                         } else {
-                            return  factor / parallelLessons.get(lessons.get(position).getStartTime());
+                            return  factor / parallelLessons.get(lessons.get(position).getLesson());
                         }
                     }
                 });
@@ -281,52 +288,5 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         shortcut = null;
-    }
-
-    private int getLessonIndex() {
-        LocalTime now = LocalTime.now();
-        if (isAfterOrEqual(LocalTime.parse("00:00")) && now.isBefore(LocalTime.parse("07:40"))) {
-            return 0;
-        } else if (isAfterOrEqual(LocalTime.parse("07:40")) && now.isBefore(LocalTime.parse("08:30"))) {
-            return 1;
-        } else if (isAfterOrEqual(LocalTime.parse("08:30")) && now.isBefore(LocalTime.parse("09:35"))) {
-            return 2;
-        } else if (isAfterOrEqual(LocalTime.parse("09:35")) && now.isBefore(LocalTime.parse("10:25"))) {
-            return 3;
-        } else if (isAfterOrEqual(LocalTime.parse("10:25")) && now.isBefore(LocalTime.parse("11:20"))) {
-            return 4;
-        } else if (isAfterOrEqual(LocalTime.parse("11:20")) && now.isBefore(LocalTime.parse("12:10"))) {
-            return 5;
-        } else if (isAfterOrEqual(LocalTime.parse("12:10")) && now.isBefore(LocalTime.parse("13:00"))) {
-            return 6;
-        } else if (isAfterOrEqual(LocalTime.parse("13:00")) && now.isBefore(LocalTime.parse("13:50"))) {
-            return 7;
-        } else if (isAfterOrEqual(LocalTime.parse("13:50")) && now.isBefore(LocalTime.parse("14:45"))) {
-            return 8;
-        } else if (isAfterOrEqual(LocalTime.parse("14:45")) && now.isBefore(LocalTime.parse("15:35"))) {
-            return 9;
-        } else if (isAfterOrEqual(LocalTime.parse("15:35")) && now.isBefore(LocalTime.parse("16:30"))) {
-            return 10;
-        } else if (isAfterOrEqual(LocalTime.parse("16:30")) && now.isBefore(LocalTime.parse("17:20"))) {
-            return 11;
-        } else if (isAfterOrEqual(LocalTime.parse("17:20")) && now.isBefore(LocalTime.parse("18:00"))) {
-            return 12;
-        } else if (isAfterOrEqual(LocalTime.parse("18:00")) && now.isBefore(LocalTime.parse("19:00"))) {
-            return 13;
-        } else if (isAfterOrEqual(LocalTime.parse("19:00")) && now.isBefore(LocalTime.parse("20:00"))) {
-            return 14;
-        } else if (isAfterOrEqual(LocalTime.parse("20:00")) && now.isBefore(LocalTime.parse("21:00"))) {
-            return 15;
-        } else if (isAfterOrEqual(LocalTime.parse("21:00")) && now.isBefore(LocalTime.parse("22:00"))) {
-            return 16;
-        } else if (isAfterOrEqual(LocalTime.parse("22:00"))) {
-            return -2;
-        } else {
-            return 0;
-        }
-    }
-
-    private boolean isAfterOrEqual(LocalTime time) {
-        return LocalTime.now().isAfter(time) || LocalTime.now().equals(time);
     }
 }
