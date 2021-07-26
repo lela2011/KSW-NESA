@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment {
                     binding.pluspoints.setTextColor(requireContext().getColor(R.color.green));
                 } else if (pluspoints <= 2 && pluspoints >= 0) {
                     binding.pluspoints.setTextColor(requireContext().getColor(R.color.orange));
-                } else if (pluspoints < 0) {
+                } else if (pluspoints < 0 && pluspoints != -10.0f) {
                     binding.pluspoints.setTextColor(requireContext().getColor(R.color.red));
                 } else if (pluspoints == -10.0f) {
                     binding.pluspoints.setText("-");

@@ -187,7 +187,7 @@ public class Network {
 
                     LocalDate today = LocalDate.now();
                     LocalDate previousMonday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-                    LocalDate lastDay = LocalDate.parse("2021-07-12");
+                    LocalDate lastDay = LocalDate.parse("2022-02-06");
 
                     if(all) {
 

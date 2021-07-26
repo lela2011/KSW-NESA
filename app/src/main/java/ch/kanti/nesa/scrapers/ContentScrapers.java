@@ -156,9 +156,13 @@ public class ContentScrapers {
                         grades.remove(grades.size()-1);
                     } else {
                         Elements additionalGrades = detailView.get(g+1).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
-                        additionalGrades.remove(additionalGrades.size()-1);
-                        grades.addAll(additionalGrades);
-                        detailView.remove(g+1);
+                        if(additionalGrades.size() != 0) {
+                            if(additionalGrades.last().text().contains("Aktueller Durchschnitt")) {
+                                additionalGrades.remove(additionalGrades.size()-1);
+                                grades.addAll(additionalGrades);
+                                detailView.remove(g+1);
+                            }
+                        }
                     }
                 } else if (g == detailView.size()-1) {
                     if(grades.last().text().contains("Aktueller Durchschnitt")) {

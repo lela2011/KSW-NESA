@@ -37,6 +37,9 @@ public class BankRepository {
 
     public void insert(List<BankStatement> statement) {
         Database.databaseWriteExecutor.execute(()-> {
+
+            List<BankStatement> backupStatements = new ArrayList<>(statement);
+
             if(statement.size() != 0) {
                 //statement.add(new BankStatement("pk", 16, "11.03.2021", "Test", 10, 69420));
                 List<BankStatement> oldBank = bankDAO.getBankStatementSync();
@@ -68,7 +71,6 @@ public class BankRepository {
                 List<Notification> notificationList = new ArrayList<>();
 
                 for (BankStatement bank : oldBank) {
-                    bankDAO.deleteByStatement(bank.getPk());
                     String deletedText = context.getString(R.string.bank1) + bank.getTitle() + context.getString(R.string.deletedBank2);
 
                     Intent intent = new Intent(context, MainActivity.class);
@@ -91,7 +93,6 @@ public class BankRepository {
                     notificationList.add(notificationDel);
                 }
 
-                bankDAO.insert(statement);
                 for (BankStatement newBank : statement) {
                     String addedText = context.getString(R.string.bank1) + newBank.getTitle() + context.getString(R.string.addedBank2);
 
@@ -117,7 +118,6 @@ public class BankRepository {
 
 
                 for (BankStatement bank : modifiedBank) {
-                    bankDAO.updateByStatement(bank.getDate(), bank.getTitle(), bank.getAmount(), bank.getBalance());
                     String moddedText = context.getString(R.string.bank1) + bank.getTitle() + context.getString(R.string.modifiedBank2);
 
                     Intent intent = new Intent(context, MainActivity.class);
@@ -139,6 +139,9 @@ public class BankRepository {
                             .build();
                     notificationList.add(notificationMod);
                 }
+
+                bankDAO.deleteAll();
+                bankDAO.insert(backupStatements);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
