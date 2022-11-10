@@ -89,7 +89,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         LoginAndScrape scrape = Network.checkLoginAndPages(true, true, true, true, username, password);
                         if (scrape.isLoginCorrect()) {
-                            viewModel.insertInfo(scrape.getAccountInfos());
+                            //viewModel.insertInfo(scrape.getAccountInfos());
                             viewModel.insertSubjects(scrape.getSubjectsAndGrades().getSubjectList());
                             viewModel.insertGrades(scrape.getSubjectsAndGrades().getGradeList());
                             viewModel.insertBank(scrape.getBankStatements());

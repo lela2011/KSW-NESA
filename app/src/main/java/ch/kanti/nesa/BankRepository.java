@@ -76,7 +76,7 @@ public class BankRepository {
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("type", 2);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(bank.getTitle())
@@ -99,7 +99,7 @@ public class BankRepository {
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("type", 2);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(newBank.getTitle())
@@ -123,7 +123,7 @@ public class BankRepository {
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("type", 2);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     Notification notificationMod = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                             .setContentTitle(bank.getTitle())

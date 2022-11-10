@@ -179,7 +179,7 @@ public class SettingsFragment extends Fragment implements ColorPickerDialog.Retu
                 viewModel.deleteAllAbsences();
                 viewModel.deleteAllSubjects();
                 viewModel.deleteAllGrades();
-                viewModel.deleteAllAccountInfo();
+                //viewModel.deleteAllAccountInfo();
                 viewModel.deleteAllStudents();
                 viewModel.deleteAllLessons();
             }

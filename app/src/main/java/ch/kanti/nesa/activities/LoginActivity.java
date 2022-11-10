@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
+        viewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
         //showing and hiding password
         binding.showHidePwd.setOnClickListener(view1 -> {
@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
     //Reading out credentials, encrypting, checking for validity, writing into database
     @SuppressLint("ApplySharedPref")
     private void getLoginCredentials() {
+
         //close keyboard on screen
         closeKeyboard();
         //encrypt username and password

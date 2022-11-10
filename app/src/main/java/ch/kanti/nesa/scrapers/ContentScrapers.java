@@ -39,7 +39,7 @@ public class ContentScrapers {
 
     static final HashMap<String, Integer> parallelLessons = new HashMap<>();
 
-    public static ArrayList<AccountInfo> scrapeMain(Document mainPage, Document emailPage){
+    /*public static ArrayList<AccountInfo> scrapeMain(Document mainPage, Document emailPage){
         Elements tableLoggedOut = mainPage.select("div.mdl-cell:nth-child(4) > table:nth-child(2) > tbody:nth-child(1) > tr");
         Elements tableNotLoggedOut = mainPage.select("div.mdl-cell:nth-child(5) > table:nth-child(2) > tbody:nth-child(1) > tr");
         String schoolMail = emailPage.select("#f0").get(0).attr("value");
@@ -65,7 +65,7 @@ public class ContentScrapers {
         userInfo.add(new AccountInfo(schoolMail, userInfo.size()));
         userInfo.add(new AccountInfo(privateMail, userInfo.size()+1));
         return userInfo;
-    }
+    }*/
 
     @SuppressLint("ApplySharedPref")
     public static SubjectsAndGrades scrapeMarks(Document page) {
@@ -142,7 +142,7 @@ public class ContentScrapers {
             }
 
             String subjectName = overview.get(g).select("td:nth-child(1)").get(0).text().replace(subjectId + " ", "");
-            String gradeAverageString = overview.get(g).select("td").get(1).text().replace("*", "").replace("-", "");
+            String gradeAverageString = overview.get(g).select("td").get(1).text().replace("*", "").replace("-", "").trim();
             if(gradeAverageString.equals("")){
                 gradeAverage = -1f;
             } else {
@@ -151,22 +151,22 @@ public class ContentScrapers {
             subjects.add(new Subject(subjectName, "100", gradeAverage, calculatePluspoints(gradeAverage), subjectId, g, counts, counts));
             Elements grades = detailView.get(g).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
             if (grades.size() != 0) {
-                if(g+1 <= detailView.size()-1) {
-                    if(grades.last().text().contains("Aktueller Durchschnitt")) {
-                        grades.remove(grades.size()-1);
-                    } else {
-                        Elements additionalGrades = detailView.get(g+1).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
-                        if(additionalGrades.size() != 0) {
-                            if(additionalGrades.last().text().contains("Aktueller Durchschnitt")) {
-                                additionalGrades.remove(additionalGrades.size()-1);
-                                grades.addAll(additionalGrades);
-                                detailView.remove(g+1);
+                if(g < detailView.size()) {
+                    if(subjects.get(g).getGradeAverage() != -1.0f) {
+                        if(grades.last().text().contains("Aktueller Durchschnitt")) {
+                            grades.remove(grades.size()-1);
+                        } else {
+                            if(g < detailView.size()-1) {
+                                Elements additionalGrades = detailView.get(g+1).select("td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr");
+                                if(additionalGrades.size() != 0) {
+                                    if(additionalGrades.last().text().contains("Aktueller Durchschnitt")) {
+                                        additionalGrades.remove(additionalGrades.size()-1);
+                                        grades.addAll(additionalGrades);
+                                        detailView.remove(g+1);
+                                    }
+                                }
                             }
                         }
-                    }
-                } else if (g == detailView.size()-1) {
-                    if(grades.last().text().contains("Aktueller Durchschnitt")) {
-                        grades.remove(grades.size()-1);
                     }
                 }
                 grades.remove(0);
@@ -243,103 +243,15 @@ public class ContentScrapers {
             Element statement = table.get(i);
             String date = statement.child(0).text();
             String name = statement.child(1).text();
-            float amount = Float.parseFloat(statement.child(2).text().replace(" sFr", ""));
-            float balance = Float.parseFloat(statement.child(3).text().replace(" sFr", ""));
+            float amount = Float.parseFloat(statement.child(2).text().replace(" CHF", ""));
+            float balance = Float.parseFloat(statement.child(3).text().replace(" CHF", ""));
             String pk = i + "_" + date + "_" + name + "_" + amount + "_" + balance;
             statements.add(new BankStatement(pk ,i, date, name, amount, balance));
         }
         return statements;
     }
 
-    public static ArrayList<Lesson> scrapeTimetable (Document page) {
-        //<editor-fold desc="rooms">
-        HashMap<Integer, String> rooms = new HashMap<>();
-        rooms.put(0,"Ausserhalb");
-        rooms.put(1,"01");
-        rooms.put(2,"02");
-        rooms.put(3,"03");
-        rooms.put(4,"04");
-        rooms.put(5,"05");
-        rooms.put(6,"06");
-        rooms.put(7,"07");
-        rooms.put(8,"08");
-        rooms.put(9,"09");
-        rooms.put(10,"10");
-        rooms.put(11,"11");
-        rooms.put(12,"12");
-        rooms.put(13,"13");
-        rooms.put(14,"14");
-        rooms.put(15,"15");
-        rooms.put(16,"16");
-        rooms.put(17,"Aula");
-        rooms.put(18,"B");
-        rooms.put(19,"BL");
-        rooms.put(20,"BLapW");
-        rooms.put(21,"Ch");
-        rooms.put(22,"CL");
-        rooms.put(23,"E01");
-        rooms.put(24,"E02");
-        rooms.put(25,"E03");
-        rooms.put(26,"E04");
-        rooms.put(27,"E05");
-        rooms.put(28,"E06");
-        rooms.put(29,"E07");
-        rooms.put(30,"E08");
-        rooms.put(31,"E11");
-        rooms.put(32,"E12");
-        rooms.put(33,"E13");
-        rooms.put(34,"E16");
-        rooms.put(35,"E17");
-        rooms.put(36,"E20");
-        rooms.put(37,"E22");
-        rooms.put(38,"E24");
-        rooms.put(39,"E25");
-        rooms.put(40,"E26");
-        rooms.put(41,"E30");
-        rooms.put(42,"E31");
-        rooms.put(43,"E32");
-        rooms.put(44,"E33");
-        rooms.put(45,"E34");
-        rooms.put(46,"E35");
-        rooms.put(47,"E36");
-        rooms.put(48,"Gg");
-        rooms.put(49,"GgLapW");
-        rooms.put(50,"H");
-        rooms.put(51,"Hb");
-        rooms.put(52,"Hf1");
-        rooms.put(53,"ILapW");
-        rooms.put(54,"Inf");
-        rooms.put(55,"Inf2");
-        rooms.put(56,"K");
-        rooms.put(57,"Kr");
-        rooms.put(58,"LBiblio");
-        rooms.put(59,"Lehrerbüro");
-        rooms.put(60,"LZ1");
-        rooms.put(61,"LZ2");
-        rooms.put(62,"LZ3");
-        rooms.put(63,"m1");
-        rooms.put(64,"m10");
-        rooms.put(65,"m2");
-        rooms.put(66,"m3");
-        rooms.put(67,"m4");
-        rooms.put(68,"m5");
-        rooms.put(69,"m6");
-        rooms.put(70,"m7");
-        rooms.put(71,"m8");
-        rooms.put(72,"m9");
-        rooms.put(73,"Mediothek");
-        rooms.put(74,"Mensa");
-        rooms.put(75,"Nat");
-        rooms.put(76,"Ph");
-        rooms.put(77,"PL1");
-        rooms.put(78,"PL2");
-        rooms.put(79,"PLapW");
-        rooms.put(80,"R1");
-        rooms.put(81,"R2");
-        rooms.put(82,"RT");
-        rooms.put(83,"SLI");
-        rooms.put(84,"Z");
-        //</editor-fold>
+    public static ArrayList<Lesson> scrapeTimetable (Document page, HashMap<Integer, String> rooms) {
         //<editor-fold desc="times">
         /*HashMap<String, Integer> times = new HashMap<>();
         times.put("00:00",0);
@@ -393,8 +305,13 @@ public class ContentScrapers {
                 String[] end_date = temp.getElementsByTag("end_date").get(0).data().replace("[CDATA[","").replace("]]","").split(" ");
                 String subject = temp.getElementsByTag("fachkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
                 String teacherShort = temp.getElementsByTag("lehrerkuerzel").get(0).data().replace("[CDATA[","").replace("]]","");
-                String room = rooms.get(Integer.parseInt(temp.getElementsByTag("zimmer").get(0).data().replace("[CDATA[","").replace("]]","")));
-                String marking = markings.get(temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]",""));
+                int roomNum = -1;
+                try {
+                    roomNum = Integer.parseInt(temp.getElementsByTag("zimmer").get(0).data().replace("[CDATA[","").replace("]]",""));
+                } catch (NumberFormatException e) {
+                }
+                String room = rooms.getOrDefault(roomNum, "");
+                String marking = markings.getOrDefault(temp.getElementsByTag("markierung").get(0).data().replace("[CDATA[","").replace("]]",""),"");
                 String color = temp.getElementsByTag("color").get(0).data().replace("[CDATA[","").replace("]]","");
                 WeekFields weekField = WeekFields.of(Locale.getDefault());
                 int week = LocalDate.parse(start_date[0]).get(weekField.weekOfWeekBasedYear());
@@ -492,8 +409,8 @@ public class ContentScrapers {
         ArrayList<PromotionRule> gymRules = new ArrayList<>();
         gymRules.add(new PromotionRule(2,"sMU",".+[(]SP[)]", "NULL", 2f/3f, 1f/3f, 0, false));
         gymRules.add(new PromotionRule(2,"sFB","sBW", "NULL", 0.5f, 0.5f, 0, false));
-        gymRules.add(new PromotionRule(2,"sP","sM", "NULL", 0.5f, 0.5f, 0, true));
-        gymRules.add(new PromotionRule(2,"sB","sC", "NULL", 0.5f, 0.5f, 0, true));
+        gymRules.add(new PromotionRule(2,"sP","sM", "NULL", 0.5f, 0.5f, 0, false));
+        gymRules.add(new PromotionRule(2,"sB","sC", "NULL", 0.5f, 0.5f, 0, false));
         gymRules.add(new PromotionRule(2,"MU","BG", "NULL", 0.5f, 0.5f, 0, true));
 
         ArrayList<PromotionRule> fms12Rules = new ArrayList<>();
@@ -555,6 +472,7 @@ public class ContentScrapers {
                     .collect(Collectors.toList());
 
             float average = 0;
+            float weight = 0;
 
             if (subs.size() == rule.getSubjectsCount()) {
                 for (String foundSub : subs) {
@@ -562,18 +480,24 @@ public class ContentScrapers {
                     if (rule.isRound()) {
                         grade = Math.round(grade*2.0f)/2.0f;
                     }
-                    if (pat1.matcher(foundSub).find()) {
+                    if (pat1.matcher(foundSub).find() && grade != -1.0f) {
                         average += grade * rule.getWeight1();
                         subjectsMap.remove(foundSub);
-                    } else if (pat2.matcher(foundSub).find()) {
+                        weight += rule.getWeight1();
+                    } else if (pat2.matcher(foundSub).find() && grade != -1.0f) {
                         average += grade * rule.getWeight2();
                         subjectsMap.remove(foundSub);
-                    } else if (pat3.matcher(foundSub).find()) {
+                        weight += rule.getWeight2();
+                    } else if (pat3.matcher(foundSub).find() && grade != -1.0f) {
                         average += grade * rule.getWeight3();
                         subjectsMap.remove(foundSub);
+                        weight += rule.getWeight3();
                     }
                 }
-                pluspoints.add(calculatePluspoints(average));
+                float calculatedPluspoint = calculatePluspoints(average/weight);
+                if(calculatedPluspoint != -10.0f) {
+                    pluspoints.add(calculatedPluspoint);
+                }
             }
         }
         ArrayList<Float> unmodified = new ArrayList<>(subjectsMap.values());
@@ -584,7 +508,8 @@ public class ContentScrapers {
             }
         }
 
-        float pluspointsSum = (float) pluspoints.stream()
+        float pluspointsSum = (float) pluspoints
+                .stream()
                 .mapToDouble(Float::floatValue)
                 .sum();
 

@@ -1,6 +1,7 @@
 package ch.kanti.nesa.scrapers;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -22,11 +23,16 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,16 +60,20 @@ public class Network {
         ArrayList<Absence> absences = null;
         ArrayList<BankStatement> bankStatements = null;
         SubjectsAndGrades subjectsAndGrades;
+        HashMap<Integer, String> rooms = null;
 
         String id = "";
         String transid = "";
 
         try {
 
+            Connection.Response google_response = Jsoup.connect("https://www.google.com").execute();
+
             Connection.Response loginResponse = Jsoup.connect("https://ksw.nesa-sg.ch/loginto.php?mode=0&lang=")
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
                     .method(Connection.Method.GET)
                     .execute();
+
+            //.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0")
 
             HashMap<String, String> loginCookies = new HashMap<>(loginResponse.cookies());
             String authToken = loginResponse.parse().select("div.mdl-cell:nth-child(3) > input:nth-child(3)").first().attr("value");
@@ -145,7 +155,7 @@ public class Network {
                     }
 
 
-                    accountInfos = ContentScrapers.scrapeMain(mainPage, emailPage);
+                    //accountInfos = ContentScrapers.scrapeMain(mainPage, emailPage);
                     students = ContentScrapers.scrapeStudents(studentPages);
                 }
 
@@ -160,9 +170,31 @@ public class Network {
                             .execute()
                             .parse();
 
-                    String timetable = agendaPage.select("a.mdl-button:nth-child(2)").get(0).attr("style");
-                    String events = agendaPage.select("a.mdl-button:nth-child(3)").get(0).attr("style");
-                    String exams = agendaPage.select("a.mdl-button:nth-child(4)").get(0).attr("style");
+                    String timetable = agendaPage.select("a.mdl-button:nth-child(1)").get(0).attr("style");
+                    String events = agendaPage.select("a.mdl-button:nth-child(2)").get(0).attr("style");
+                    String exams = agendaPage.select("a.mdl-button:nth-child(3)").get(0).attr("style");
+
+                    rooms = new HashMap<>();
+
+                    Elements scripts = agendaPage.getElementsByTag("script");
+                    for(Element script : scripts) {
+                        if(script.toString().contains("zimmerliste")) {
+                            String scriptString = script.data();
+                            int begin = scriptString.indexOf("zimmerliste");
+                            int end = scriptString.indexOf("];", begin);
+                            String zimmerliste = scriptString.substring(begin, end);
+                            List<String> roomMap = Arrays.asList(zimmerliste.replace("zimmerliste = [", "").split("\\}\\,\\{"));
+                            for(String roomItem : roomMap) {
+                                roomItem = roomItem.replace("{","").replace("}","");
+                                String[] pairs = roomItem.split(",");
+                                int key = Integer.parseInt(pairs[0].split(":")[1].trim());
+                                String value = pairs[1].split(":")[1].trim().replace("\"", "");
+                                rooms.put(key,value);
+                            }
+                            Log.d("tag", rooms.toString());
+                            break;
+                        }
+                    }
 
                     if (!timetable.contains("background-color")) {
                         Connection.Response timetableResponse = Jsoup.connect("https://ksw.nesa-sg.ch/index.php?pageid=22202&id=" + id + "&transid=" + transid + "&eventtype=0_stp")
@@ -187,7 +219,17 @@ public class Network {
 
                     LocalDate today = LocalDate.now();
                     LocalDate previousMonday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-                    LocalDate lastDay = LocalDate.parse("2022-02-06");
+                    LocalDate lastDay = LocalDate.now();
+                    //Monday the week after last lesson to be scraped
+                    int currentWeek = today.get(WeekFields.of(Locale.GERMAN).weekOfYear());
+                    int currentYear = today.getYear();
+                    if (currentWeek < 5) {
+                        lastDay = LocalDate.of(currentYear,2,1).with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+                    } else if (currentWeek < 30) {
+                        lastDay = LocalDate.of(currentYear,8,1).with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+                    } else {
+                        lastDay = LocalDate.of(currentYear+1,2,1).with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+                    }
 
                     if(all) {
 
@@ -198,7 +240,7 @@ public class Network {
                                     .execute()
                                     .parse();
 
-                            ArrayList<Lesson> weekLessons = ContentScrapers.scrapeTimetable(timetableDocument);
+                            ArrayList<Lesson> weekLessons = ContentScrapers.scrapeTimetable(timetableDocument, rooms);
                             lessons.addAll(weekLessons);
 
                             previousMonday = previousMonday.plusDays(7);
@@ -231,7 +273,7 @@ public class Network {
                                 .execute()
                                 .parse();
 
-                        lessons = ContentScrapers.scrapeTimetable(timetableDocument);
+                        lessons = ContentScrapers.scrapeTimetable(timetableDocument, rooms);
 
                         Document examDocument = Jsoup.connect("https://ksw.nesa-sg.ch/scheduler_processor.php?view=week&curr_date=" + today.toString() + "&min_date=" + previousMonday.toString() + "&max_date=" + previousMonday.plusDays(7).toString() + "&ansicht=klassenuebersicht&showOnlyThisClass=-2&id=" + id + "&transid=" + transid + "&pageid=21312&timeshift=-120")
                                 .cookies(mainCookies)
@@ -249,17 +291,17 @@ public class Network {
 
                 logout(id, transid, mainCookies);
 
-                return new LoginAndScrape(true, true,  accountInfos, absences, bankStatements, students, lessons, examLessons, subjectsAndGrades);
+                return new LoginAndScrape(true, true,  null, absences, bankStatements, students, lessons, rooms, examLessons, subjectsAndGrades);
             } else {
                 if (loginCorrect) {
                     logout(id, transid, mainCookies);
                 }
-                return new LoginAndScrape(loginCorrect, true,  null, null, null, null,null, null, null);
+                return new LoginAndScrape(loginCorrect, true,  null, null, null, null,null, null, null, null);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new LoginAndScrape(false, false, null, null, null, null,null, null, null);
+            return new LoginAndScrape(false, false, null, null, null, null,null, null, null, null);
         }
     }
 

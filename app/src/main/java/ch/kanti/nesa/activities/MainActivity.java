@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -76,14 +77,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
         boolean firstLogin = App.sharedPreferences.getBoolean(App.FIRST_LOGIN, true);
 
         BottomNavigationView bottomNav = binding.bottomNavigation;
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        bottomNav.setOnItemSelectedListener(navListener);
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
 
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
+        viewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(ViewModel.class);
 
         username = App.sharedPreferences.getString("username", "");
         password = App.sharedPreferences.getString("password", "");
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Home
     }
 
     @SuppressLint("NonConstantResourceId")
-    public final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
+    public final NavigationBarView.OnItemSelectedListener navListener = item -> {
         Fragment selectedFragment = null;
 
         switch (item.getItemId()) {

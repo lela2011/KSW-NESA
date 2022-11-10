@@ -104,7 +104,7 @@ public class GradesRepository {
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     String gradeString = "-";
                     if (grade.getGrade() != -1.0f) {
@@ -139,7 +139,7 @@ public class GradesRepository {
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     String gradeString = "-";
                     if (grade.getGrade() != -1.0f) {
@@ -174,7 +174,7 @@ public class GradesRepository {
                     intent.putExtra("average", subjectAverage);
                     intent.putExtra("pluspoints", subjectPluspoints);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                     String gradeString = "-";
                     if (grade.getGrade() != -1.0f) {

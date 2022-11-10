@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment {
         recyclerView = binding.recyclerView;
         recyclerView.setAdapter(adapter);
 
-        ArrayList<TextView> personalInfoTextViews = new ArrayList<>(8);
+        /*ArrayList<TextView> personalInfoTextViews = new ArrayList<>(8);
         personalInfoTextViews.add(binding.name);
         personalInfoTextViews.add(binding.address);
         personalInfoTextViews.add(binding.city);
@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
             for(int i = 0; i < accountInfos.size(); i++){
                 personalInfoTextViews.get(i).setText(accountInfos.get(i).value);
             }
-        });
+        });*/
 
         viewModel.getBalance().observe(getViewLifecycleOwner(), aFloat -> {
             if(aFloat != null){

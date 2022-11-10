@@ -78,7 +78,7 @@ public class AbsenceRepository {
                    Intent intent = new Intent(context, MainActivity.class);
                    intent.putExtra("type", 1);
 
-                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                    Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                            .setContentTitle(absence.getDate() + " - " + absence.getCourse())
@@ -101,7 +101,7 @@ public class AbsenceRepository {
                    Intent intent = new Intent(context, MainActivity.class);
                    intent.putExtra("type", 1);
 
-                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                    Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                            .setContentTitle(absence.getDate() + " - " + absence.getCourse())
@@ -125,7 +125,7 @@ public class AbsenceRepository {
                    Intent intent = new Intent(context, MainActivity.class);
                    intent.putExtra("type", 1);
 
-                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                   PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
 
                    Notification notificationDel = new NotificationCompat.Builder(context, App.CHANNEL_GRADES)
                            .setContentTitle(absence.getDate() + " - " + absence.getCourse())

@@ -20,10 +20,11 @@ public class LoginAndScrape {
     private final ArrayList<BankStatement> bankStatements;
     private final ArrayList<Student> students;
     private final ArrayList<Lesson> lessons;
+    private final HashMap<Integer, String> rooms;
     private final ArrayList<Lesson> exams;
     private final SubjectsAndGrades subjectsAndGrades;
 
-    public LoginAndScrape(boolean loginCorrect, boolean checkSuccessful, ArrayList<AccountInfo> accountInfos, ArrayList<Absence> absences, ArrayList<BankStatement> bankStatements, ArrayList<Student> students, ArrayList<Lesson> lessons, ArrayList<Lesson> exams, SubjectsAndGrades subjectsAndGrades) {
+    public LoginAndScrape(boolean loginCorrect, boolean checkSuccessful, ArrayList<AccountInfo> accountInfos, ArrayList<Absence> absences, ArrayList<BankStatement> bankStatements, ArrayList<Student> students, ArrayList<Lesson> lessons, HashMap<Integer, String> rooms, ArrayList<Lesson> exams, SubjectsAndGrades subjectsAndGrades) {
         this.loginCorrect = loginCorrect;
         this.checkSuccessful = checkSuccessful;
         this.accountInfos = accountInfos;
@@ -31,6 +32,7 @@ public class LoginAndScrape {
         this.bankStatements = bankStatements;
         this.students = students;
         this.lessons = lessons;
+        this.rooms = rooms;
         this.exams = exams;
         this.subjectsAndGrades = subjectsAndGrades;
     }
